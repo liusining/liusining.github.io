@@ -114,25 +114,25 @@
 
 
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta name="keywords" content="Programming">
+  <meta name="description" content="梳理 pandas 和 numpy 在设计上的不同">
+<meta name="keywords" content="pandas,numpy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://www.sining.io/2019/01/20/hello-world/index.html">
+<meta property="og:title" content="区分 pandas 库中的 loc &#x2F; iloc 以及 numpy 中的 []">
+<meta property="og:url" content="https://www.sining.io/2019/01/21/distinguish-iloc-and-loc-in-pandas/index.html">
 <meta property="og:site_name" content="sining.io">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="梳理 pandas 和 numpy 在设计上的不同">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-21T01:59:04.389Z">
+<meta property="og:updated_time" content="2019-01-21T08:26:28.515Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="区分 pandas 库中的 loc &#x2F; iloc 以及 numpy 中的 []">
+<meta name="twitter:description" content="梳理 pandas 和 numpy 在设计上的不同">
 
 
 
 
 
 
-  <link rel="canonical" href="https://www.sining.io/2019/01/20/hello-world/">
+  <link rel="canonical" href="https://www.sining.io/2019/01/21/distinguish-iloc-and-loc-in-pandas/">
 
 
 
@@ -142,7 +142,7 @@
   };
 </script>
 
-  <title>Hello World | sining.io</title>
+  <title>区分 pandas 库中的 loc / iloc 以及 numpy 中的 [] | sining.io</title>
   
 
 
@@ -320,7 +320,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/01/20/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/01/21/distinguish-iloc-and-loc-in-pandas/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sining Liu">
@@ -337,7 +337,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Hello World
+          <h2 class="post-title" itemprop="name headline">区分 pandas 库中的 loc / iloc 以及 numpy 中的 []
               
             
           </h2>
@@ -362,24 +362,12 @@
                 
               
 
-              <time title="Created: 2019-01-20 08:32:05" itemprop="dateCreated datePublished" datetime="2019-01-20T08:32:05+08:00">2019-01-20</time>
+              <time title="Created: 2019-01-21 14:33:46 / Modified: 16:26:28" itemprop="dateCreated datePublished" datetime="2019-01-21T14:33:46+08:00">2019-01-21</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-01-21 09:59:04" itemprop="dateModified" datetime="2019-01-21T09:59:04+08:00">2019-01-21</time>
               
             
           </span>
@@ -393,9 +381,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/01/20/hello-world/#comments" itemprop="discussionUrl">
+                <a href="/2019/01/21/distinguish-iloc-and-loc-in-pandas/#comments" itemprop="discussionUrl">
                 
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/20/hello-world/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/21/distinguish-iloc-and-loc-in-pandas/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -408,6 +396,8 @@
 
           
 
+          
+              <div class="post-description">梳理 pandas 和 numpy 在设计上的不同</div>
           
 
         </div>
@@ -423,15 +413,68 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p>numpy 和 pandas（处理数据的 python 库）中，有很多表示二维数组的类。为了定位到二维数组中的数组，这些类也提供了很多实例方法，比如脚标方法（e.g. <code>data[0]</code>)。但除了脚标方法这个概念，numpy 和 pandas 在定位方法的设计上有很多不同。我们在这里简单梳理一下。</p>
+<h2 id="pandas-中的-loc-和-iloc"><a href="#pandas-中的-loc-和-iloc" class="headerlink" title="pandas 中的 loc 和 iloc"></a>pandas 中的 loc 和 iloc</h2><p>在 pandas 中，定位n个竖列（column）用脚标方法<code>[]</code>：</p>
+<ol>
+<li><code>df[&#39;column&#39;]</code> 返回一个包含当前竖列数据的 <code>pd.Series</code> 对象</li>
+<li><code>df[[&#39;column1&#39;, &#39;column2&#39;]]</code> 返回一个包含两个竖列数据的 <code>pd.DataFrame</code> 对象</li>
+</ol>
+<p>但因为脚标方法被用来定位 columns，定位横排（ rows ）的时候用什么呢？pandas 想出的方法是创造两个新的对象属性 <code>loc</code> 和 <code>iloc</code>，并用他们来访问 rows。</p>
+<p>比如，对于这样一个 DataFrame：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df = pd.DataFrame(data=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]], columns=[<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'C'</span>], index=[<span class="string">'x'</span>,<span class="string">'y'</span>,<span class="string">'z'</span>])</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>y</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>z</td>
+<td>7</td>
+<td>8</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>其中，x, y, z 就是 df 的 index（在这个 df 中，index 都是 string）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(df.index)</span><br><span class="line"><span class="comment"># =&gt; Index(['x', 'y', 'z'], dtype='object')</span></span><br></pre></td></tr></table></figure>
+<p>要想通过这些 df 的 index 来访问一整个 row 的数据，我们需要先访问 df 的 loc 属性，然后才能使用 index 作为脚标访问一整行的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(df.loc)</span><br><span class="line"><span class="comment"># =&gt; &lt;pandas.core.indexing._LocIndexer object at 0x7fa060820f28&gt;</span></span><br><span class="line">df.loc[<span class="string">'x'</span>] <span class="comment"># return an pd.Series object</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">df.loc[[<span class="string">'x'</span>]] <span class="comment"># return an pd.DataFrame object, like a 2-d array</span></span><br></pre></td></tr></table></figure>
+<p>同时，pandas 还允许我们按照 rows 的顺序来访问数据，也就是像普通的 list 一样，用数字 index 来访问 df 中的数据。但就像上面的 loc 一样，我们这里也需要先访问 df 的一个属性，叫 <code>iloc</code> 属性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(df.iloc)</span><br><span class="line"><span class="comment"># =&gt; &lt;pandas.core.indexing._iLocIndexer object at 0x7fa0605d0fd0&gt;</span></span><br><span class="line">df.iloc[<span class="number">0</span>]</span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">df.iloc[[<span class="number">0</span>]] <span class="comment"># return an pd.DataFrame object, like a 2-d array</span></span><br></pre></td></tr></table></figure>
+<p>总之，因为 pandas 的设计，我们在按 rows 来访问 DataFrame 数据之前，都需要先访问 <code>loc</code> 或者 <code>iloc</code> 属性，两者的区别是传入的脚标是否被视为顺序的 index。</p>
+<p>其他 pandas 的类也有类似设计，比如 <code>pd.Series</code>，只不过后者通常是一维的，很多时候直接脚标访问数据就可以了。</p>
+<h2 id="numpy-的设计"><a href="#numpy-的设计" class="headerlink" title="numpy 的设计"></a>numpy 的设计</h2><p>我们在上面讨论了 pandas 中的方法设计，而 numpy 中是很不一样的设计风格。</p>
+<p>比如，如果把上面的 df 转化为 numpy.ndarray</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">array = np.asarray(df)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">array([[1, 2, 3],</span></span><br><span class="line"><span class="string">       [4, 5, 6],</span></span><br><span class="line"><span class="string">       [7, 8, 9]])</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure>
+<p>然后访问一个 row 的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array[<span class="number">0</span>] <span class="comment"># =&gt; [1,2,3]</span></span><br><span class="line">array[<span class="number">0</span>,:] <span class="comment"># =&gt; [1,2,3]</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">array[[<span class="number">0</span>]] <span class="comment"># =&gt; [[1,2,3]], <span class="doctag">NOTE:</span> a 2-d array</span></span><br><span class="line">array[[<span class="number">0</span>],:] <span class="comment"># =&gt; [[1,2,3]], <span class="doctag">NOTE:</span> a 2-d array</span></span><br></pre></td></tr></table></figure>
+<p>或者访问一个 column 下的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array[:,<span class="number">0</span>] <span class="comment"># =&gt; [1,4,7]</span></span><br><span class="line">array[:,[<span class="number">0</span>]] <span class="comment"># =&gt; [[1], [4], [7]], <span class="doctag">NOTE:</span> a 2-d array</span></span><br></pre></td></tr></table></figure>
+<p>显然，numpy 采用的方法不是访问 ndarray 的一个属性之后，定位竖列或横行上的数据。而是，允许传入两个脚标，第一个代表 rows 的定位，第二个代表 columns 的定位。</p>
+<h2 id="What’s-more"><a href="#What’s-more" class="headerlink" title="What’s more"></a>What’s more</h2><p>最后，顺带一提，从上面的例子中看出 numpy 和 pands 对于二维数据（或者n维）：</p>
+<ol>
+<li>如果传入的脚标是一个单独的 index 的值，那么返回的数据就会降低到一维（n-1 维）</li>
+<li>如果传入的脚标是个包含 index 的数组，那么返回的数据不会降维</li>
+</ol>
+<p>不论是通过 iloc，loc 的属性间接访问数据，还是直接传入脚标，上面这条设计是个共同点。</p>
+<p>（这是归纳法得出的一个结论，吧）</p>
 
       
     </div>
@@ -453,6 +496,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/pandas/" rel="tag"># pandas</a>
+          
+            <a href="/tags/numpy/" rel="tag"># numpy</a>
+          
+        </div>
+      
 
       
       
@@ -462,15 +513,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/01/20/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/21/distinguish-iloc-and-loc-in-pandas/" rel="prev" title="区分 pandas 库中的 loc / iloc 以及 numpy 中的 []">
-                区分 pandas 库中的 loc / iloc 以及 numpy 中的 [] <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -740,9 +791,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://www.sining.io/2019/01/20/hello-world/';
-        this.page.identifier = '2019/01/20/hello-world/';
-        this.page.title = 'Hello World';
+        this.page.url = 'https://www.sining.io/2019/01/21/distinguish-iloc-and-loc-in-pandas/';
+        this.page.identifier = '2019/01/21/distinguish-iloc-and-loc-in-pandas/';
+        this.page.title = '区分 pandas 库中的 loc / iloc 以及 numpy 中的 []';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
