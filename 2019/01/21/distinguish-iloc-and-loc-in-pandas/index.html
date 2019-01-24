@@ -422,6 +422,7 @@
 <p>但因为脚标方法被用来定位 columns，定位横排（ rows ）的时候用什么呢？pandas 想出的方法是创造两个新的对象属性 <code>loc</code> 和 <code>iloc</code>，并用他们来访问 rows。</p>
 <p>比如，对于这样一个 DataFrame：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df = pd.DataFrame(data=[[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]], columns=[<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'C'</span>], index=[<span class="string">'x'</span>,<span class="string">'y'</span>,<span class="string">'z'</span>])</span><br></pre></td></tr></table></figure>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -452,6 +453,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>其中，x, y, z 就是 df 的 index（在这个 df 中，index 都是 string）：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(df.index)</span><br><span class="line"><span class="comment"># =&gt; Index(['x', 'y', 'z'], dtype='object')</span></span><br></pre></td></tr></table></figure>
 <p>要想通过这些 df 的 index 来访问一整个 row 的数据，我们需要先访问 df 的 loc 属性，然后才能使用 index 作为脚标访问一整行的数据：</p>
@@ -523,6 +525,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/01/23/cases-on-thinking-both-in-twos-kind-of-language/" rel="prev" title="用多种语言学习带来的惊喜">
+                用多种语言学习带来的惊喜 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -591,7 +597,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -610,7 +616,15 @@
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>
@@ -851,6 +865,13 @@
   
 
   
+  
+
+  
+  
+
+  
+
 
   
   
