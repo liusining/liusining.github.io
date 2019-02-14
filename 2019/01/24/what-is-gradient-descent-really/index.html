@@ -114,24 +114,25 @@
 
 
 
-  <meta name="description" content="在这里，低级和原始都是褒义词">
-<meta name="keywords" content="Programming">
-<meta property="og:type" content="website">
-<meta property="og:title" content="sining.io">
-<meta property="og:url" content="https://www.sining.io/archives/2019/01/index.html">
+  <meta name="description" content="原来这就是你心心念的「梯度下降」">
+<meta name="keywords" content="Math,Machine Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10分钟深入理解梯度下降，面试再也不怕了">
+<meta property="og:url" content="https://www.sining.io/2019/01/24/what-is-gradient-descent-really/index.html">
 <meta property="og:site_name" content="sining.io">
-<meta property="og:description" content="在这里，低级和原始都是褒义词">
+<meta property="og:description" content="原来这就是你心心念的「梯度下降」">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-14T15:47:40.410Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sining.io">
-<meta name="twitter:description" content="在这里，低级和原始都是褒义词">
+<meta name="twitter:title" content="10分钟深入理解梯度下降，面试再也不怕了">
+<meta name="twitter:description" content="原来这就是你心心念的「梯度下降」">
 
 
 
 
 
 
-  <link rel="canonical" href="https://www.sining.io/archives/2019/01/">
+  <link rel="canonical" href="https://www.sining.io/2019/01/24/what-is-gradient-descent-really/">
 
 
 
@@ -141,7 +142,7 @@
   };
 </script>
 
-  <title>Archive | sining.io</title>
+  <title>10分钟深入理解梯度下降，面试再也不怕了 | sining.io</title>
   
 
 
@@ -199,7 +200,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -257,7 +258,7 @@
         
         
           
-          <li class="menu-item menu-item-archives menu-item-active">
+          <li class="menu-item menu-item-archives">
 
     
     
@@ -299,200 +300,234 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/01/24/what-is-gradient-descent-really/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sining Liu">
+      <meta itemprop="description" content="在这里，低级和原始都是褒义词">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h2 class="post-title" itemprop="name headline">10分钟深入理解梯度下降，面试再也不怕了
+              
+            
+          </h2>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-24 20:20:13" itemprop="dateCreated datePublished" datetime="2019-01-24T20:20:13+08:00">2019-01-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-02-14 23:47:40" itemprop="dateModified" datetime="2019-02-14T23:47:40+08:00">2019-02-14</time>
+              
+            
+          </span>
+
           
-        
-        Um..! 4 posts in total. Keep on posting.
-      </span>
-      
 
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h2 class="archive-year" id="archive-year-2019">2019</h2>
-          </div>
-        
-        
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/01/24/what-is-gradient-descent-really/#comments" itemprop="discussionUrl">
+                
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/01/24/what-is-gradient-descent-really/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/24/what-is-gradient-descent-really/" itemprop="url">
-              
-                <span itemprop="name">10分钟深入理解梯度下降，面试再也不怕了</span>
-              
-            </a>
-        
-      </h3>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-24T20:20:13+08:00" content="2019-01-24">
-          01-24
-        </time>
-      </div>
+          
+              <div class="post-description">原来这就是你心心念的「梯度下降」</div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/23/cases-on-thinking-both-in-twos-kind-of-language/" itemprop="url">
-              
-                <span itemprop="name">用多种语言学习带来的惊喜</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-23T10:37:34+08:00" content="2019-01-23">
-          01-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/21/distinguish-iloc-and-loc-in-pandas/" itemprop="url">
-              
-                <span itemprop="name">区分 pandas 库中的 loc / iloc 以及 numpy 中的 []</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-21T14:33:46+08:00" content="2019-01-21">
-          01-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/20/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-20T08:32:05+08:00" content="2019-01-20">
-          01-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
-
+        <p>wikipedia 的解释是：</p>
+<blockquote>
+<p>Gradient descent is a first-order iterative optimization algorithm</p>
+</blockquote>
+<p>如果有同学不熟悉数学名词的英语表达（其实我也是刚查的），那么有这么几个看似常见，但是含义却很不一样的单词需要注意：</p>
+<ol>
+<li>order 是阶，first-order 就是一阶（不知道这有没有让你想起一阶导数）</li>
+<li>iterative 是<a href="https://en.wikipedia.org/wiki/Iterative_method" target="_blank" rel="noopener">迭代，或者叫递归</a>，对于一个优化过程来说，可以特指先猜一个结果，然后逐次优化，直到到达某个结束条件</li>
+</ol>
+<p>接下来就是 optimization，可能大家都知道这是（最）优化的意思，但更重要的问题是我们要优化什么？别着急，wikipedia 的解释中还有后半句:</p>
+<blockquote>
+<p>Gradient descent is a first-order iterative optimization algorithm <strong>for finding the minimum of a function</strong></p>
+</blockquote>
+<p>回忆一下你学习过的机器学习算法们，他们都有一个 Error Function，比如：</p>
+<ol>
+<li>Linear Regression 的常用 Error Function 是 $$ ， 两者优化出来的结果是一样的。</li>
+</ol>
+<!-- sklearn 的 minimize -->
+<!-- 递归是有退出条件的，退出条件就是 function 不能再小了。 -->
+<!-- ![image-20190124212332959](/Users/SiningLiu/Library/Application Support/typora-user-images/image-20190124212332959.png) -->
+<!-- learning rate 要说。 -->
+<!-- 那个导数是什么意思。 -->
+<!-- 线的调整，给出 code -->
+<!-- 问题是怎么通过一阶导数来达到最速 -->
+<!-- L1 的导数怎么计算？ -->
+<!-- 再问几个为什么的问题 -->
+      
     </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Math/" rel="tag"># Math</a>
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/23/cases-on-thinking-both-in-twos-kind-of-language/" rel="next" title="用多种语言学习带来的惊喜">
+                <i class="fa fa-chevron-left"></i> 用多种语言学习带来的惊喜
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -722,6 +757,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
 
   
 
@@ -737,6 +776,41 @@
   
 
   
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2019/01/24/what-is-gradient-descent-really/';
+        this.page.identifier = '2019/01/24/what-is-gradient-descent-really/';
+        this.page.title = '10分钟深入理解梯度下降，面试再也不怕了';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
 
 
 
@@ -769,6 +843,36 @@
   
   
 
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+    overflow: auto hidden;
+}
+</style>
+
+    
   
 
 
