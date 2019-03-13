@@ -122,7 +122,7 @@
 <meta property="og:site_name" content="sining.io">
 <meta property="og:description" content="梳理 pandas 和 numpy 在设计上的不同">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-21T08:26:28.515Z">
+<meta property="og:updated_time" content="2019-03-13T12:06:59.961Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="区分 pandas 库中的 loc &#x2F; iloc 以及 numpy 中的 []">
 <meta name="twitter:description" content="梳理 pandas 和 numpy 在设计上的不同">
@@ -362,12 +362,24 @@
                 
               
 
-              <time title="Created: 2019-01-21 14:33:46 / Modified: 16:26:28" itemprop="dateCreated datePublished" datetime="2019-01-21T14:33:46+08:00">2019-01-21</time>
+              <time title="Created: 2019-01-21 14:33:46" itemprop="dateCreated datePublished" datetime="2019-01-21T14:33:46+08:00">2019-01-21</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-03-13 20:06:59" itemprop="dateModified" datetime="2019-03-13T20:06:59+08:00">2019-03-13</time>
               
             
           </span>
@@ -458,11 +470,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array[<span class="number">0</span>] <span class="comment"># =&gt; [1,2,3]</span></span><br><span class="line">array[<span class="number">0</span>,:] <span class="comment"># =&gt; [1,2,3]</span></span><br><span class="line"><span class="comment"># or</span></span><br><span class="line">array[[<span class="number">0</span>]] <span class="comment"># =&gt; [[1,2,3]], <span class="doctag">NOTE:</span> a 2-d array</span></span><br><span class="line">array[[<span class="number">0</span>],:] <span class="comment"># =&gt; [[1,2,3]], <span class="doctag">NOTE:</span> a 2-d array</span></span><br></pre></td></tr></table></figure>
 <p>或者访问一个 column 下的数据：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array[:,<span class="number">0</span>] <span class="comment"># =&gt; [1,4,7]</span></span><br><span class="line">array[:,[<span class="number">0</span>]] <span class="comment"># =&gt; [[1], [4], [7]], <span class="doctag">NOTE:</span> a 2-d array</span></span><br></pre></td></tr></table></figure>
-<p>显然，numpy 采用的方法不是访问 ndarray 的一个属性之后，定位竖列或横行上的数据。而是，允许传入两个脚标，第一个代表 rows 的定位，第二个代表 columns 的定位。</p>
-<h2 id="What’s-more"><a href="#What’s-more" class="headerlink" title="What’s more"></a>What’s more</h2><p>最后，顺带一提，从上面的例子中看出 numpy 和 pands 对于二维数据（或者n维）：</p>
+<p>显然，numpy 采用的方法跟 pandas 不一样，在按‘行序号“访问 ndarray 时，不需要先访问 iloc 一类的属性。而且，ndarray 的 <code>[]</code> 方法允许传入两个或两组脚标，第一个代表 rows 的定位，第二个代表 columns 的定位。（备注，pandas 的 DataFrame 的 iloc 属性也允许传入两个或两组角标，用法和 numpy 的 ndarray 基本一样）</p>
+<h2 id="What’s-more"><a href="#What’s-more" class="headerlink" title="What’s more"></a>What’s more</h2><p>最后，总结一下，从上面的例子中看出 numpy 和 pands 对于二维数据（或者n维）：</p>
 <ol>
 <li>如果传入的脚标是一个单独的 index 的值，那么返回的数据就会降低到一维（n-1 维）</li>
-<li>如果传入的脚标是个包含 index 的数组，那么返回的数据不会降维</li>
+<li>如果传入的脚标是个包含 index 的数组（<code>:</code> 也算是数组），那么返回的数据不会降维</li>
 </ol>
 <p>不论是通过 iloc，loc 的属性间接访问数据，还是直接传入脚标，上面这条设计是个共同点。</p>
 <p>（这是归纳法得出的一个结论，吧）</p>
