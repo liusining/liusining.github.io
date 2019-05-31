@@ -122,7 +122,7 @@
 <meta property="og:site_name" content="sining.io">
 <meta property="og:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-11T14:14:55.634Z">
+<meta property="og:updated_time" content="2019-05-30T10:34:25.817Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rails 源代码 100 天（8）">
 <meta name="twitter:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
@@ -193,7 +193,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -203,7 +203,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -332,20 +332,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.sining.io/2018/04/27/rails-source-code-100-days-8/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sining Liu">
       <meta itemprop="description" content="在这里，低级和原始都是褒义词">
       <meta itemprop="image" content="/images/sining-avatar.png">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="sining.io">
     </span>
 
@@ -396,7 +396,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-03-11 22:14:55" itemprop="dateModified" datetime="2019-03-11T22:14:55+08:00">2019-03-11</time>
+                <time title="Modified: 2019-05-30 18:34:25" itemprop="dateModified" datetime="2019-05-30T18:34:25+08:00">2019-05-30</time>
               
             
           </span>
@@ -457,7 +457,7 @@
 <p>对于这么多的实例变量，我们目前用到的只有<code>@name</code>，剩下的我们以后会用到。</p>
 <p>接下来，在<code>define_accessors</code>方法中，rails 又分别调用了<code>define_readers</code>和<code>define_writers</code>方法，这两个方法是这样的：</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># activerecord-5.1.4/lib/active_record/associations/builder/association.rb</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">define_readers</span><span class="params">(mixin, name)</span></span></span><br><span class="line">  mixin.class_eval &lt;&lt;-CODE, __FILE_<span class="number">_</span>, __LINE_<span class="number">_</span> + <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="comment">#&#123;name&#125;(*args)</span></span></span><br><span class="line">      association(<span class="symbol">:</span><span class="comment">#&#123;name&#125;).reader(*args)</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  CODE</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">define_writers</span><span class="params">(mixin, name)</span></span></span><br><span class="line">  mixin.class_eval &lt;&lt;-CODE, __FILE_<span class="number">_</span>, __LINE_<span class="number">_</span> + <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="comment">#&#123;name&#125;=(value)</span></span></span><br><span class="line">      association(<span class="symbol">:</span><span class="comment">#&#123;name&#125;).writer(value)</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  CODE</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>其中参数 mixin 就是我们刚刚新建的 module —— <code>Product::GeneratedAssociationMethods</code>。现在，利用 class_eval 方法向这个 module 中动态插入两个方法。根据 name 的值是 <code>:users</code>，插入的来个方法就成了 <code>users</code> 和 <code>users=</code>，这是使用非常常用的来个方法。在插入这两个方法的时候，rails 还直到了代码在文件中的位置: <code>mixin.class_eval &lt;&lt;-CODE, __FILE__, __LINE__ + 1</code>，这表示代码动态插入的位置在当前文件（<code>activerecord-5.1.4/lib/active_record/associations/builder/association.rb</code>）的此行 + 1。我们可以验证一下：</p>
+<p>其中参数 mixin 就是我们刚刚新建的 module —— <code>Product::GeneratedAssociationMethods</code>。现在，利用 class<em>eval 方法向这个 module 中动态插入两个方法。根据 name 的值是 <code>:users</code>，插入的来个方法就成了 <code>users</code> 和 <code>users=</code>，这是使用非常常用的来个方法。在插入这两个方法的时候，rails 还直到了代码在文件中的位置: `mixin.class<em>eval &lt;&lt;-CODE, <strong>FILE</strong>, __LINE</em></em> + 1<code>，这表示代码动态插入的位置在当前文件（</code>activerecord-5.1.4/lib/active_record/associations/builder/association.rb`）的此行 + 1。我们可以验证一下：</p>
 <figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Product.first.method(<span class="symbol">:users</span>).source_location</span><br><span class="line"><span class="comment"># =&gt; [  "XXX/activerecord-5.1.4/lib/active_record/associations/builder/association.rb", 110 ]</span></span><br></pre></td></tr></table></figure>
 <p>到这里，我们已经探索完了 <code>define_accessors</code> 方法在构建 reflection 对象时的作用。总结一些就是：</p>
 <ol>
@@ -572,7 +572,7 @@
 
       <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="Sining Liu">
             
@@ -601,10 +601,6 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
-                    
-                      
-                    
-                      
                     
                       
                     

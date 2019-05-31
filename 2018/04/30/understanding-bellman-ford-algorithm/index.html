@@ -124,7 +124,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tKfTcly1fquqwvqiwuj30tu09un6r.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tKfTcly1fquqwtr7rdj30m00godnf.jpg">
-<meta property="og:updated_time" content="2019-03-11T14:16:09.357Z">
+<meta property="og:updated_time" content="2019-05-30T10:34:25.818Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="理解 Bellman-Ford 算法">
 <meta name="twitter:description" content="仔细分析算法，才能真正理解算法，吧">
@@ -196,7 +196,7 @@
 
 </head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -206,7 +206,7 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
@@ -335,20 +335,20 @@
 
   
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.sining.io/2018/04/30/understanding-bellman-ford-algorithm/">
 
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sining Liu">
       <meta itemprop="description" content="在这里，低级和原始都是褒义词">
       <meta itemprop="image" content="/images/sining-avatar.png">
     </span>
 
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="sining.io">
     </span>
 
@@ -399,7 +399,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-03-11 22:16:09" itemprop="dateModified" datetime="2019-03-11T22:16:09+08:00">2019-03-11</time>
+                <time title="Modified: 2019-05-30 18:34:25" itemprop="dateModified" datetime="2019-05-30T18:34:25+08:00">2019-05-30</time>
               
             
           </span>
@@ -478,7 +478,7 @@
 <p>我们来看看这段做判断的伪代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for u, v in Edge( u -&gt; v )</span><br><span class="line">	if v.distance &gt; u.distance + w( u -&gt; v )</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">False</span> <span class="comment"># there is a negetive weight circle</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">True</span> <span class="comment"># there is no such circle</span></span><br></pre></td></tr></table></figure>
 <p>举一个特例来说明这段代码的作用：</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fquqwtr7rdj30m00godnf.jpg" alt=""></p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcly1fquqwtr7rdj30m00godnf.jpg" alt></p>
 <p>在这张图中，c，d，e 构成了一个负权重的回路。在 n - 1 次，也就是 4 次松弛操作后，3号节点会是最后一次松弛操作改变的对象，他的 distance 变为 0。所以在计算机利用 Edge( c -> d )这条边做判断时，<code>d.distance &gt; c.distance + w( c -&gt; d)</code> 就会返回 True，程序就会执行 <code>return False</code>。更完整的证明可以在《算法导论》第380页找到。</p>
 <p>总结一下：Bellman-Ford 算法可以用 n - 1 次松弛操作来找到各个点的最短路径，如果那些点存在最短路径的话；也能让负权重回路显形。</p>
 <h2 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h2><p>你说，算法中的那个操作为什么要叫「松弛」呢？</p>
@@ -588,7 +588,7 @@
 
       <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="Sining Liu">
             
@@ -617,10 +617,6 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/tags/index.html">
                     
-                    
-                      
-                    
-                      
                     
                       
                     
