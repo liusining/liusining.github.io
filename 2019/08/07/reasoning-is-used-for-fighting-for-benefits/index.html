@@ -114,25 +114,25 @@
 
 
 
-  <meta name="description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
-<meta name="keywords" content="Rails,source code,持续行动">
+  <meta name="description" content="不忘初心，方得始终">
+<meta name="keywords" content="Reasoning,讲道理,感知求存">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rails 源代码 100 天（1）">
-<meta property="og:url" content="https://www.sining.io/2018/02/25/rails-source-code-100-days-1/index.html">
+<meta property="og:title" content="讲道理就是谈利益">
+<meta property="og:url" content="https://www.sining.io/2019/08/07/reasoning-is-used-for-fighting-for-benefits/index.html">
 <meta property="og:site_name" content="sining.io">
-<meta property="og:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta property="og:description" content="不忘初心，方得始终">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-30T10:34:25.814Z">
+<meta property="og:updated_time" content="2019-08-07T13:43:37.513Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rails 源代码 100 天（1）">
-<meta name="twitter:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta name="twitter:title" content="讲道理就是谈利益">
+<meta name="twitter:description" content="不忘初心，方得始终">
 
 
 
 
 
 
-  <link rel="canonical" href="https://www.sining.io/2018/02/25/rails-source-code-100-days-1/">
+  <link rel="canonical" href="https://www.sining.io/2019/08/07/reasoning-is-used-for-fighting-for-benefits/">
 
 
 
@@ -142,7 +142,7 @@
   };
 </script>
 
-  <title>Rails 源代码 100 天（1） | sining.io</title>
+  <title>讲道理就是谈利益 | sining.io</title>
   
 
 
@@ -337,7 +337,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2018/02/25/rails-source-code-100-days-1/">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/08/07/reasoning-is-used-for-fighting-for-benefits/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sining Liu">
@@ -354,7 +354,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Rails 源代码 100 天（1）
+          <h2 class="post-title" itemprop="name headline">讲道理就是谈利益
               
             
           </h2>
@@ -379,24 +379,12 @@
                 
               
 
-              <time title="Created: 2018-02-25 10:37:34" itemprop="dateCreated datePublished" datetime="2018-02-25T10:37:34+08:00">2018-02-25</time>
+              <time title="Created: 2019-08-07 20:57:03 / Modified: 21:43:37" itemprop="dateCreated datePublished" datetime="2019-08-07T20:57:03+08:00">2019-08-07</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-05-30 18:34:25" itemprop="dateModified" datetime="2019-05-30T18:34:25+08:00">2019-05-30</time>
               
             
           </span>
@@ -415,7 +403,7 @@
           
 
           
-              <div class="post-description">既然靠 Rails 吃饭，吃得踏实一点才好</div>
+              <div class="post-description">不忘初心，方得始终</div>
           
 
         </div>
@@ -431,33 +419,25 @@
       
 
       
-        <p>基于我之前的一些思考，我现在觉得了解 Rails 源代码是一个应该上马的项目了。如果你也有看 Rails 源代码的需求，可以 Follow 这个项目。</p>
-<p>当我有了这个需求之后，我就在想自己要如何开始呢？有这样几点思考和大家分享：</p>
+        <p>（长文，按小节依次发布）</p>
+<p>有一次，我在西安机场坐大巴，有几个刚下飞机的乘客要带一箱酒上车，但被乘务员阻拦并说“不能携带这么多酒”。那几位乘客很快就急了，然后跟乘务员讲：</p>
 <ol>
-<li>越早开始越好，如果我从100天（不过是3个月的时间）开始，现在这个项目已经完成了。</li>
-<li>从相对独立、短小的 helper methods 开始。如果我从 ActiveRecord 中的某个方法开始，那么这个方法通过一层一层的调用别的方法，可以整个 Active Record gem 都被调用了一遍<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</li>
-<li>了解源代码也是学习 Ruby 代码（如何组织代码，如何使用 Ruby 语法）的好方式。</li>
-<li>解说完代码之后提炼一下我们能从中学到什么。</li>
+<li>飞机上都能带，你们不能带？（应该是飞机托运吧）</li>
+<li>哪条国家法律说巴士车不能带酒了？</li>
 </ol>
-<p>话不多说，那我们就开始吧。我们先从一个非常常用的 helper method —— <code>link_to</code> 开始，来找找感觉。</p>
-<p>先写几个<code>link_to</code>的例子：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">link_to <span class="string">'1st link'</span>, <span class="string">'https://example.com'</span></span><br><span class="line">link_to <span class="string">'https://google.com'</span> <span class="keyword">do</span></span><br><span class="line">	<span class="string">'&lt;span&gt;2nd click&lt;/span&gt;'</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">link_to <span class="string">'3rd link'</span>, products_path</span><br><span class="line">link_to <span class="string">'4th link'</span>, <span class="symbol">controller:</span> <span class="string">'products'</span></span><br><span class="line">link_to <span class="string">'5th link'</span>, products_path, <span class="class"><span class="keyword">class</span>: '<span class="title">my</span>-<span class="title">class</span>'</span></span><br><span class="line">link_to <span class="string">'6th link'</span>, &#123;<span class="symbol">controller:</span> <span class="string">'products'</span>&#125;, <span class="class"><span class="keyword">class</span>: '<span class="title">my</span>-<span class="title">class</span>', <span class="title">id</span>: '<span class="title">my</span>-<span class="title">id</span>'</span></span><br><span class="line">link_to <span class="string">'7th link'</span>, product_path(<span class="number">1</span>), <span class="symbol">method:</span> <span class="symbol">:delete</span>, <span class="symbol">data:</span> &#123;<span class="symbol">confirm:</span> <span class="string">'Are you ok?'</span>&#125;</span><br><span class="line">link_to <span class="string">'8th link'</span>, products_path, <span class="symbol">target:</span> <span class="string">'_blank'</span>, <span class="symbol">rel:</span> <span class="string">'nofollow'</span></span><br></pre></td></tr></table></figure>
-<p>如果看不过来，可以不用全看，但有个问题值得想一想：一个方法的参数结构为什么可以这么多样？</p>
-<p>我们可以通过<a href="https://github.com/rails/rails/blob/2135daf0d552bbb2eca4208f8c33fb015cf052ab/actionview/lib/action_view/helpers/url_helper.rb#L189" target="_blank" rel="noopener">link_to 的源代码</a>来解释这一点。为了方便解说，我们把代码复制过来：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rails/actionview/lib/action_view/helpers/url_helper.rb</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">link_to</span><span class="params">(name = <span class="literal">nil</span>, options = <span class="literal">nil</span>, html_options = <span class="literal">nil</span>, &amp;block)</span></span></span><br><span class="line">  html_options, options, name = options, name, block <span class="keyword">if</span> block_given?</span><br><span class="line">  options <span class="params">||</span>= &#123;&#125;</span><br><span class="line"></span><br><span class="line">  html_options = convert_options_to_data_attributes(options, html_options)</span><br><span class="line"></span><br><span class="line">  url = url_for(options)</span><br><span class="line">  html_options[<span class="string">"href"</span>.freeze] <span class="params">||</span>= url</span><br><span class="line"></span><br><span class="line">  content_tag(<span class="string">"a"</span>.freeze, name <span class="params">||</span> url, html_options, &amp;block)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>这个方法接受4个参数，每种参数都不是必须的。</p>
-<p>从方法内部的第一行可以看出，如果有block，参数的次序就要轮转一下。所以，在上面举例过程中的<code>2nd link</code>中用括号传入的第一个参数的参数名其实叫<code>name</code>，只不过在<code>link_to</code>方法的内部，通过这行代码被赋值给了<code>options</code>:</p>
-<pre><code>html_options, options, name = options, name, block if block_given?
-</code></pre><p>这里有一个题外的补充，<a href="https://stackoverflow.com/a/3066747/6633748" target="_blank" rel="noopener">你可以用 <code>block</code>，也可以用 <code>yield</code> 来代表传入的代码块</a>，但两者有不同的效果，简单来说，<code>block</code> 代表的是个 Proc 对象，而<code>yield</code>的使用会直接对 <code>block</code> 进行 <code>call</code>。如果你不在定义方法时明确地给出<code>block</code>这个参数（加一个 <code>&amp;</code>是为了更明确的表明那是个 code block），那么你就只能使用 yield。另外，在某些 ruby style guide 中，使用 block 会建议改为 yield。当然，<code>block_given?</code> 对于两者都是通用的。</p>
-<p>在接下来的这这行代码：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">html_options = convert_options_to_data_attributes(options, html_options)</span><br></pre></td></tr></table></figure>
-<p>Rails 的工作是整理出相关的字段，把那些原本应该是 <code>options</code> 的，但是为了传参方便被归为了 <code>html_options</code> 的字段拿掉，比如<code>method</code>字段。</p>
-<p>再接下来是生成 url 字符串的过程，并且用将所有整理好的参数传入<code>content_tag</code>方法来生成<code>&lt;a&gt;</code>便签：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">url = url_for(options)</span><br><span class="line">html_options[<span class="string">"href"</span>.freeze] <span class="params">||</span>= url</span><br><span class="line"></span><br><span class="line">content_tag(<span class="string">"a"</span>.freeze, name <span class="params">||</span> url, html_options, &amp;block)</span><br></pre></td></tr></table></figure>
-<p>这具体是怎么生成的，以及上一段中 Rails 封装的方法<code>convert_options_to_data_attributes</code>到底在做什么，我们在下一节继续探索。与此同时还有一个问题值得我们关注，为什么 Rails 对一些特定的字段要<code>freeze</code>，比如<code>&quot;a&quot;.freeze</code> 和 <code>&quot;href.freeze&quot;</code></p>
-<blockquote id="fn_1">
-<sup>1</sup>.    这是我从<a href="https://stackoverflow.com/a/2689285/6633748" target="_blank" rel="noopener">一个 stack overflow 回答中得到的提示</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
-</blockquote>
+<p>你可能也认为，飞机对安全的要求那么严格都允许带，巴士车应该也可以带；你可能也觉得，国家的法律不会细致到说明一辆公共汽车上能不能带一箱酒。</p>
+<p>我们且不说巴士公司就是可以在法律允许的范围内有自己的规定<small>（如果不对，请专业人士批评）</small>；就说，这个时候搬出“道理”、“法律”这样的东西，就真的是在讲道理么？</p>
+<p>你只要定睛再一看，就会发现他们说的“道理”，全都是用来维护自己利益的道理。这不是说维护自己的利益不对，而是说，那利益到底是不是你的，还不一定。这也不是说让大家都秉公无私，这对每个人来说都有点难，而是说，不要动不动就把“道理”、“法律”这样的东西挂在嘴边上欺负别人比自己更不懂，这样的行为可能会在时机成熟时让你教一大笔智商税（后面谈）。</p>
+<h2 id="讲道理只是正常的高尚，并没有特别的高尚"><a href="#讲道理只是正常的高尚，并没有特别的高尚" class="headerlink" title="讲道理只是正常的高尚，并没有特别的高尚"></a>讲道理只是正常的高尚，并没有特别的高尚</h2><p>很多时候，人们在吵架中只要说一句“咱得讲道理吧”，接下来基本上就都是在讲对自己有利的道理了。就好像是，不论理由是什么，结论已经已经确定了：即，利益归我。</p>
+<p>有些道理如果不仔细想，可能短时间内很难想到驳倒的方法。如果那驳不倒的道理出自你口，那么就要小心对方开始动用别的方式来分配利益，比如打架；如果那暂时驳不倒的道理出自对方之口，你同样不可能心服口服。</p>
+<!-- 如果真遇到这样的情况，我建议直接摊牌：”得了，你要讲的道理都是为自己谋利益的，不如直接谈利益吧“，也省的在”理“这个层面兜来兜去，谁也说服不了谁，即使”说“服了，心里也是不服的吧，不如直接谈利益分配，快点解决问题。 -->
+<!-- 那样的“论证”肯定很多人是根本没耐心听的，若是你遇到了一个肯听的人，尤其若是对手方的当事人，我觉得这人挺难得的（自己应该想想还要不要继续与之争利益）；若对方听完你的论证，竟然还同意了，要不然就是你”讲道理“能力胜过对方太多，要不然就是对方真的做到了“讲道理”，我猜（虽然我不太信，本质上还是给得起） -->
+<p>未完待续：</p>
+<ol>
+<li>人类进化出语言能力是为了什么？可能是为了在分配利益的时候可以动口：包括吵架和讲道理</li>
+<li>当人们不在讲道理的“理”这个层面解决利益分配问题了，而是谈“你爱不爱我”、“咱是不是哥们”，你怎么办</li>
+<li>如果实力相对强大无数倍，你还有耐心和对方“讲道理”么</li>
+</ol>
 
       
     </div>
@@ -481,11 +461,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Rails/" rel="tag"># Rails</a>
+            <a href="/tags/Reasoning/" rel="tag"># Reasoning</a>
           
-            <a href="/tags/source-code/" rel="tag"># source code</a>
+            <a href="/tags/讲道理/" rel="tag"># 讲道理</a>
           
-            <a href="/tags/持续行动/" rel="tag"># 持续行动</a>
+            <a href="/tags/感知求存/" rel="tag"># 感知求存</a>
           
         </div>
       
@@ -498,8 +478,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/27/whats-more/" rel="next" title="以前的博客">
-                <i class="fa fa-chevron-left"></i> 以前的博客
+              <a href="/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/" rel="next" title="我们把世界看错了，却反说世界欺骗了我们——生小孩与996问题">
+                <i class="fa fa-chevron-left"></i> 我们把世界看错了，却反说世界欺骗了我们——生小孩与996问题
               </a>
             
           </div>
@@ -507,10 +487,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/26/rails-source-code-100-days-2/" rel="prev" title="Rails 源代码 100 天（2）">
-                Rails 源代码 100 天（2） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -874,9 +850,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://www.sining.io/2018/02/25/rails-source-code-100-days-1/';
-        this.page.identifier = '2018/02/25/rails-source-code-100-days-1/';
-        this.page.title = 'Rails 源代码 100 天（1）';
+        this.page.url = 'https://www.sining.io/2019/08/07/reasoning-is-used-for-fighting-for-benefits/';
+        this.page.identifier = '2019/08/07/reasoning-is-used-for-fighting-for-benefits/';
+        this.page.title = '讲道理就是谈利益';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
