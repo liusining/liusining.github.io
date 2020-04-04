@@ -337,6 +337,691 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/04/03/how-safe-the-world-is/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sining Liu">
+      <meta itemprop="description" content="我们把世界看错了，却反说世界欺骗了我们">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/04/03/how-safe-the-world-is/" class="post-title-link" itemprop="https://www.sining.io/index.html">这一切真的安全么</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-04-03 08:08:49" itemprop="dateCreated datePublished" datetime="2020-04-03T08:08:49+08:00">2020-04-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-04-04 17:23:57" itemprop="dateModified" datetime="2020-04-04T17:23:57+08:00">2020-04-04</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近在做一个涉及小额资产的互联网工具，每次向用户保证“安全”的时候，我都会不由自主的问自己，真的安全么？所以在这里详细讨论一下。不过事先声明，我做的工具可能无法绝对安全，但并不比同类工具差，请自行比较。</p>
+<p>首先说，这世界上可能没有绝对安全，有的话也不属于我们。即使你躲在家中，也面临各种小概率灾难的威胁：大地震，大洪水，陨石撞击，火山喷发。很多人认为小概率事件不可能发生，但事实却是，他们不知道会不会发生。“不知道”不等不“不会”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
+<p>很多人在 2019 年都觉得不会再发生 2003 年非典那样严重的疫情。确实，结果 2020 年来了个更严重的疫情。我们不知道的事情，不代表不存在。</p>
+<p>因为这些强悍的小概率事件不是人能左右的，至少目前不是，所以一个处理办法是听之任之，暂不考虑。但是，如果一个东西需要依存很多外物来存在的时候，那么你需要考虑的事情即使再少，也还是很多。比如，居家的人就需要考虑断水、断电、断网、断粮等各种问题，平时可以找人来修，疫情期间你敢让陌生人进家门么，何况陌生人也不想进你家门。人就是需要考虑很多事情，因为<a href="/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/">人类的依存需求最多</a>。</p>
+<p>回到一个互联网小工具上来，它真的安全么？这需要看他依赖的东西：</p>
+<ol>
+<li>访问国际互联网的通路</li>
+<li>核心分布式网络的稳定性</li>
+<li>云计算服务商（及其硬件条件、运营能力等诸多方面）</li>
+<li>开发人员（及其工作设备、开发工具、知识水平等诸多方面）</li>
+</ol>
+<p>这中间每一个环节出现问题，安全都将受到考验。比如云计算服务商意外删除了数据怎么办（这样的事情不是没有发生过），开发人员的工作设备被入侵了怎么办（开发人员也无法搞清设备的每一个细节）。所以很多选择，并不是基于深刻理解，而是基于经验、品牌等，觉得那样没问题。所以安全就变成了，你依赖我，我依赖他们，他们依赖更多他们，脆弱性很可能就在这个链条中不断积累。</p>
+<p>如果上面的说明让你觉得我开发的工具很不安全，那我得说，你接触到的网站都差不多，我开发的并没有更不安全。可能大公司有实力考虑更小的意外事故，所以他们自建机房（不使用云服务商）、监控工作人员的设备，但如果他们真的那么安全，每隔一段时间就会出现的数据泄露是怎么来的。所以，事实可能是，他们并没有更安全，相反，如果他们不花大价钱做更多的防护，就会大大地不安全。这是“有选择”和“没选择”的区别。<small>当然，小公司也可能泄露数据，但是因为没人关注或者干脆公司自己都不知道，所以知道的人少。但大公司更容易成为“靶子”应该是确定的。</small></p>
+<p>并且，从某种程度上来说，个人开发可能还具有某些优势：接触敏感数据的人少。大公司里都是打工的人，你并不能指望每个人都对你的数据安全上心（肯定有兢兢业业的人，不误伤）。而且他们都是有限责任公司，只要不违法，很多责任是在“有限”之外的。这鼓励了人们创新<sup><a href="#fn_2" id="reffn_2">2</a></sup>，因为不用承担更多的责任，但有时会给别人留下了隐患。有人可能会反驳说，参与公司投资、购买公司产品，都是个人做出的选择，“自己为自己的选择负责”；这在今天的背景下听起来没有问题，甚至还站上了某些道德高地，但当社会中因此出现越来越多的 inverse hero<sup><a href="#fn_1" id="reffn_1">1</a></sup>、占据不对称优势的人，有些事情可能会发生改变。这里谨引用章北海在“自然选择号”上说的一句话<sup><a href="#fn_3" id="reffn_3">3</a></sup>：</p>
+<blockquote>
+<p>新的文明在诞生，新的道德也在形成</p>
+</blockquote>
+<p>当然，我也只是猜，不要当真。但一个难以否认的事实是，个人越来越无法为自己“负责”了，因为我们依赖的东西越来越多：手机、网络、软件、房子、车子、各种食品商品供应链，每一个你都不甚了解，但又不得不依赖，你越来越多的需要别人为你负责。从这个角度说，我觉得“有限责任公司”<strong>可能</strong>只是个历史阶段性产物。<small>注意，我没说要对我做的工具承担 100% 的责任，这对我是不公平的，至少在今天这个环境下。</small></p>
+<p>我知道有些圈子流行“生命不息，折腾不止”，这挺好。但以后人们可能会更加关注一个问题：你折腾的是谁。如果是你自己，大家应该会勉强接受（当然，你也可以无视大家是否接受）；如果是别人，你的生命可能需要休息……开玩笑的，只是为了文字表达上的对称而已；有些人会愿意你折腾他们，可以去找这些人，或许。<small>注意，我没有暗指罗永浩老师，只是在给这句话加个注脚而已。</small></p>
+<p>有人会说，这世界不是零和游戏，资源越折腾越多。有可能。一个著名的例子是罗马俱乐部报告了人类增长的极限<sup><a href="#fn_4" id="reffn_4">4</a></sup>，说石油等资源会在接下来几十年到 100 年之内用尽，但人类却通过不断探测新储备、开发新能源，延长了这一时间，人们因此大受鼓舞。但问题是，你怎么知道人类永远能找到下一个能量来源。或者，换个说法，我们和我们的子孙（如果你有的话）本来没必要开发更高难度的资源，但是因为更容易的资源被前人用完了，所以逼迫着下一代不得不发展新能源；如果你开发不出来，世界人口将会打折。这是“有选择”和“没选择”的区别。</p>
+<p>回到正题，怎么解决安全问题呢？</p>
+<p>有些人认为是发展新的安全技术。这比较容易理解，毕竟，“发展是解决一切问题的总钥匙”<sup><a href="#fn_5" id="reffn_5">5</a></sup>。但有时我也会有些犹豫，毕竟，宇宙已经发展 130 亿年了，却没有给人类营造一个没有问题的空间；人类文明已经发展 1 万年了，眼看着问题好像越来越多（天灾好像少了，但人祸却变多了<sup><a href="#fn_6" id="reffn_6">6</a></sup>）。所以，我们是不是把这个世界看错了？</p>
+<p>注意，我并没有否定“进步论”，我目前还没有这个能力；而且，我自己也在努力进步。但借助上面的思考，对于安全问题，或许可以有不一样的解决方向：不发生，就不会有问题。如果我压根就不让敏感数据产生，或者不使用高敏感数据，大家都可以相对安全。</p>
+<p>基于此，相对最安全的方式其实是，不做这个小工具。如果非要做，不使用、不存储敏感数据，就没有数据泄露等一系列问题。如果不得不存储私钥等数据，才使用一些安全技术。总之，能不发生的，就都不要发生。这多少印证了索福克勒斯（Sophocles，《俄狄浦斯王》作者）的名言<sup><a href="#fn_7" id="reffn_7">7</a></sup>：</p>
+<blockquote>
+<p>Not to be born is, beyond all estimation, best<br>没出生才是最好的情况</p>
+</blockquote>
+<p>这就是我对“安全”的一些思考。可能有些消极，但我们都要坚强的活下去，继续面对问题，继续解决问题……开玩笑的，生活还是很美好的，天空很蓝，阳光很明媚。</p>
+<p><small></small></p>
+<p>最后，</p>
+<ol>
+<li>我的观点很可能是错的。</li>
+<li>我表达这样的观点，可能会带来风险，因为和主流不符。</li>
+</ol>
+<p>所以，如果您不同意，请关闭页面；如果您认同，也请<strong>不要</strong>转发，我目前不想受到攻击。</p>
+<p>&lt;/small&gt;</p>
+<blockquote id="fn_1">
+<sup>1</sup>. 《反脆弱》<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. <a href="http://jishi.cntv.cn/program/gongsideliliang/shouye/" target="_blank" rel="noopener">《公司的力量》 </a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. 刘慈欣. (2008). 黑暗森林. In 三体Ⅱ (pp. 420): 重庆出版社.<a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. Wikipedia Contributors. (2020, March 10). The Limits to Growth. Retrieved April 3, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/The_Limits_to_Growth‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/The_Limits_to_Growth‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <a href="https://web.archive.org/web/20170519150940/http://www.beltandroadforum.org/n100/2017/0514/c24-407.html" target="_blank" rel="noopener">https://web.archive.org/web/20170519150940/http://www.beltandroadforum.org/n100/2017/0514/c24-407.html</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. 《物演通论》<a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. Contributors to Wikimedia projects. (2005, January 29). ancient Greek playwright. Retrieved April 3, 2020, from Wikiquote.org website: <a href="https://en.wikiquote.org/wiki/Sophocles#Oedipus_at_Colonus‌" target="_blank" rel="noopener">https://en.wikiquote.org/wiki/Sophocles#Oedipus_at_Colonus‌</a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/03/25/doing-sales-make-me-feel-a-little-different/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sining Liu">
+      <meta itemprop="description" content="我们把世界看错了，却反说世界欺骗了我们">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/25/doing-sales-make-me-feel-a-little-different/" class="post-title-link" itemprop="https://www.sining.io/index.html">销售好像不是一个“说服”工作</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-03-25 17:33:54" itemprop="dateCreated datePublished" datetime="2020-03-25T17:33:54+08:00">2020-03-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-03-30 18:25:43" itemprop="dateModified" datetime="2020-03-30T18:25:43+08:00">2020-03-30</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我以前对销售的认知是：</p>
+<ol>
+<li>越能说会道，卖的越多</li>
+<li>因为时常被人拒绝，需要打鸡血</li>
+<li>多少有些虚伪，因为提供的大多数信息都是为了让你买东西</li>
+</ol>
+<p>但非常不幸，抑或非常有幸，自己也在做一些销售。</p>
+<p>基于上面的认知，我首先做的事情是，把<strong>展示材料</strong>准备好，也就是“能说会道”。因为我的素材一直在改进，不同时期接触的用户看到不同的素材，越近期接触的客户看到的材料越好（至少我感觉更好，也找朋友帮忙提意见），理论上，后期客户的销售成功率应该越大才对，但事实不是这样的。</p>
+<p>当我的材料还很烂的时候，有些用户冲进来就想买。当我的材料变好之后，却迟迟没有人买。这不得不让我想到，一个人做决策，可能是 Ta 半生经历的综合体现，我一份小小的展示材料能成为最主要的影响因素么？总之，我有点找不到展示材料和销售成功的相关性。（也可能是我样本不够大）<!-- 而且相关性不等于因果律，依照相关性来行动多少让人犹豫 --></p>
+<p>如果不是展示材料，那我卖不出去的根本原因在哪呢？</p>
+<p>大致梳理一下我的销售流程：</p>
+<ol>
+<li>获取客户的沟通渠道</li>
+<li>通过沟通渠道初步接触客户</li>
+<li>请客户填写调查问卷</li>
+<li>根据问卷等判断客户是否感兴趣</li>
+<li>人工接触感兴趣的客户（展示材料就在这里使用）</li>
+</ol>
+<p>综观这个流程，当我还在为展示材料不给力，自己一次次被客户拒绝而感到苦恼，甚至准备“强打精神，从头再来”的时候，却偶然发现：最不给力的（就转化率而言），其实是获取客户沟通渠道之后的第一次接触。你可以想象，突然有个东西给你发了一条信息，让你填写问卷，你是什么反应。当然，其次差的就是我自己的沟通（哭哭）。</p>
+<p>我以前听说过转化率这个概念，还有“销售漏斗”，大意是说，从最开始的产品曝光，到最后用户成单甚至复购，用户是一层一层流失的，每层的转化率相乘，最后你只能获得很少的用户。提高各层的转化率，而不是只着眼一层的转化率，可能更有效。这应该不难理解，但是只有真的给自己打工的时候，才觉得自己正视了这个概念。</p>
+<p>有了这个想法上的改变，我就不再把大量的时间放在准备展示材料上了，反正没人看；抑或，想看的人都是不看也会买的人。我还没见到过有人仅仅是因为看了展示材料，就兴奋地问我“在哪里才能买得到呢？”，大多数用户都是因为有之前生活的铺垫，或多或少产生了一些购买需求。</p>
+<p><img src="../images/where-is-it-sold.jpg" alt></p>
+<p>那么，我要做的更应该是提高这些潜在用户的<strong>转化率</strong>，其中一个重要的措施是：不要有断环。何为断环？就是用户不知道接下来要做什么了。回想一下，如果是你第一次接触这个产品，你必须要具备哪些知识才能完成购买。查理·芒格认为人们更愿意做容易的事情<sup><a href="#fn_1" id="reffn_1">1</a></sup>，如果有些知识你不提供给用户，就是在增加他们行动的难度。减少断环，就是扫清他们下单路上的一切障碍，这样他们一旦起了购买的动念，操作路上一马平川。反之，把展示材料做得再好，用户却停留在基础购买知识不全的状态，也会大幅降低他们下单的概率。这样做的道理在于，用户想不想买，不是你一时半刻能影响的；你能控制的其实是”怎么买“（How）。基于这个想法，当我看到有些销售尝试向用户解释”为什么要买“（Why）的时候，我觉得可能不太合适。</p>
+<p>可问题是，用户凭什么愿意补齐这些知识，又凭什么从你这里了解这些知识？这可能需要你给出持续的激励了。</p>
+<p>帮用户补齐基础知识之余，再适当向用户提供他们可能关心的信息，请大家留下来，这样才有下一步销售的可能（我听说以前有人提倡“产品要用完即走”，不知道为什么，我猜这在销售场景下不适用）。具体细节我就不谈了。</p>
+<p>提高转化率的事情还在尽量做，但是限于我目前和未来的知识水平，我应该没法这层的转化率提高到 100%。大致设想未来，如果外部条件稳定，仅靠我销售方式内部的调整，转化率最后可能会稳定在一个区间。那么，要想扩大销售业绩怎么办？找到更多潜在用户。</p>
+<p>到哪里才能找到潜在用户呢？一个直觉性的答案是：有相关生活经历的人群中（当然，直觉并不保证有效）。不同的群体中潜在用户的比例可能不同，但从普通人群到潜在用户肯定还有一个转化率的问题。同理，这又是一个优化转化率的发力点。</p>
+<p><img src="http://processon.com/chart_image/5e800d2ae4b092510f7e7534.png" alt></p>
+<p>盯着这个转化率，我们可以设想，在人群中总是有一定比例的人会感兴趣，又有一定比例会买单；当然，也意味着有一定比例的人不买单。那么，要想扩大销售业绩怎么办？多尝试，用更低的成本筛选出更多的潜在用户。被拒绝了没关系，这只是概率问题；被买单了也不一定代表自己销售能力爆表，因为，这只是概率问题。假设最终转化率是 5%，每单赚 100 元。只要你有能力低成本地尝试到中国所有人，billionaire 的头衔非你莫属。（当然，某些明显不可能的客户群体就不用尝试了，可以降低成本）</p>
+<p>想到这里，感觉销售不再是一项“说服”工作，那只不过是压榨最后一段转化率的细节。又感觉，自己瞬间变“坚强”了，不再怕被人拒绝。因为，拒绝你的人只不过是数据分布图中的一个样本点；看全局，一切都是概率问题。这真的是一剂很强的鸡血。</p>
+<p>最后，奔着提高转化率的方针，我也在不断优化我和用户的沟通内容。但你可以想象，很多语言可能是重复的，我一遍一遍地和不同用户说，然后看反馈，调整。有时候觉得自己像机器人（晚上还会梦到电子羊），不断重复同样的销售动作，但概率指引我，<strong>扩大样本</strong>，订单可能会迟到，但不会缺席。</p>
+<p>可能有客户看我的沟通语言，会觉得我虚伪。如果是这样，那我想对这位客户说，这恰恰表明您是一个独立的人，您跟别人不一样，因为沟通用语的数据表现看起来更好，而不是为您一个人设计的。又或者说，您没有落在我的经验范围之内（落进来的客户也是独一无二的人，只不过我们的世界观可能更相近）。当然，数据在不断积累，销售方法也在改进，如果我做销售足够长，可能有一天会把您囊括进来，请不要放弃我。</p>
+<p>总之，我目前的销售方法迭代是这样的：</p>
+<p>展示材料 -&gt; 转化率 -&gt; 扩大样本</p>
+<p>但实际上，也实现了上述之：</p>
+<p>能说会道 -&gt; 打鸡血 -&gt; 虚伪</p>
+<p>哎。</p>
+<p><small></small></p>
+<p>备注：</p>
+<ol>
+<li>此文是个人感想，随时可能被新的感想颠覆，希望对读者有启发，但不要信以为真。</li>
+<li>我不认为我的用户就是概率、数据，他们都是非常好的人，只是为了宏观讨论问题，才做了这样的抽象；我在某东、某宝那里才肯定是数据。</li>
+<li>如果销售成功了，请做好售后，不要让用户在使用产品时一片茫然。</li>
+</ol>
+<p>&lt;/small&gt;</p>
+<blockquote id="fn_1">
+<sup>1</sup>. 查理·芒格. (2017). 错误衡量易得性倾向 (李继宏, Trans.). In 穷查理宝典 (Vol. 2, pp. 189): 中信出版社.<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/03/24/dynamodb-basic-features-as-a-batabase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sining Liu">
+      <meta itemprop="description" content="我们把世界看错了，却反说世界欺骗了我们">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2020/03/24/dynamodb-basic-features-as-a-batabase/" class="post-title-link" itemprop="https://www.sining.io/index.html">DynamoDB 增删改查要点</a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2020-03-24 21:22:42" itemprop="dateCreated datePublished" datetime="2020-03-24T21:22:42+08:00">2020-03-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-03-30 20:39:13" itemprop="dateModified" datetime="2020-03-30T20:39:13+08:00">2020-03-30</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>DynamoDB 作为一个数据库，其特性也落在 ACID 的框架之内。我们先来复习一下什么是 ACID<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
+<ol>
+<li>原子性（Atomicity）：不可分割性，一个具有原子性的操作要么都成功，要么都失败，不存在只有开头成功，结尾却失败；不存在只有前几个语句成功，后几句却失败。</li>
+<li>一致性（Consistency）：一种和谐状态变为另一种和谐状态。写入数据库的数据必须是合法的<sup><a href="#fn_2" id="reffn_2">2</a></sup>，比如，不能把改了一半、缺少完整性的数据存入数据库，导致程序无法解析那些数据。某种程度上，这和原子性相辅相成。</li>
+<li>隔离性（Isolation）：多个进程、线程同时写入数据库时，可能造成某些数据的冲突、覆盖，一定的隔离性防止冲突发生</li>
+<li>持久性（Durability）：数据一旦提交，就会存在数据库中，不能丢失</li>
+</ol>
+<!-- 对于 DynamoDB 的常规操作，可能比较主要的考虑就是，基于这些特性来防止数据冲突、同时提高效率。-->
+<h2 id="增、改、删"><a href="#增、改、删" class="headerlink" title="增、改、删"></a>增、改、删</h2><p>写入操作都很、也最忌讳意外覆盖，导致数据丢失。因此要着重考察数据原子性、一致性、隔离性，防止冲突地修改。</p>
+<p>如果你的使用场景中确定没有并发的写入，比如个人随便记录东西的数据库，那设计就很简单。</p>
+<ol>
+<li>可以顺序执行 <code>PutItem</code>，<code>UpdateItem</code>，<code>DeleteItem</code> 等各种操作，直至把他们组合起来形成批量写入 <code>BatchWriteItem</code></li>
+</ol>
+<p>但只要有多个不同的源头操作同一个 item，尤其是同一个 item 的同一个 attribute，那冲突就有可能发生了。有些源头可能读取旧数据之后，隔一段时间后（从最短的机器时到地老天荒不等）还在基于旧数据来更新 item，从而导致在那段时间中别人的更新被覆盖，成为 lost update<sup><a href="#fn_3" id="reffn_3">3</a></sup>。</p>
+<p>此时可以尽量避免冲突：</p>
+<ol>
+<li>使用简单的原子性操作，缩短读取数据和更改数据之间的窗口时间，比如 atomic counter（类似于 <code>#attr = #attr + :val</code>），不取回数据，只在数据库本身中使用数据。</li>
+<li>如果必须取回数据、计算一番之后再修改数据，那写入时，就需要再检查一次，确保自己刚刚的计算所基于的数据是最新的，这就是  <code>ConditionExpression</code>  的作用。</li>
+</ol>
+<p>乐观锁实际上就在写入时检查“数据是否是最新的”（利用 <code>ConditionExpression</code>），只不过判断的标识是数据的版本号（version）。</p>
+<p>DynamoDB 中的 request 都是具有原子性的<sup><a href="#fn_4" id="reffn_4">4</a></sup>（<code>BatchWriteItem</code> 除外），但是原子性不意味着隔离性。一个原子性操作的过程中，别的线程并未被隔离，也在修改数据，还是有可能造成冲突。<small>我不确定 DynamoDB 中，对同一个 item 执行多个原子性写入，是否会序列化隔离<sup><a href="#fn_5" id="reffn_5">5</a></sup>；但没人提到，带上合理的 ConditionExpression 后，原子性的写入也会产生意外覆盖。</small></p>
+<p>写入有可能总是基于 leader node<sup><a href="#fn_14" id="reffn_14">14</a></sup> </p>
+<p>在 2018 年之前，我们可能找不到 DynamoDB 对于 ACID 的完整支持，<a href="https://www.sswug.org/bentaylor/editorials/amazon-dynamodb-does-acid/" target="_blank" rel="noopener">据说</a> DynamoDB 更关注写入的一致性和持久性，而没那么关注隔离性的实现。但是现在 DynamoDB 有了自己的 transaction 操作，可以实现序列化级别的隔离<sup><a href="#fn_6" id="reffn_6">6</a></sup>。这种序列化包括 transcation 之间的序列化和 transaction 和普通写入的序列化<sup><a href="#fn_7" id="reffn_7">7</a></sup>。在 api 简介中，也只有 transaction 明确说明支持 acid，其他全部没说：<a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html</a></p>
+<p>因此</p>
+<ol>
+<li>当你一万个不允许某个 item 被冲突修改，那么所有对这个 item 的修改都用 <code>TransactWriteItems</code>。</li>
+<li>除此之外，你可以在一个 transaction 中修改多个 item，这些修改具有一个原子性，统一和其他请求隔离。</li>
+</ol>
+<p>相比之下，之前的 DynamoDB 是无法在一个原子操作内修改多个 item 的。如果你要修改 2 个 item，就只能创建两个写入请求，结果可能是一个成功修改，另一个却在执行时发生冲突。以及还有更多种子情况需要你处理，你可以想象那意味着什么……</p>
+<p>但 DynamoDB 的序列化隔离不会锁住正要修改的 item，而是发现 item 被别的 transaction 修改后让当前的修改失败（这种不基于锁的序列化，被称为“快照隔离”<sup><a href="#fn_8" id="reffn_8">8</a></sup>），因此你需要处理相关的失败，重试或放弃。不过请注意，<a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html#transaction-apis-txwriteitems" target="_blank" rel="noopener">文档</a>暗示：</p>
+<ol>
+<li>当 transaction 遇到正在进行的 transaction，后来的 transaction 失败</li>
+<li>当后来的普通写入遇到正在进行的 transaction，后来的普通写入失败</li>
+</ol>
+<p><small>这是否间接证明对单一 item 的普通原子性写入本来就是可序列化的？因为没有关于 transaction 遇到正在进行的普通写入的描述</small></p>
+<p>总之，由简单到复杂，由一个  <code>PutItem</code> ，到多个请求合并成一个原子性的、transaction 之间序列化的 <code>TransactWriteItems</code>，这是一个大致连续的变化。情况确定了，复杂度就确定了，操作方式也就确定了。</p>
+<!-- 如果你选定了一种操作方式，性能的基础也就被 AWS 给定了，想增加性能就交钱开大并发。-->
+<p>当然，你可能也发现了：DynamoDB 中目前没有标准意义上的范围写入（<code>WHERE</code>一个大范围），每一个写入都需要明确 primary key。如果你要大批量、甚至全表改数据，不是一件容易的事情，所以设计表结构的时候要谨慎。</p>
+<p>最后的最后，纵观各种写入限制<sup><a href="#fn_9" id="reffn_9">9</a></sup>，</p>
+<ol>
+<li>最容易被突破的是一个 item 的数据大小不能超过 400kb（如果 item 包含 Local Secondary Index，则 index 大小包含在内），不要把 attributes 当成一个新的 table 存一些总是在增长的数据（比如用户历史账单），迟早会撑爆。</li>
+<li>如果遵守了这个限制，其他的限制都“留有余地”的：<code>BatchWriteItem</code> 和 <code>TransactWriteItems</code> 可容纳的 25 个请求加起来也不会超过他们分别的大小限制 16 mb<sup><a href="#fn_10" id="reffn_10">10</a></sup> 和 4 mb。</li>
+</ol>
+<h2 id="查"><a href="#查" class="headerlink" title="查"></a>查</h2><p>Data model：</p>
+<ol>
+<li>1对多</li>
+<li>多对一</li>
+<li>多对多</li>
+<li>2个以上的元素 compsitet key as sort key（as partition key？）</li>
+</ol>
+<p>AWS 提示，DynamoDB 这种 NoSQL 和关系型数据库的一个重要区别是：你需要先想好查表的方式，然后再设计表<sup><a href="#fn_12" id="reffn_12">12</a></sup>。因为不是每一个 attribute（类似于关系型数据库中的 column）都可以当作查询的条件；没有事先建立 index 的查询，在 DynamoDB 中非常耗费资源。</p>
+<p>和 SQL 只用 <code>SELECT</code> 一个命令做查询不同，目前 DynamoDB 有 5 种查询指令：<code>GetItem</code>、<code>BatchGetItem</code>、<code>Query</code>、<code>Scan</code>、<code>TransactGetItems</code>。我们做一下分类，大家就知道选择谁了。</p>
+<p>查询的本质是比对目标之实际条件和你给出的条件。上述命令所能利用的“条件”类型有很大不同<sup><a href="#fn_11" id="reffn_11">11</a></sup>：</p>
+<ol>
+<li>全表扫描，全 index 扫描：这三种类型的“条件”都可以被 <code>Scan</code> 接受，也只有 <code>Scan</code> 能利用普通 attribute 做查询；它会逐行扫描，速度慢；我猜，这种情况主要发生在你忘了建 index 时</li>
+<li>扫描一个 partition：<code>Query</code></li>
+<li>根据 primary key 做查询：<code>GetItem</code>、 <code>BatchGetItem</code>、<code>TransactGetItems</code>，他们都只能利用 primary key</li>
+</ol>
+<p>如果你要给出的条件类型，根本就不是某些命令可以接受的，就不能选择他们。</p>
+<p>这里提到了 3 种查询条件：</p>
+<p>首先他们执行时所依据的数据</p>
+<p>首先看读取范围是否确定。如果不确定，即，你只知道目标对象的部分信息，比如，他们都属于某个用户，那就只能扫描一部分表来比对相关信息，可以选择：</p>
+<ol>
+<li>Query：</li>
+</ol>
+<p>首先是他们会读取到哪些类型的数据，因此先考察隔离性：</p>
+<ol>
+<li>可序列化读：<code>TransactGetItems</code> 实现了可序列化读，一个 Transaction 中读取同一批 item，数据一定是一样的<small>（但好像没必要读取同一批 item）</small>，如果读取过程中相关的 item 被其他 Transaction 修改，会得到异常信息<small>（同样，<a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html#transaction-apis-txwriteitems" target="_blank" rel="noopener">文档</a>没说 <code>TransactGetItems</code> 和其他种类写入请求相遇时会报错）</small></li>
+<li>提交读、不可重复读：DynamoDB 没有“脏读”，只能得到提交过的数据；但同时，其他线程的提交可能使 <code>GetItem</code>、<code>BatchGetItem</code>、<code>Query</code>、<code>Scan</code> 两次读到的数据不同</li>
+<li>“提交也不能读”：DynamoDB 是一种分布式数据库<sup><a href="#fn_13" id="reffn_13">13</a></sup>，考虑 read consistency <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html</a></li>
+</ol>
+<p>此乃第一层分类。其次，是读取范围。首先看读取范围是否确定：</p>
+<ol>
+<li>范围内只有确定的一个：<code>GetItem</code>，比如读取单个用户的名字</li>
+<li>范围内只有确定的几个：<code>BatchGetItem</code>、``每个子请求都要</li>
+</ol>
+<p>其次，区分</p>
+<p>最终，选择谁还是由情况决定的，把情况描述清楚，结论（大概率）自动出现。</p>
+<p>最后，如果我的文章展现了某些漏洞，请告诉我，但不要用 Hack 我的方式告诉我。好人一生平安。</p>
+<blockquote id="fn_1">
+<sup>1</sup>. Wikipedia Contributors. (2020, March 20). ACID. Retrieved March 25, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/ACID‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/ACID‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. Wikipedia Contributors. (2019, June 19). Consistency (database systems). Retrieved March 25, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Consistency_(database_systems)‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Consistency_(database_systems)‌</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. Wikipedia Contributors. (2019, December 12). Concurrency control. Retrieved March 24, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Concurrency_control#Why_is_concurrency_control_needed.3F‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Concurrency_control#Why_is_concurrency_control_needed.3F‌</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. AWS Developer Forums: Is “UpdateItem” an atomic operation wrt … (2015). Retrieved March 24, 2020, from Amazon.com website: <a href="https://forums.aws.amazon.com/thread.jspa?threadID=179999‌" target="_blank" rel="noopener">https://forums.aws.amazon.com/thread.jspa?threadID=179999‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. Working with Items and Attributes - Amazon DynamoDB. (2020). Retrieved March 24, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html#WorkingWithItems.AtomicCounters‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html#WorkingWithItems.AtomicCounters‌</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. Amazon DynamoDB Transactions: How It Works - Amazon DynamoDB. (2020). Retrieved March 25, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html#transaction-isolation‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html#transaction-isolation‌</a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. New – Amazon DynamoDB Transactions | Amazon Web Services. (2018, November 27). Retrieved March 25, 2020, from Amazon Web Services website: <a href="https://aws.amazon.com/blogs/aws/new-amazon-dynamodb-transactions/‌" target="_blank" rel="noopener">https://aws.amazon.com/blogs/aws/new-amazon-dynamodb-transactions/‌</a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_8">
+<sup>8</sup>. Wikipedia Contributors. (2020, March 3). Isolation (database systems). Retrieved March 24, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable‌</a><a href="#reffn_8" title="Jump back to footnote [8] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_9">
+<sup>9</sup>. Limits in Amazon DynamoDB - Amazon DynamoDB. (2020). Retrieved March 25, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html‌</a><a href="#reffn_9" title="Jump back to footnote [9] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_10">
+<sup>10</sup>. Package dynamodb. (2012). Retrieved March 25, 2020, from Godoc.org website: <a href="https://godoc.org/github.com/aws/aws-sdk-go/service/dynamodb#DynamoDB.BatchWriteItem‌" target="_blank" rel="noopener">https://godoc.org/github.com/aws/aws-sdk-go/service/dynamodb#DynamoDB.BatchWriteItem‌</a><a href="#reffn_10" title="Jump back to footnote [10] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_11">
+<sup>11</sup>. DynamoDB API - Amazon DynamoDB. (2020). Retrieved March 26, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html#HowItWorks.API.DataPlane‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html#HowItWorks.API.DataPlane‌</a><a href="#reffn_11" title="Jump back to footnote [11] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_12">
+<sup>12</sup>. <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-general-nosql-design.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-general-nosql-design.html</a><a href="#reffn_12" title="Jump back to footnote [12] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_13">
+<sup>13</sup>. <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html</a><a href="#reffn_13" title="Jump back to footnote [13] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_14">
+<sup>14</sup>. Amazon Web Services. (2020). AWS re:Invent 2018: Amazon DynamoDB Under the Hood: How We Built a Hyper-Scale Database (DAT321) [YouTube Video]. Retrieved from <a href="https://www.youtube.com/watch?time_continue=160&amp;v=yvBR71D0nAQ‌" target="_blank" rel="noopener">https://www.youtube.com/watch?time_continue=160&amp;v=yvBR71D0nAQ‌</a><a href="#reffn_14" title="Jump back to footnote [14] in the text."> &#8617;</a>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/10/17/worldview-is-changing-itself-and-will-continue-like-this/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -399,7 +1084,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-11-08 19:18:19" itemprop="dateModified" datetime="2019-11-08T19:18:19+08:00">2019-11-08</time>
+                <time title="Modified: 2019-11-15 10:51:54" itemprop="dateModified" datetime="2019-11-15T10:51:54+08:00">2019-11-15</time>
               
             
           </span>
@@ -719,7 +1404,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-11-08 13:38:42" itemprop="dateModified" datetime="2019-11-08T13:38:42+08:00">2019-11-08</time>
+                <time title="Modified: 2019-11-15 19:12:20" itemprop="dateModified" datetime="2019-11-15T19:12:20+08:00">2019-11-15</time>
               
             
           </span>
@@ -1199,7 +1884,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-10-17 20:30:06" itemprop="dateModified" datetime="2019-10-17T20:30:06+08:00">2019-10-17</time>
+                <time title="Modified: 2020-04-04 16:49:44" itemprop="dateModified" datetime="2020-04-04T16:49:44+08:00">2020-04-04</time>
               
             
           </span>
@@ -1442,486 +2127,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/04/27/multi-factor-analysis-is-not-that-believable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sining Liu">
-      <meta itemprop="description" content="我们把世界看错了，却反说世界欺骗了我们">
-      <meta itemprop="image" content="/images/sining-avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="sining.io">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/27/multi-factor-analysis-is-not-that-believable/" class="post-title-link" itemprop="https://www.sining.io/index.html">多因素分析，并没有我们以为的那样可信</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-04-27 21:39:46" itemprop="dateCreated datePublished" datetime="2019-04-27T21:39:46+08:00">2019-04-27</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-10-17 20:30:43" itemprop="dateModified" datetime="2019-10-17T20:30:43+08:00">2019-10-17</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          这世界很可能只有一个原因，其他宛若似真的分析更像是严谨地随便找个理由
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/04/27/multi-factor-analysis-is-not-that-believable/">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/04/09/what-is-absolute-what-is-relative/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sining Liu">
-      <meta itemprop="description" content="我们把世界看错了，却反说世界欺骗了我们">
-      <meta itemprop="image" content="/images/sining-avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="sining.io">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/04/09/what-is-absolute-what-is-relative/" class="post-title-link" itemprop="https://www.sining.io/index.html">什么是绝对？什么是相对？什么是辩证？</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-04-09 21:09:34" itemprop="dateCreated datePublished" datetime="2019-04-09T21:09:34+08:00">2019-04-09</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-10-17 20:31:12" itemprop="dateModified" datetime="2019-10-17T20:31:12+08:00">2019-10-17</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          讨论 3 个概念
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/04/09/what-is-absolute-what-is-relative/">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/03/29/our-society-is-differentiating/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sining Liu">
-      <meta itemprop="description" content="我们把世界看错了，却反说世界欺骗了我们">
-      <meta itemprop="image" content="/images/sining-avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="sining.io">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/03/29/our-society-is-differentiating/" class="post-title-link" itemprop="https://www.sining.io/index.html">我们都要面对一种趋势：分化</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2019-03-29 00:14:13" itemprop="dateCreated datePublished" datetime="2019-03-29T00:14:13+08:00">2019-03-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-10-17 20:31:21" itemprop="dateModified" datetime="2019-10-17T20:31:21+08:00">2019-10-17</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          若然，你看到了什么？
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/03/29/our-society-is-differentiating/">
-                Read more &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1971,7 +2176,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">25</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2042,7 +2247,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">26</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -2129,7 +2340,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
