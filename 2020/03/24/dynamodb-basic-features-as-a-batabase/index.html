@@ -122,7 +122,7 @@
 <meta property="og:site_name" content="sining.io">
 <meta property="og:description" content="ACID and more">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-05T08:25:16.657Z">
+<meta property="og:updated_time" content="2020-04-05T13:42:10.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DynamoDB 增删改查要点">
 <meta name="twitter:description" content="ACID and more">
@@ -396,7 +396,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-04-05 16:25:16" itemprop="dateModified" datetime="2020-04-05T16:25:16+08:00">2020-04-05</time>
+                <time title="Modified: 2020-04-05 21:42:10" itemprop="dateModified" datetime="2020-04-05T21:42:10+08:00">2020-04-05</time>
               
             
           </span>
@@ -490,7 +490,7 @@
 </ul>
 </li>
 <li>多对多：<ul>
-<li>首先建立一个 1 对多，这样 1 个 PK 就对应多个 SK，再把 SK 作为 PK’ 建立一个新的 index‘，这样 SK 值相同的 items 就会聚合在 index’ 中。可能的情景有：一个用户参与多个项目，一个项目中有多个用户。</li>
+<li>首先建立一个 1 对多，这样 1 个 PK 就对应多个 items，再把 items 中的一个 attribute，比如 project_id 作为新 PK’，建立一个新的 index’，这样 project_id 相同的 items 就会聚合在 index’ 的同一个 partition 中，实现通过 attribute 定位 items（不然 DynamoDB 是无法像关系型数据库那样，对任意 column 做查询来定位 rows 的）。这种在 attribute 上建 index 来查原始 items 的操作或可称为 inverted index<sup><a href="#fn_18" id="reffn_18">18</a></sup>。可能的情景是：一个用户参与多个项目，一个项目中有多个用户。</li>
 </ul>
 </li>
 </ol>
@@ -564,6 +564,9 @@
 </blockquote>
 <blockquote id="fn_17">
 <sup>17</sup>. What Is Amazon DynamoDB? - Amazon DynamoDB. (2020). Retrieved April 5, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html‌</a><a href="#reffn_17" title="Jump back to footnote [17] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_18">
+<sup>18</sup>. Wikipedia Contributors. (2020, February 29). Inverted index. Retrieved April 5, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Inverted_index‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Inverted_index‌</a><a href="#reffn_18" title="Jump back to footnote [18] in the text."> &#8617;</a>
 </blockquote>
 
       
