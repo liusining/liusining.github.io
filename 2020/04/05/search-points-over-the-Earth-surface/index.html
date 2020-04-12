@@ -123,9 +123,10 @@
 <meta property="og:description" content="为了找到自己的位置，我们需要将全世界编码">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.sining.io/images/if-china-locates-at-high-latitude.png">
+<meta property="og:image" content="https://s2geometry.io/devguide/img/s2curve-small.gif">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Spherical_cap_diagram.tiff/lossless-page1-220px-Spherical_cap_diagram.tiff.png">
 <meta property="og:image" content="https://www.sining.io/images/s2-cells-convering-a-cap.png">
-<meta property="og:updated_time" content="2020-04-12T04:28:33.559Z">
+<meta property="og:updated_time" content="2020-04-12T05:07:02.437Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搜索地球表面上的点（工程）">
 <meta name="twitter:description" content="为了找到自己的位置，我们需要将全世界编码">
@@ -400,7 +401,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-04-12 12:28:33" itemprop="dateModified" datetime="2020-04-12T12:28:33+08:00">2020-04-12</time>
+                <time title="Modified: 2020-04-12 13:07:02" itemprop="dateModified" datetime="2020-04-12T13:07:02+08:00">2020-04-12</time>
               
             
           </span>
@@ -472,6 +473,7 @@
 <li>利用合适的地理编码系统（s2 geometry cell）解决地理区域划分的部分难点</li>
 <li>调整地理编码所代表的区域大小，使请求次数和产生热键的概率都保持在可接受的范围内</li>
 </ol>
+<p><img src="https://s2geometry.io/devguide/img/s2curve-small.gif" alt></p>
 <p>至于为什么一定要用 s2 geometry cell，其实不一定，但我只了解过 s2。其实还有其他的地理编码系统，比如 uber 开发的 h3，但我还不是很了解。</p>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>下面进入工程实现的部分（语言为 golang）。</p>
 <ol>
@@ -518,7 +520,7 @@
 <li>人口扎堆在大城市，对应的数据分区更容易被击中，成为热键（如果有很多人用的话）</li>
 <li><p>cell id 的发送方（比如网页前端）和接收方（比如服务器后端）对于搜索范围的确定可能有偏差，因为前端标示距离的算法和后端使用的 s2 geometry 计算距离的算法可能不一样；而且使用较模糊的 cell id（level 较低的 cell），本来就难以保证前后端中心点一致</p>
 </li>
-<li><p>计算覆盖区域可能比较耗时，需要更长等待时间</p>
+<li><p>需要平衡计算覆盖区域、数据查询、再次确认距离（即，第四、五、六步）之间的时间开销，在某一步降低消耗可能会导致剩下的步骤产生更多消耗。比如，计算覆盖区域时不使用精确计算，可能导致数据查询时返回更多候选点，进而需要分页处理以及更多次确认距离。监控、平衡各步的消耗，降低总体消耗，可能是个合理的选择。</p>
 </li>
 </ol>
 <p>最后，s2 geometry 连接各地理分区所用的空间填充曲线很有意思，让人怀疑这个世界到底是什么样子。</p>
