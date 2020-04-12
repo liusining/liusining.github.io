@@ -114,21 +114,21 @@
 
 
 
-  <meta name="description" content="我站在一个球体上，却浑然不觉">
+  <meta name="description" content="为了找到自己的位置，我们需要将全世界编码">
 <meta name="keywords" content="工程,地球">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搜索地球表面上的点（工程）">
 <meta property="og:url" content="https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/index.html">
 <meta property="og:site_name" content="sining.io">
-<meta property="og:description" content="我站在一个球体上，却浑然不觉">
+<meta property="og:description" content="为了找到自己的位置，我们需要将全世界编码">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.sining.io/images/if-china-locates-at-high-latitude.png">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Spherical_cap_diagram.tiff/lossless-page1-220px-Spherical_cap_diagram.tiff.png">
 <meta property="og:image" content="https://www.sining.io/images/s2-cells-convering-a-cap.png">
-<meta property="og:updated_time" content="2020-04-11T10:33:07.759Z">
+<meta property="og:updated_time" content="2020-04-12T04:28:33.559Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搜索地球表面上的点（工程）">
-<meta name="twitter:description" content="我站在一个球体上，却浑然不觉">
+<meta name="twitter:description" content="为了找到自己的位置，我们需要将全世界编码">
 <meta name="twitter:image" content="https://www.sining.io/images/if-china-locates-at-high-latitude.png">
 
 
@@ -400,7 +400,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-04-11 18:33:07" itemprop="dateModified" datetime="2020-04-11T18:33:07+08:00">2020-04-11</time>
+                <time title="Modified: 2020-04-12 12:28:33" itemprop="dateModified" datetime="2020-04-12T12:28:33+08:00">2020-04-12</time>
               
             
           </span>
@@ -419,7 +419,7 @@
           
 
           
-              <div class="post-description">我站在一个球体上，却浑然不觉</div>
+              <div class="post-description">为了找到自己的位置，我们需要将全世界编码</div>
           
 
         </div>
@@ -435,12 +435,14 @@
       
 
       
-        <p>说明：</p>
+        <blockquote>
+<p>说明：</p>
 <ol>
 <li>这里讲不了太多原理，因为我也还不懂</li>
 <li>地球覆盖范围计算基于 Google S2 Geometry 软件库</li>
 <li>数据存储、查询基于 DynamoDB，迁移到其他 NoSQL 应该差不多</li>
 </ol>
+</blockquote>
 <p>这里尝试解决一个需求：寻找附近的 POI（Points of Interest，相关地点，下同）。</p>
 <p>第一种方法，也是最直接、最简单的办法是：</p>
 <ol>
@@ -448,22 +450,22 @@
 <li>计算数据库中各个点和中心点的距离</li>
 <li>保留距离在要求范围内（假设为 [0, D]）的点</li>
 </ol>
-<p>当数据很少的时候，这样可能是最好的方法，但是如果数据增加，计算量按照 <code>O(n)</code> 函数线性增加。对于大数据量是不可行的。</p>
+<p>当数据很少的时候，这样可能是最好的方法，但是如果数据增加，计算量会按照 <code>O(n)</code> 函数线性增加。对于大数据量是不可行的。</p>
 <p>上面的方法可以改良。如果这些点按照经纬度排序，那么可以通过坐标先排除一部分明显很远的点。如果纬度或经度的存储使用 B+ tree 等 index，定位某个范围的时间可能更短。于是，一个可能的方法是：</p>
 <ol>
-<li>查询临近经纬度内的点，大幅缩小候选点范围</li>
-<li>计算剩下的候选点到中心点的距离</li>
+<li>搜索临近经纬度，只取回满足初步条件的点（可称为候选点）</li>
+<li>计算候选点到中心点的距离</li>
 <li>保留距离在  [0, D] 内的点</li>
 </ol>
 <p>但这个方法也面临问题。</p>
-<p>首先，DynamoDB 等基于 document 的数据库是按分区存储数据的，如果按照经度或者纬度区间分区存储数据，那么有些目前区域可能跨越 2 个数据分区，需要做 2 次查询请求；如果把所有数据都存在一个分区内（方便利用纬度和经度的组合字段做 index，类似于关系型数据库中的多字段 index），又容易造成每个分区过于繁忙（热键问题）。当然，某些情况下这些处理方法是可以接受的。</p>
-<p>其次，虽然相同的纬度差（∆lat），距离是大致相等的，但是相同的经度差（∆lng）却可能代表非常不同的距离。相同的 ∆lng 在赤道附近有更长的距离，越靠近南北极越短，因此需要调整经度区间的大小，才能保持搜索范围的大小一致。</p>
-<p>对于上述之第一个问题，可以把经纬度 2 个值编码为一个值，最简单的方法就是拼接，比如，把 N30° - N31° 之间且 E110° - E111° 之间的点统一编码为 <code>N30.5-E110.5</code>。这样此范围内的点的地理编码是一样的，可以存在一个数据分区内。如果某个中心点之外，半径 D 之内没有超过 <code>N30.5-E110.5</code> 编码所表示的区域，那么仅在一个数据分区内取回候选点就可以了，只做一次请求。而且，数据分区内还可以利用 sort key 等方法进一步缩小候选点的范围。</p>
+<p>首先，DynamoDB 等分布式数据库是按分区存储数据的，如果通过划分经纬度来制定数据分区键（partition key），那么有些目标区域可能跨越 N 个数据分区，需要做 N 次查询请求；分区越细，目标区域跨越的分区就越多，N 就越大。如果把所有数据都存在一个分区内，可以利用纬度和经度的组合字段做 index（类似于关系型数据库中的多字段 index），但又容易造成此分区过于繁忙（热键问题）。当然，某些情况下这些处理方法是可以接受的。</p>
+<p>其次，虽然相同的纬度差（∆lat）代表的距离总是大致相等，但是相同的经度差（∆lng）却可能代表非常不同的距离。相同的 ∆lng 在赤道附近有更长的距离，越靠近南北极越短，因此需要调整经度区间的大小，才能保持搜索范围的大小和靠近赤道的区域一致。</p>
+<p>对于上述之第一个问题，可以把经、纬度 2 个值编码为一个值，最简单的方法就是拼接，比如，把 N30° - N31° 之间且 E110° - E111° 之间的区域编码为 <code>N30.5-E110.5</code>。这样，此范围内的点都可以对应相同的地理编码，进而存在同一个数据分区内（以地理编码做分区键）。如果某个中心点之外，半径 D 之内没有超过 <code>N30.5-E110.5</code> 编码所表示的区域，那么仅在一个数据分区内就能取回所有的候选点，只做一次请求。而且，数据分区内还可以利用 sort key 等方法进一步缩小候选点的范围。</p>
 <p>一个地理编码表示的范围越大，你就越有可能用 1 个请求取回所有的候选点。但如果编码覆盖的区域太大，很多查询可能同时击中一个分区，同样热键问题。这里需要看怎么平衡两种消耗（请求次数，热键的可能性）。</p>
 <p>上面说的地理编码方式很简单。另外也有很多编码规范供你选择，Geohash 就是一种，应该算是比较知名的。</p>
-<p>然而 Geohash 并没有解决上述之第二个问题：单位经度差所代表的实际距离随着纬度升高而大幅减小。所以，同一级别的地理编码，在赤道代表的面积比在南北极代表的面积大很多<sup><a href="#fn_1" id="reffn_1">1</a></sup>。虽然在平面地图上看起来南北极附近的编码区域好像很大，但那是因为平面地图把极点附近聚拢的区域展开成了跟赤道一样宽。（类似地，俄罗斯、南极洲都没有平面地图上显示的比例那么大；根据 thetruesize.com 计算，如果把中国挪到俄罗斯的纬度位置，在地图上看起来会比在中纬度大得多）</p>
+<p>然而 Geohash 并没有解决上述之第二个问题：单位经度差所代表的实际距离随着纬度升高而大幅减小。所以，同一级别的地理编码，在赤道代表的面积比在南北极代表的面积大很多<sup><a href="#fn_1" id="reffn_1">1</a></sup>。虽然在平面地图上看起来南北极附近的编码区域好像很大，但那是因为平面地图把极点附近聚拢的区域展开成了跟赤道一样宽。（类似地，俄罗斯、南极洲都没有平面地图上显示的比例那么大；根据 thetruesize.com 计算，如果把中国挪到俄罗斯的纬度位置，在平面地图上看起来会比在中纬度大得多）</p>
 <p><img src="/images/if-china-locates-at-high-latitude.png" alt></p>
-<p>如果你是看了 <a href="https://aws.amazon.com/blogs/aws/new-geo-library-for-dynamodb/" target="_blank" rel="noopener">AWS 的博客</a>或者 Google 搜索排名很靠前的<a href="https://read.acloud.guru/location-based-search-results-with-dynamodb-and-geohash-267727e5d54f" target="_blank" rel="noopener">一篇文章</a>，而想在自己的 dynamodb 中用 geohash 做数据分区，那么他们可能误导了你。这些博客中提到的 sdk 其实用的是 s2 geometry 做的地理编码。可以通过<a href="https://github.com/amazon-archives/dynamodb-geo/blob/1d0881295142a9bb15415817c644b104657666e5/src/com/amazonaws/geo/s2/internal/S2Manager.java#L115" target="_blank" rel="noopener">其 github 上的代码</a>确认。</p>
+<p>如果你是看了 <a href="https://aws.amazon.com/blogs/aws/new-geo-library-for-dynamodb/" target="_blank" rel="noopener">AWS 的博客</a>或者 Google 搜索排名很靠前的<a href="https://read.acloud.guru/location-based-search-results-with-dynamodb-and-geohash-267727e5d54f" target="_blank" rel="noopener">一篇文章</a>，而想在自己的 dynamodb 中用 geohash 做数据分区，那么他们可能误导了你。这些博客中提到的代码库其实用的是 s2 geometry 做的地理编码。可以通过<a href="https://github.com/amazon-archives/dynamodb-geo/blob/1d0881295142a9bb15415817c644b104657666e5/src/com/amazonaws/geo/s2/internal/S2Manager.java#L115" target="_blank" rel="noopener">其 github 上的代码</a>确认。</p>
 <p>s2 geometry 让同一级别的地理编码所代表的面积相近<sup><a href="#fn_2" id="reffn_2">2</a></sup>，即使在南北极也不会和赤道的差距过于悬殊。所以，到这里，我们基本上可以解决上述提到的问题：</p>
 <ol>
 <li>利用地理区域筛选候选点，解决逐一计算距离则计算量过大的问题</li>
@@ -481,7 +483,7 @@
 <li>计算取回的候选点是否在目标区域内</li>
 </ol>
 <p>作为事先准备，我们先生成一个 cell id。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s2"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s1"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	latLng := s2.LatLngFromDegrees(<span class="number">39.916667</span>, <span class="number">116.383333</span>) <span class="comment">// Beijing</span></span><br><span class="line">	cellID := s2.CellIDFromLatLng(latLng)</span><br><span class="line">	cellIDUint := <span class="keyword">uint64</span>(cellID)</span><br><span class="line">	base2 := strconv.FormatUint(cellIDUint, <span class="number">2</span>)</span><br><span class="line">	base10 := strconv.FormatUint(cellIDUint, <span class="number">10</span>)</span><br><span class="line">	base16 := strconv.FormatUint(cellIDUint, <span class="number">16</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"cell id:\nbase2(%s)\nbase10(%s)\nbase16(%s)\ntoken(%s)\n"</span>,</span><br><span class="line">		base2, base10, base16, cellID.ToToken(),</span><br><span class="line">	)</span><br><span class="line">  <span class="comment">// cell id:</span></span><br><span class="line">	<span class="comment">// base2(11010111110000010100101111001001110010010000011111100101111001)</span></span><br><span class="line">	<span class="comment">// base10(3886697679673227641)</span></span><br><span class="line">	<span class="comment">// base16(35f052f27241f979)</span></span><br><span class="line">	<span class="comment">// token(35f052f27241f979)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s2"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s1"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	latLng := s2.LatLngFromDegrees(<span class="number">39.916667</span>, <span class="number">116.383333</span>) <span class="comment">// Beijing</span></span><br><span class="line">	cellID := s2.CellIDFromLatLng(latLng)</span><br><span class="line">	cellIDUint := <span class="keyword">uint64</span>(cellID)</span><br><span class="line">	base2 := strconv.FormatUint(cellIDUint, <span class="number">2</span>)</span><br><span class="line">	base10 := strconv.FormatUint(cellIDUint, <span class="number">10</span>)</span><br><span class="line">	base16 := strconv.FormatUint(cellIDUint, <span class="number">16</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"cell id:\nbase2(%s)\nbase10(%s)\nbase16(%s)\ntoken(%s)\n"</span>,</span><br><span class="line">		base2, base10, base16, cellID.ToToken(),</span><br><span class="line">	)</span><br><span class="line"><span class="comment">// cell id:</span></span><br><span class="line"><span class="comment">// base2(11010111110000010100101111001001110010010000011111100101111001)</span></span><br><span class="line"><span class="comment">// base10(3886697679673227641)</span></span><br><span class="line"><span class="comment">// base16(35f052f27241f979)</span></span><br><span class="line"><span class="comment">// token(35f052f27241f979)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>因此，我们用作实验的 cell id 是：<code>35f052f27241f979</code>。</p>
 <p>搜索工程就从接收这个 cell id 开始。至于为什么要传入 cell id，而不是经纬度。因为：</p>
 <ol>
@@ -504,7 +506,7 @@
 <ol>
 <li>MaxLevel 代表最小的 cell，即覆盖区域精细到什么程度，如果数值太大，可能会返回一些细小的 cell；</li>
 <li>MinLevel 代表最大的 Cell，即不能使用更大的 cell 来代表覆盖区域，MinLevel 也不能小于数据分区使用的编码级别，因为级别太小的话（覆盖范围太大）就分不清具体指向哪个数据分区。</li>
-<li>covering 指向一个 CellUnion 类型的值，CellUnion 是一个或多个 cell ids 组成的数组。因为上面的 Covering 方法返回的 CellUnion 并没有归一化（normalize），所以有时 4 个 cell id 已经构成一个完整的 cell（更大的 cell），但却没有被合并，增加了查询的复杂度，因此需要进一步归一化，即 Normalize 方法。</li>
+<li><code>Covering</code> 方法返回的结果是一个 CellUnion 类型的值（包含一个或多个 cell id），而这个结果可能没有归一化（normalize），所以有时 4 个 cell id 已经构成一个完整的 cell（更大的 cell），但却没有被合并<sup><a href="#fn_5" id="reffn_5">5</a></sup>，增加了接下来数据查询的复杂度，因此需要进一步归一化，即调用 <code>Normalize</code> 方法。</li>
 </ol>
 <p>第四步，计算数据分区。上面得到的 cell ids 并不直接就是数据分区的分区键（partition key），因为有些 cell id 的范围比数据分区所代表的地理范围小。但通过找到范围较小的 cell id 的父级，就能得到其所对应的数据分区。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pk := v.Parent(parentLevel) <span class="comment">// parentLevel is set by you</span></span><br></pre></td></tr></table></figure>
@@ -513,8 +515,11 @@
 <p>最后，再次计算候选点是否处在我们预想的范围 region 内：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, v := <span class="keyword">range</span> pointsYouRetrievedFromDatabase &#123;</span><br><span class="line">  <span class="keyword">if</span> region.ContainsPoint(v) &#123;</span><br><span class="line">    <span class="comment">// do something ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="可能的问题"><a href="#可能的问题" class="headerlink" title="可能的问题"></a>可能的问题</h2><ol>
-<li>人口扎堆在大城市，对应的数据分区更容易被击中，称为热键（如果有很多人用的话）</li>
-<li>cell id 的发送方（比如网页前端）和接收方（比如服务器后端）对于搜索范围的确定可能有偏差，因为前端标示距离的算法和后端使用的 s2 geometry 计算距离的算法可能不一样；而且使用较模糊的 cell id（level 较低的 cell），本来就难以保证前后端中心点一致。</li>
+<li>人口扎堆在大城市，对应的数据分区更容易被击中，成为热键（如果有很多人用的话）</li>
+<li><p>cell id 的发送方（比如网页前端）和接收方（比如服务器后端）对于搜索范围的确定可能有偏差，因为前端标示距离的算法和后端使用的 s2 geometry 计算距离的算法可能不一样；而且使用较模糊的 cell id（level 较低的 cell），本来就难以保证前后端中心点一致</p>
+</li>
+<li><p>计算覆盖区域可能比较耗时，需要更长等待时间</p>
+</li>
 </ol>
 <p>最后，s2 geometry 连接各地理分区所用的空间填充曲线很有意思，让人怀疑这个世界到底是什么样子。</p>
 <blockquote id="fn_1">
@@ -528,6 +533,9 @@
 </blockquote>
 <blockquote id="fn_4">
 <sup>4</sup>. Earth Fact Sheet. (2020). Retrieved April 11, 2020, from Nasa.gov website: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html‌" target="_blank" rel="noopener">https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. S2 Cells. (2020). Retrieved April 12, 2020, from S2Geometry website: <a href="https://s2geometry.io/devguide/s2cell_hierarchy#approximating-regions‌" target="_blank" rel="noopener">https://s2geometry.io/devguide/s2cell_hierarchy#approximating-regions‌</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
 </blockquote>
 
       
@@ -576,6 +584,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/12/what-happens-when-a-lambda-function-is-invoked/" rel="prev" title="一次 AWS Lambda 调用的过程中发生了什么">
+                一次 AWS Lambda 调用的过程中发生了什么 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -645,7 +657,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-count">29</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -726,7 +738,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">31</span>
+                      
+                    
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
