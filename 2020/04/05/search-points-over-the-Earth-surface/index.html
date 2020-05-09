@@ -126,7 +126,7 @@
 <meta property="og:image" content="https://s2geometry.io/devguide/img/s2curve-small.gif">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Spherical_cap_diagram.tiff/lossless-page1-220px-Spherical_cap_diagram.tiff.png">
 <meta property="og:image" content="https://www.sining.io/images/s2-cells-convering-a-cap.png">
-<meta property="og:updated_time" content="2020-04-12T05:07:02.437Z">
+<meta property="og:updated_time" content="2020-04-28T08:02:59.381Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搜索地球表面上的点（工程）">
 <meta name="twitter:description" content="为了找到自己的位置，我们需要将全世界编码">
@@ -401,7 +401,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-04-12 13:07:02" itemprop="dateModified" datetime="2020-04-12T13:07:02+08:00">2020-04-12</time>
+                <time title="Modified: 2020-04-28 16:02:59" itemprop="dateModified" datetime="2020-04-28T16:02:59+08:00">2020-04-28</time>
               
             
           </span>
@@ -503,7 +503,7 @@
 <p>第三步，计算搜索范围 region 覆盖了哪些地理分区（cells），因为数据分区是根据地理分区制定的，只有得到了地理分区，我们才能知道候选点存在哪个数据分区。</p>
 <p><img src="/images/s2-cells-convering-a-cap.png" alt></p>
 <p><small>图片使用 <a href="https://s2.sidewalklabs.com/regioncoverer/?center=39.952504%2C-243.644092&amp;zoom=11&amp;cells=35f049555%2C35f04bf%2C35f04d%2C35f04f%2C35f054%2C35f1aac%2C35f1ab4%2C35f1abc%2C35f1ad%2C35f1b3" target="_blank" rel="noopener">s2.sidewalklabs.com</a> 制作</small></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rc := &amp;s2.RegionCoverer&#123;MinLevel: <span class="number">5</span>, MaxLevel: <span class="number">20</span>, MaxCells: <span class="number">8</span>&#125;</span><br><span class="line">covering := &amp;rc.Covering(region)</span><br><span class="line">covering.Normalize()</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rc := &amp;s2.RegionCoverer&#123;MinLevel: <span class="number">5</span>, MaxLevel: <span class="number">20</span>, MaxCells: <span class="number">8</span>&#125;</span><br><span class="line">covering := rc.Covering(region)</span><br><span class="line">covering.Normalize()</span><br></pre></td></tr></table></figure>
 <p>其中，</p>
 <ol>
 <li>MaxLevel 代表最小的 cell，即覆盖区域精细到什么程度，如果数值太大，可能会返回一些细小的 cell；</li>
@@ -587,10 +587,6 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/04/12/what-happens-when-a-lambda-function-is-invoked/" rel="prev" title="一次 AWS Lambda 调用的过程中发生了什么">
-                一次 AWS Lambda 调用的过程中发生了什么 <i class="fa fa-chevron-right"></i>
-              </a>
-            
           </div>
         </div>
       
@@ -659,7 +655,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">28</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
