@@ -114,27 +114,25 @@
 
 
 
-  <meta name="description" content="讨论 3 个概念">
-<meta name="keywords" content="语言,递弱代偿,概念">
+  <meta name="description" content="如果不出问题，你还以为我不存在呢？">
+<meta name="keywords" content="编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="什么是绝对？什么是相对？什么是辩证？">
-<meta property="og:url" content="https://www.sining.io/2019/04/09/what-is-absolute-what-is-relative/index.html">
+<meta property="og:title" content="记一次启动网卡的过程">
+<meta property="og:url" content="https://www.sining.io/2020/05/10/a-little-thing-called-turning-up-network-card/index.html">
 <meta property="og:site_name" content="sining.io">
-<meta property="og:description" content="讨论 3 个概念">
+<meta property="og:description" content="如果不出问题，你还以为我不存在呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1g1yzu5e1j9j313m0j641p.jpg">
-<meta property="og:updated_time" content="2019-10-17T12:31:12.927Z">
+<meta property="og:updated_time" content="2020-05-10T11:26:37.501Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="什么是绝对？什么是相对？什么是辩证？">
-<meta name="twitter:description" content="讨论 3 个概念">
-<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/006tNc79ly1g1yzu5e1j9j313m0j641p.jpg">
+<meta name="twitter:title" content="记一次启动网卡的过程">
+<meta name="twitter:description" content="如果不出问题，你还以为我不存在呢？">
 
 
 
 
 
 
-  <link rel="canonical" href="https://www.sining.io/2019/04/09/what-is-absolute-what-is-relative/">
+  <link rel="canonical" href="https://www.sining.io/2020/05/10/a-little-thing-called-turning-up-network-card/">
 
 
 
@@ -144,7 +142,7 @@
   };
 </script>
 
-  <title>什么是绝对？什么是相对？什么是辩证？ | sining.io</title>
+  <title>记一次启动网卡的过程 | sining.io</title>
   
 
 
@@ -339,7 +337,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/04/09/what-is-absolute-what-is-relative/">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/05/10/a-little-thing-called-turning-up-network-card/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sining Liu">
@@ -356,7 +354,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">什么是绝对？什么是相对？什么是辩证？
+          <h2 class="post-title" itemprop="name headline">记一次启动网卡的过程
               
             
           </h2>
@@ -381,24 +379,12 @@
                 
               
 
-              <time title="Created: 2019-04-09 21:09:34" itemprop="dateCreated datePublished" datetime="2019-04-09T21:09:34+08:00">2019-04-09</time>
+              <time title="Created: 2020-05-10 14:01:58 / Modified: 19:26:37" itemprop="dateCreated datePublished" datetime="2020-05-10T14:01:58+08:00">2020-05-10</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">Edited on</span>
-                
-                <time title="Modified: 2019-10-17 20:31:12" itemprop="dateModified" datetime="2019-10-17T20:31:12+08:00">2019-10-17</time>
               
             
           </span>
@@ -417,7 +403,7 @@
           
 
           
-              <div class="post-description">讨论 3 个概念</div>
+              <div class="post-description">如果不出问题，你还以为我不存在呢？</div>
           
 
         </div>
@@ -433,114 +419,51 @@
       
 
       
-        <p>很多时候，词汇可以看成是其背后之概念的一个编码<br>（参考<a href="https://en.wikipedia.org/wiki/Shannon%E2%80%93Weaver_model" target="_blank" rel="noopener">香农-韦弗模型</a>）。<!--因此，可以说，同一个概念在不同的语言中有不同的编码形式（也就是不同词汇形状）。理解一个概念，不必拘泥用从哪个编码体系开始上手理解。--> 理解词汇，更重要的是理解其背后的概念；如果不理解那些概念，乱用这些词汇，会给自己的信息输入、思考和表达带来不可预知的问题。</p>
-<p>因此本文想来讨论三个比较常见的词，和他们对应的概念。（他们有多常见呢？在英语中，absolute（绝对）、relative（相对）比人们喜欢的 dog 出现频率还要高一些哦，见下图）</p>
-<p><img src="https://ws1.sinaimg.cn/large/006tNc79ly1g1yzu5e1j9j313m0j641p.jpg" alt="谷歌词汇查看器中显示的各词汇历年出现频率"></p>
-<h2 id="查词义"><a href="#查词义" class="headerlink" title="查词义"></a>查词义</h2><p>首先说，想讨论这 3 个概念，是因为在一本书里看到一句话：</p>
+        <p>为了弄一台处理定时任务的服务器，我在一台机器上安装了 ubuntu，至于为什么要用 ubuntu 以及所有之前的选择不在本文的讨论范围，但是，可能正是基于之前的一系列选择，使我遇到了“无法上网”的问题。如果之前的选择不同，今天遇到的可能就是不同的问题，或者不会遇到问题也说不定。</p>
+<p>事情正是开始。</p>
+<p>当我安装完 ubuntu 20.04 之后，就需要下载一些软件，但是发现无法上网。所以，问题的第一个表现是无法上网。</p>
+<p>要知道，“无法上网”这件事可能是几百个因素造成的，从网络机房、光缆，到你家的路由器、网线，最后是计算机的硬件、软件，中间有任何一个坏点，都表现为“无法上网”。所以，如果我不能把整个链条重启，那我可能就需要诊断一下问题在哪里，才好解决问题。</p>
+<p>一个直觉产生的诊断问题的方法，就是分段查看目标的工作效果。比如，要判断是路由器之后的问题，还是路由器之前的问题，就看看家里的其他设备是否能上网，如果能，那么大概率说明路由器及其以前的点是好的。如此，问题就锁定在路由器之后的部分：一根网线，一张网卡，一个计算机操作系统。</p>
+<p>网线的问题通过使用一根确保正常的网线排除，因为换成正常的网线后还是“无法上网”，那么大概率说明不是网线的问题。于此同时，发现网线接口的灯指示灯不亮。</p>
+<p>“灯不亮”这个新信息说明什么，可能是网卡坏了，或者没有启动，或者是我不知道的问题。因为我对 ubuntu 及其管理硬件的方式很不熟悉，所以我并不知道怎么诊断网卡或者操作系统的问题。于是，基本上就处于盲目操作的状态，其中一种常见的盲目操作，就是重启。然而，重启过程中又出现了新的信息，网线接口的指示灯亮了一下。</p>
+<p>“亮了一下”可以表示很多信息，可能是你希望的那种，又或者不是。但至少说明网卡是可以通电的。于是猜测问题不是网卡坏了，更不是没有网卡。当然，这只是猜，但有的可猜，可能比抛硬币式地乱猜好一点。</p>
+<p>在上面的猜测下，就开始搜索如何解决 ubuntu 无法上网的问题，因为如果不是网卡本身的问题，那么以我的认知，就剩操作系统的部分可能有问题了。当然，操作系统的问题又是一个很宽泛的概念。基于我对软件系统的大致理解，软件的组合、组成大致都是栈型结构，或者说层累结构，就是一层调用一层，高级程序调用低级程序、低级程序调用机器码、机器码产生物理信号，中间任何一层出现异常都可能在用户界面中表现为问题。因为不知道是哪一层的问题，所以在最开始搜索中，我用的都是最宽泛的关键词，比如：</p>
+<ol>
+<li><code>ubuntu configure network</code>，但返回的结果是告诉我如何设置静态 ip 的。然而这些搜索并不是没有用，因为其中包含检查 ip 的内容：<code>ip addr</code>。我在这台机器上第一次看到了它的 ip 地址，至少 127.0.0.1 和相应的 ipv6 值，这个意思应该是说机器上只有本机的网络，没有链接到路由器的网络。这也算是新信息，对我后面的选择可能已经产生了潜移默化的影响。</li>
+<li><code>ubuntu find network card</code>，这个搜索的意思是确定 ubuntu 知道这台机器上有网卡，而不是相反。如果他不知道有网卡，则首先需要让 ubuntu 发现网卡，安装网卡驱动才有后续诊断或操作可言。查到指令 <a href="https://askubuntu.com/questions/425859/how-can-i-list-installed-network-cards-using-terminal" target="_blank" rel="noopener"><code>lspci</code></a>，且结果返回了一个硬件信息，这说明 ubuntu 知道这台机器上有网卡。那么操作系统和网卡硬件链接的部分大概可以视为没有问题。于是进一步缩小诊断范围。</li>
+</ol>
+<p>在上面搜索的基础上，我已经获得了一些新信息，相对更有能力把问题描述地更具体：</p>
+<ol>
+<li><code>ubuntu not detecting wired connection</code>，目的是排除之前搜索结果中出现的 wireless/wifi 相关的搜索结果。这个时候，很多 stack overflow 的答案指向了一个文件 /etc/network/interfaces，但是我的操作系统中并没有这个文件。是需要我自己创建呢，还是需要调用什么程序来生成这个文件呢？我不知道，但是有进一步的疑问，就可以做进一步的搜索。</li>
+<li><code>/etc/network/interfaces</code>，也即直接搜索上文提到的这个文件名，又出现了新信息，<a href="https://linuxconfig.org/how-to-switch-back-networking-to-etc-network-interfaces-on-ubuntu-20-04-focal-fossa-linux" target="_blank" rel="noopener">据说</a> <code>interfaces</code> 文件是之前版本的 ubuntu 管理网络资源的方式，于是我就没有再多研究这个配置文件的作用，而是更近一步确定 20.04 版本上如何处理操作系统能发现网卡，但是好像没有使用网卡的问题（此时我还不知道这种情况叫做“网卡没有启用/启动”）</li>
+<li><code>cloudinit network interfaces</code>，因为据说 cloudinit 是 ubuntu 20 管理网络资源的方式，我也在操作系统的启动日志中看到过 cloud init 这个名词，虽然当时一点概念都没有。不过我并没有深究 cloud init 的作用，因为太多不熟悉的概念，想先看看有没有其他路可走</li>
+<li><code>ubuntu 20 not detecting wired connection</code>，很明显，我是对上面的搜索增加了条件，可能因为 ubuntu 20 的资料还很少，我搜到了几个临近版本上出现的类似问题，其中出现了一个查询指令 <a href="https://askubuntu.com/questions/1049302/wired-ethernet-not-working-ubuntu-18-04" target="_blank" rel="noopener"><code>sudo lshw -C network</code></a>，指令返回了一个看起来像网络资源的东西，关键是只有一个，而且这一个标题是这样的 <code>*-network DISABLED</code></li>
+</ol>
+<p>更全面的信息是这样的：</p>
 <blockquote>
-<p>只有存在的相对性或相对性的存在是绝对的<sup><a href="#fn_1" id="reffn_1">1</a></sup>。——《物演通论》</p>
+<p>  *-network DISABLED<br>       description: Ethernet interface<br>       product: RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller<br>       vendor: Realtek Semiconductor Co., Ltd.<br>       physical id: 0<br>       bus info: pci@0000:03:00.0<br>       logical name: enp3s0<br>       version: 0c</p>
 </blockquote>
-<p>我并不理解这句话的意思，而造成理解障碍的直接原因应该是有两个概念没搞清楚：绝对和相对。最后，顺便讨论一下”辩证”。</p>
-<p>如果说词汇是概念的编码，那幸运的是，我知道的语言中，都有自己的编码含义对照表——词典。从这里开始探究概念，或许是个不错的开始。（也可以顺便<a href="https://www.sining.io/2019/01/23/cases-on-thinking-both-in-twos-kind-of-language/">借助多种语言来学习一个概念</a>）</p>
-<p>在汉语词典<sup><a href="#fn_2" id="reffn_2">2</a></sup>中，”绝对”的意思是：</p>
-<blockquote>
-<ol>
-<li>没有任何条件的，不受任何限制的（形容词）</li>
-<li>只以某一条件为根据，不管其他条件的（形容词）</li>
-<li>完全；肯定（副词）</li>
-<li>最；极（副词）</li>
-</ol>
-</blockquote>
-<!--词典认为做"完全；肯定"这个意思的时候，都是副词，但其实应该也可以是形容词，比如，"他是一个绝对的笨蛋"，其中"绝对"是修饰"笨蛋"的-->
-<p>英语中也有”绝对”这个概念，其形容词形式是 absolute，剑桥词典<sup><a href="#fn_3" id="reffn_3">3</a></sup>的解释是：</p>
-<blockquote>
-<ol>
-<li>very great: very great or largest degree possible（最大程度的，可对应汉语解释中的”最；极”）</li>
-<li>not changing: true, right or the same in all situations and not depending on anything else（可对应汉语词典中的第 1 个解释）</li>
-<li>certain; not to be doubted（可与”完全；肯定”对应）</li>
-</ol>
-</blockquote>
-<p>除此之外，美国人喜欢用的韦氏词典中<sup><a href="#fn_4" id="reffn_4">4</a></sup>，提供了几个更细节的意思：</p>
-<blockquote>
-<ol>
-<li>pure: free or relatively free from mixture（纯）</li>
-<li>being self-sufficient and free of external reference or relationships（自洽的，不依赖外部解释的）</li>
-</ol>
-</blockquote>
-<p>英语中同一个词的不同词性通常会有变形（相比之下，汉语中没有），absolute 的副词形式是 absolutely，和我们的讨论相关的意思也只有：”completely”。</p>
-<!--因为汉语中的词汇不会跟着词性的改变而变换字形，所以"绝对"本身既可以是形容词，也可以是副词，具体是哪种词要看语境。可对应 absolutely。-->
-<p>对上面的解释进行总结，大概可以认为，”绝对”的含义是：<strong>稳定到没有任何条件限制、不受任何变化影响的一种性质</strong>。（嗯，是性质，而不是状态，因为状态有一种临时的含义，意味着将来可能会变化）</p>
-<p>如果当我们说”绝对”的同时排除时间这个维度，那就是说在当下这个空间中的确定性，即表达”完全；肯定；最；极”。如果加上时间这个维度，那似乎就真的没有任何因素能影响”绝对”了，此时，”绝对”和”永恒”成了同义词。</p>
-<p>再来看”相对”的释义中相关的意思<sup><a href="#fn_2" id="reffn_2">2</a></sup><sup><a href="#fn_5" id="reffn_5">5</a></sup><sup><a href="#fn_6" id="reffn_6">6</a></sup>：</p>
-<blockquote>
-<ol>
-<li>指性质上互相对立（动词）</li>
-<li>依靠一定条件而存在，随着一定条件而变化的（跟”绝对”相对）（形容词）</li>
-<li>not absolute or independently</li>
-<li>if something is relative to something else, it changes accourding to the speed or level or the other thing</li>
-<li>比较的（形容词）</li>
-<li>being judged or measured in comparision with something else</li>
-<li>true to a particular degree when compared with other things</li>
-<li>relevant, pertinent</li>
-<li>if something is relative to a particular subject, it is connected with it</li>
-</ol>
-</blockquote>
-<p>英文中表示”相对”的的词挺多的，比如 against、oppose，都和中文释义 1 更为接近。但我上面选的英文释义来自 relative 这个词，因为爱因斯坦的”相对论”就用了这个词的名词形式，英语中的”相对主义”也和它是同一个词根，所以用 relative 的释义做分析比较合理。但 relative 还有”相应，相关”的含义（释义 8 和 9），似乎也有一些”依存”的味道，但不做主要分析。</p>
-<p>把剩下的概念分组，就有了 2、3、4，表示”<strong>有条件的稳定状态，以及，会受某些变化影响的不稳定状态</strong>“，和绝对做反义词。然后是 5、6、7，都说的是”通过比较而确立的，或者，通过比较才能确立的”，应该说，还是在表达”有条件的稳定状态”。</p>
-<p>因此，我们可以说：</p>
-<ol>
-<li>“绝对”表明稳定的性质</li>
-<li>“相对”表明可以存在、但不稳定的状态（至于存在范围多广、时间多久，是另外一个问题）</li>
-</ol>
-<p>那么问题来了，如果”稳定”之外都是”不稳定”，即 A 和 非A 互斥且互补，那么<strong>绝对（的事物）之外都是相对（的事物）么？</strong></p>
-<p>这个问题有意义么？还是只是词汇组合方式上的问题（常被人戏称为”文字游戏”）？这些都是需要继续思考的问题，以后有机会再讨论。</p>
-<h2 id="辩证是何义"><a href="#辩证是何义" class="headerlink" title="辩证是何义"></a>辩证是何义</h2><p>至少在中国，”辩证”这个概念是被写进课本里的，我记得我在历史和政治课上都学到过。但它究竟是何义，我现在也不是很清楚。</p>
-<p>但有意思的是，我认识的一些长辈挺喜欢拿这个概念来教育人的：”要学会辩证的看待问题”。对此，有 3 点似乎值得讨论：</p>
-<ol>
-<li>如何界定”辩证”的范围？（即，”辩证”的准确定义）</li>
-<li>“辩证”就意味着正确么？</li>
-<li>不”辩证”就意味着错误么？</li>
-</ol>
-<p>在现代汉语词典<sup><a href="#fn_2" id="reffn_2">2</a></sup>中，”辩证”相关的释义有点让人不知所措，但有几个关键的意思反复出现：</p>
-<blockquote>
-<ol>
-<li>事物处在不断的变化和发展之中</li>
-<li>把握事物内部矛盾的发展才能认识客观规律</li>
-</ol>
-</blockquote>
-<p>这些抽象的设定，应该是很难证明也很难证伪的，我自知功力有限，不能当作我们讨论的重点。我只想知道，当人们在说”辩证”或者”辩证法”时，到底在说什么？</p>
-<p>维基百科给出一段的解释<sup><a href="#fn_7" id="reffn_7">7</a></sup>倒是可操作性很强（只可惜没有指明出处）：</p>
-<blockquote>
-<p>Dialectic comprises three stages of development: first, a thesis or statement of an idea, which gives rise to a second step, a reaction or antithesis that contradicts or negates the thesis, and third, the synthesis, a statement through which the differences between the two points are resolved.</p>
-<p>辩证法的使用包含3个阶段：一，先产生关于事物的一个判断，二，再提出一个相反的意见，最后，整合矛盾的双方形成一个化解矛盾的判断</p>
-</blockquote>
-<p>若是这般说法，那所谓”辩证”，就是先产生一个观点，并指认为”矛”，再发现一个相反的看法做”盾”，最后把握矛与盾的关系，全面的看待问题。</p>
-<p>感觉很有道理，但也有一些问题值得提出：</p>
-<ol>
-<li>什么是对立？不同于”矛”的就都是”盾”么，或者说，不同点是否都可以认为是对立点？</li>
-<li>分析矛盾两方面的关系，是否是一个”双因素分析”的过程，多因素分析的方法相比之是否更先进？</li>
-</ol>
-<p>然而，这些问题我都无法给出讨论。但我猜，人们在日常生活中提到”辩证”时，可能是想提醒别人全面的看待问题吧。</p>
+<p>虽然 DISABLED 可能代表很多信息，但是这里应该很容易让人猜想，这代表网卡被禁用了。我觉得值得在这个方向上尝试解决问题。于是搜索方向转向了：<code>ubuntu ethernet interface disabled</code>。发现了几个启动命令<sup><a href="#fn_1" id="reffn_1">1</a></sup><sup><a href="#fn_2" id="reffn_2">2</a></sup>：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ip link <span class="built_in">set</span> up <span class="variable">$&#123;logical_name&#125;</span> <span class="comment"># 好像使得网线接口上的一盏指示灯亮起</span></span><br><span class="line">sudo dhclient <span class="variable">$&#123;logical_name&#125;</span> <span class="comment"># 明确观测到网线接口上的 2 盏灯都亮了</span></span><br></pre></td></tr></table></figure>
+<p>此时已经可以访问互联网上的服务了。但是，凭借直觉和一些人的回答<sup><a href="#fn_3" id="reffn_3">3</a></sup>，在终端直接输入的指令可能并没有改变某些配置文件，如果重启操作系统，网卡可能依然是禁用状态，所以我可能需要改变某些配置文件。关于配置文件，有人建议改变上文提到的 /etc/network/interfaces/<sup><a href="#fn_4" id="reffn_4">4</a></sup>。因为版本的区别，我可能不会采用这种方法。有人建议修改 NetworkManager<sup><a href="#fn_3" id="reffn_3">3</a></sup>，但最后我采用了更改 NetPlan 的方式<sup><a href="#fn_4" id="reffn_4">4</a></sup>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">network:</span></span><br><span class="line"><span class="attr">  version:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  renderer:</span> <span class="string">networkd</span></span><br><span class="line"><span class="attr">  ethernets:</span></span><br><span class="line"><span class="attr">    LOGICAL_NAME:</span></span><br><span class="line"><span class="attr">      dhcp4:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>其实我不太清楚这段配置的含义，大致猜测是启动了 LOGICAL_NAME 所代表的网卡，并且使用 dhcp 上网方式。然后重启系统，依然可以连接公网。</p>
+<p>到此，我的探索就结束了。其实不应该这样，把效果的达成当作求知的终点，可能是限制了求知的自由和范围。但可能还有其他方面的事情更值得我深入探索，所以这里也就暂时放下了。</p>
+<!--最后，能总结一点什么呢？-->
+<!-- 1. 如果我是持进步论观点的人，我可能会说只要一点点进步，问题终将会被解决。-->
+<!-- 2. 如果我是消极处世的人，我可能会说这些问题都是“彼来则我与之来，彼往则我与之往”。-->
+<!-- 感觉不论我说什么，都只不过是我看到的世界。我也不知道如何突破自己总结点什么，就先不总结了吧。当然基于同样的原因，有些人会选择总结点什么，因为他们正是要表达自己看到的世界，或者说不定总结之后就能突破自己了。-->
 <blockquote id="fn_1">
-<sup>1</sup>. 王东岳. (2015). 第四章. In 物演通论 (pp. 8): 中信出版社.<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+<sup>1</sup>. Ethernet adapter was disable on Ubuntu 17.04. (2017, April 19). Ethernet adapter was disable on Ubuntu 17.04. Retrieved May 10, 2020, from Ask Ubuntu website: <a href="https://askubuntu.com/questions/906636/ethernet-adapter-was-disable-on-ubuntu-17-04‌" target="_blank" rel="noopener">https://askubuntu.com/questions/906636/ethernet-adapter-was-disable-on-ubuntu-17-04‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_2">
-<sup>2</sup>. 中国社会科学院语言研究所词典编辑室. (Ed.) (2016) 现代汉语词典  (第七版 ed.). 商务印书馆.<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+<sup>2</sup>. Ethernet adapter was disable on Ubuntu 17.04. (2017, April 19). Ethernet adapter was disable on Ubuntu 17.04. Retrieved May 10, 2020, from Ask Ubuntu website: <a href="https://askubuntu.com/questions/906636/ethernet-adapter-was-disable-on-ubuntu-17-04‌" target="_blank" rel="noopener">https://askubuntu.com/questions/906636/ethernet-adapter-was-disable-on-ubuntu-17-04‌</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_3">
-<sup>3</sup>. ABSOLUTE | meaning in the Cambridge English Dictionary. (2019). Retrieved April 9, 2019, from Cambridge.org website: <a href="https://dictionary.cambridge.org/dictionary/english/absolute‌" target="_blank" rel="noopener">https://dictionary.cambridge.org/dictionary/english/absolute‌</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+<sup>3</sup>. Ubuntu, in. (2017, April 25). Ethernet Network not showing or connecting in Ubuntu 17.04. Retrieved May 10, 2020, from Ask Ubuntu website: <a href="https://askubuntu.com/questions/908614/ethernet-network-not-showing-or-connecting-in-ubuntu-17-04/909442#909442" target="_blank" rel="noopener">https://askubuntu.com/questions/908614/ethernet-network-not-showing-or-connecting-in-ubuntu-17-04/909442#909442</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_4">
-<sup>4</sup>. Definition of ABSOLUTE. (2019). Retrieved April 11, 2019, from Merriam-webster.com website: <a href="https://www.merriam-webster.com/dictionary/absolute‌" target="_blank" rel="noopener">https://www.merriam-webster.com/dictionary/absolute‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_5">
-<sup>5</sup>. RELATIVE | meaning in the Cambridge English Dictionary. (2019). Retrieved April 12, 2019, from Cambridge.org website: <a href="https://dictionary.cambridge.org/dictionary/english/relative‌" target="_blank" rel="noopener">https://dictionary.cambridge.org/dictionary/english/relative‌</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_6">
-<sup>6</sup>. Definition of RELATIVE. (2019). Retrieved April 12, 2019, from Merriam-webster.com website: <a href="https://www.merriam-webster.com/dictionary/relative‌" target="_blank" rel="noopener">https://www.merriam-webster.com/dictionary/relative‌</a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
-</blockquote>
-<blockquote id="fn_7">
-<sup>7</sup>. Wikipedia Contributors. (2019, March 28). Dialectic. Retrieved April 13, 2019, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Dialectic‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Dialectic‌</a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+<sup>4</sup>. Wired Ethernet not working Ubuntu 18.04. (2018, June 24). Wired Ethernet not working Ubuntu 18.04. Retrieved May 10, 2020, from Ask Ubuntu website: <a href="https://askubuntu.com/questions/1049302/wired-ethernet-not-working-ubuntu-18-04‌" target="_blank" rel="noopener">https://askubuntu.com/questions/1049302/wired-ethernet-not-working-ubuntu-18-04‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
 </blockquote>
 
       
@@ -565,11 +488,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/语言/" rel="tag"># 语言</a>
-          
-            <a href="/tags/递弱代偿/" rel="tag"># 递弱代偿</a>
-          
-            <a href="/tags/概念/" rel="tag"># 概念</a>
+            <a href="/tags/编程/" rel="tag"># 编程</a>
           
         </div>
       
@@ -582,8 +501,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/29/our-society-is-differentiating/" rel="next" title="我们都要面对一种趋势：分化">
-                <i class="fa fa-chevron-left"></i> 我们都要面对一种趋势：分化
+              <a href="/2020/04/05/search-points-over-the-Earth-surface/" rel="next" title="搜索地球表面上的点（工程）">
+                <i class="fa fa-chevron-left"></i> 搜索地球表面上的点（工程）
               </a>
             
           </div>
@@ -591,10 +510,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/04/27/multi-factor-analysis-is-not-that-believable/" rel="prev" title="多因素分析，并没有我们以为的那样可信">
-                多因素分析，并没有我们以为的那样可信 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -974,9 +889,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://www.sining.io/2019/04/09/what-is-absolute-what-is-relative/';
-        this.page.identifier = '2019/04/09/what-is-absolute-what-is-relative/';
-        this.page.title = '什么是绝对？什么是相对？什么是辩证？';
+        this.page.url = 'https://www.sining.io/2020/05/10/a-little-thing-called-turning-up-network-card/';
+        this.page.identifier = '2020/05/10/a-little-thing-called-turning-up-network-card/';
+        this.page.title = '记一次启动网卡的过程';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
