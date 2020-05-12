@@ -122,7 +122,7 @@
 <meta property="og:site_name" content="sining.io">
 <meta property="og:description" content="如果不出问题，你还以为我不存在呢？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-10T11:26:37.501Z">
+<meta property="og:updated_time" content="2020-05-12T12:57:41.789Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次启动网卡的过程">
 <meta name="twitter:description" content="如果不出问题，你还以为我不存在呢？">
@@ -379,12 +379,24 @@
                 
               
 
-              <time title="Created: 2020-05-10 14:01:58 / Modified: 19:26:37" itemprop="dateCreated datePublished" datetime="2020-05-10T14:01:58+08:00">2020-05-10</time>
+              <time title="Created: 2020-05-10 14:01:58" itemprop="dateCreated datePublished" datetime="2020-05-10T14:01:58+08:00">2020-05-10</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-05-12 20:57:41" itemprop="dateModified" datetime="2020-05-12T20:57:41+08:00">2020-05-12</time>
               
             
           </span>
@@ -448,7 +460,8 @@
 <p>此时已经可以访问互联网上的服务了。但是，凭借直觉和一些人的回答<sup><a href="#fn_3" id="reffn_3">3</a></sup>，在终端直接输入的指令可能并没有改变某些配置文件，如果重启操作系统，网卡可能依然是禁用状态，所以我可能需要改变某些配置文件。关于配置文件，有人建议改变上文提到的 /etc/network/interfaces/<sup><a href="#fn_4" id="reffn_4">4</a></sup>。因为版本的区别，我可能不会采用这种方法。有人建议修改 NetworkManager<sup><a href="#fn_3" id="reffn_3">3</a></sup>，但最后我采用了更改 NetPlan 的方式<sup><a href="#fn_4" id="reffn_4">4</a></sup>：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">network:</span></span><br><span class="line"><span class="attr">  version:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">  renderer:</span> <span class="string">networkd</span></span><br><span class="line"><span class="attr">  ethernets:</span></span><br><span class="line"><span class="attr">    LOGICAL_NAME:</span></span><br><span class="line"><span class="attr">      dhcp4:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 <p>其实我不太清楚这段配置的含义，大致猜测是启动了 LOGICAL_NAME 所代表的网卡，并且使用 dhcp 上网方式。然后重启系统，依然可以连接公网。</p>
-<p>到此，我的探索就结束了。其实不应该这样，把效果的达成当作求知的终点，可能是限制了求知的自由和范围。但可能还有其他方面的事情更值得我深入探索，所以这里也就暂时放下了。</p>
+<p>然后，回过头再来看，我在探索过程中所做的猜想，虽然最终导致了期望效果的达成，但他们就是正确的么？很可能只是巧合，即俗话所说之“瞎猫死耗子”。<!--多说一句，这和中国古人视万物为阴阳来推测养生之道可能有点类似，即如果有效果，可能也是巧合而已。我不是要嘲笑古人，只是想说现代人可能也逃不掉某些思想模式（当然，更多的现代人比我聪明）。而且，如果人类的历史继续展开，我们也终将成为古人，你以为未来的子孙会觉得 21 世纪的祖先掌握了真理么？--></p>
+<p>不过，到此，我的探索就结束了。其实不应该这样，把效果的达成当作求知的终点，可能是限制了求知的自由和范围。但可能还有其他方面的事情更值得我深入探索，所以这里也就暂时放下了。</p>
 <!--最后，能总结一点什么呢？-->
 <!-- 1. 如果我是持进步论观点的人，我可能会说只要一点点进步，问题终将会被解决。-->
 <!-- 2. 如果我是消极处世的人，我可能会说这些问题都是“彼来则我与之来，彼往则我与之往”。-->
