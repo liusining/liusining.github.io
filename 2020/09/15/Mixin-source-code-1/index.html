@@ -114,19 +114,19 @@
 
 
 
-  <meta name="description" content="听别人信心满满的宣讲，不如自己安安静静地看代码">
+  <meta name="description" content="听别人信心满满的宣讲，也许不如自己安安静静地看代码">
 <meta name="keywords" content="学习, 编程, 语言, 递弱代偿, 物演通论">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mixin 源代码分析①：软件服务架构">
 <meta property="og:url" content="https://www.sining.io/2020/09/15/Mixin-source-code-1/index.html">
 <meta property="og:site_name" content="sining.io">
-<meta property="og:description" content="听别人信心满满的宣讲，不如自己安安静静地看代码">
+<meta property="og:description" content="听别人信心满满的宣讲，也许不如自己安安静静地看代码">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.sining.io/images/Mixin-Software-Architecture-Simplified.jpg">
-<meta property="og:updated_time" content="2020-09-16T04:54:02.155Z">
+<meta property="og:updated_time" content="2020-09-16T06:48:19.528Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mixin 源代码分析①：软件服务架构">
-<meta name="twitter:description" content="听别人信心满满的宣讲，不如自己安安静静地看代码">
+<meta name="twitter:description" content="听别人信心满满的宣讲，也许不如自己安安静静地看代码">
 <meta name="twitter:image" content="https://www.sining.io/images/Mixin-Software-Architecture-Simplified.jpg">
 
 
@@ -398,7 +398,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-09-16 12:54:02" itemprop="dateModified" datetime="2020-09-16T12:54:02+08:00">2020-09-16</time>
+                <time title="Modified: 2020-09-16 14:48:19" itemprop="dateModified" datetime="2020-09-16T14:48:19+08:00">2020-09-16</time>
               
             
           </span>
@@ -417,7 +417,7 @@
           
 
           
-              <div class="post-description">听别人信心满满的宣讲，不如自己安安静静地看代码</div>
+              <div class="post-description">听别人信心满满的宣讲，也许不如自己安安静静地看代码</div>
           
 
         </div>
@@ -438,10 +438,14 @@
 <p>不过，Mixin 的代码在不断更新，所以请注意文章发布的时间。如果有与现状不符的地方，还请自行研究，但总体上应该还是能帮你了解 Mixin。 </p>
 <h2 id="服务架构概述"><a href="#服务架构概述" class="headerlink" title="服务架构概述"></a>服务架构概述</h2><p><img src="/images/Mixin-Software-Architecture-Simplified.jpg" alt></p>
 <p>我们先对 Mixin 的整体软件架构做一个简要（所以可能不精确）的描述。</p>
-<p>Mixin 的核心部分是 Mixin Network，它目前包括 Mixin Domains 和 Mixin Kernals。Domains 控制或通过多签地址控制比特币等各种资产，作为数据出入 Mixin Network 的“关口”。Kernals 就是 Mixin Network 上的全节点，他们基于 Domain 所提供的原始数据，记录用户在 Mixin Network 内部产生的“交易”。</p>
+<p>Mixin 的核心部分是 Mixin Network，它目前包括 Mixin Domains 和 Mixin Kernals。Domains 控制或通过多签地址控制比特币等各种资产，作为数据出入 Mixin Network 的“关口”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。Kernals 就是 Mixin Network 上的全节点，他们基于 Domain 所提供的原始数据，记录用户在 Mixin Network 内部产生的“交易”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
 <p>但对于 Mixin Messenger 的用户和其上的 Bot 开发者来说，这些软件服务单元是不可见的，因为他们被 Mixin 官方服务器封装起来了。目前大多数情况下，我们都是调用 Mixin 官方的 API 来间接使用 Mixin Network。</p>
-<p>同时，Mixin Messenger 还有社交功能，他们也由 Mixin 官方服务器提供服务，所以 Mixin 肯定还有很多常规的网络服务单元，比如各种数据库、CDN 之类的。</p>
+<p>同时，Mixin Messenger 还有社交功能，他们也由 Mixin 官方服务器提供服务，所以 Mixin 肯定还有很多常规的、非区块链的网络服务单元，比如各种数据库、CDN 之类的。</p>
 <p>Mixin 官方服务器上的代码没有开源，但为了完成对 Mixin Kernals 的调用，我们可以大致猜测 Mixin 官方服务器上做了哪些事。因此我们接下来几篇研究 Mixin Kernals 的调用过程和原理。</p>
+<p></p>
+<blockquote id="fn_1">
+<sup>1</sup>. <em>Mixin Network</em>. (2018). Retrieved from <a href="https://mixin.one/assets/Mixin-Draft-2018-07-01.pdf‌" target="_blank" rel="noopener">https://mixin.one/assets/Mixin-Draft-2018-07-01.pdf‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
 
       
     </div>

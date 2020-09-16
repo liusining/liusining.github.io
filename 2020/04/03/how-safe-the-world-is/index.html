@@ -117,14 +117,14 @@
   <meta name="description" content="这是“有选择”和“没选择”的区别">
 <meta name="keywords" content="安全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="这一切真的安全么">
+<meta property="og:title" content="这一切真的安全么——一个开发项目引发的思考">
 <meta property="og:url" content="https://www.sining.io/2020/04/03/how-safe-the-world-is/index.html">
 <meta property="og:site_name" content="sining.io">
 <meta property="og:description" content="这是“有选择”和“没选择”的区别">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-04-12T04:09:54.206Z">
+<meta property="og:updated_time" content="2020-09-16T06:38:43.230Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="这一切真的安全么">
+<meta name="twitter:title" content="这一切真的安全么——一个开发项目引发的思考">
 <meta name="twitter:description" content="这是“有选择”和“没选择”的区别">
 
 
@@ -142,7 +142,7 @@
   };
 </script>
 
-  <title>这一切真的安全么 | sining.io</title>
+  <title>这一切真的安全么——一个开发项目引发的思考 | sining.io</title>
   
 
 
@@ -354,7 +354,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">这一切真的安全么
+          <h2 class="post-title" itemprop="name headline">这一切真的安全么——一个开发项目引发的思考
               
             
           </h2>
@@ -396,7 +396,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-04-12 12:09:54" itemprop="dateModified" datetime="2020-04-12T12:09:54+08:00">2020-04-12</time>
+                <time title="Modified: 2020-09-16 14:38:43" itemprop="dateModified" datetime="2020-09-16T14:38:43+08:00">2020-09-16</time>
               
             
           </span>
@@ -435,14 +435,13 @@
 <p>首先说，这世界上可能没有绝对安全，有的话也不属于人类。即使你躲在家中，也面临各种小概率灾难的威胁：大地震，大洪水，陨石撞击，火山喷发。很多人认为小概率事件不可能发生，但事实却是，他们不知道会不会发生。“不知道”不等不“不会”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
 <p>很多人在 2019 年都觉得不会再发生非典那样严重的疫情。确实，结果 2020 年来了个更严重的疫情。我们不知道的事情，不代表不存在。</p>
 <p>没有了绝对安全，就只剩下相对安全了。“相对”的意思是“依靠一定条件而存在”（《现代汉语词典》）。我们可以大致可以猜想，如果某种安全依赖的条件特别多，抑或特别苛刻，那么其稳定性就会大打折扣。若真如此，人类生存的安全性就很让人“焦虑”，因为<a href="/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/">人类的依存需求很多</a>，甚至有可能是自然界中最多的。</p>
-<p>回到一个互联网小工具上来，它真的安全么？这需要看他依赖的条件：</p>
+<p>回到一个互联网小工具上来，它真的安全么？这需要看他依赖的条件，其中至少包含以下几点：</p>
 <ol>
-<li>访问国际互联网的通路</li>
-<li>核心分布式网络的稳定性</li>
-<li>云计算服务商（及其硬件条件、运营能力等诸多方面）</li>
-<li>开发人员（及其工作设备、开发工具、知识水平等诸多方面）</li>
+<li>访问国际互联网的通路，包括 DNS，CDN 等</li>
+<li>云计算服务商的软硬件，包括设施维护、灾备处理等</li>
+<li>开发人员，包括其工作设备、开发工具、知识水平等诸多方面</li>
 </ol>
-<p>这中间任何环节出现问题，安全都将受到考验。比如云计算服务商意外删除了数据怎么办（这样的事情不是没有发生过），开发人员的工作设备被入侵了怎么办（开发人员也无法搞清设备的每一个细节）。所以很多选择，并不是基于深刻理解，而是基于经验、品牌等，觉得那样没问题。所以安全就变成了，你依赖我，我依赖他们，他们依赖更多他们，脆弱性很可能就在这个链条中不断积累。</p>
+<p>这中间任何环节出现问题，安全都将受到考验。比如云服务商意外删除了数据怎么办（<a href="https://about.gitlab.com/blog/2017/02/01/gitlab-dot-com-database-incident/" target="_blank" rel="noopener">这种事不是没有发生过</a>），开发人员的工作设备被入侵了怎么办（开发人员也无法搞清设备的每一个细节）。所以很多选择，并不是基于深刻理解，而是基于经验、品牌等，觉得那样没问题。所以安全就变成了，你依赖我，我依赖他们，他们依赖更多他们，脆弱性很可能就在这个链条中不断积累。</p>
 <p>如果上面的说明让你觉得我开发的工具很不安全，那我得说，你接触到的网站都差不多，我开发的并没有更不安全。可能大公司有实力考虑更小的意外事故，所以他们自建机房（不使用云服务商）、监控工作人员的设备，但如果他们真的那么安全，每隔一段时间就会出现的数据泄露是怎么来的。所以，事实可能是，他们并没有更安全，相反，如果他们不花大价钱做更多防护，就会大大地不安全，他们必须付出更大的成本。这是“有选择”和“没选择”的区别。<small>当然，小公司也可能泄露数据，但是因为没人关注或者干脆公司自己都不知道，所以知道的人少。但大公司更容易成为“靶子”应该是确定的。</small></p>
 <p>并且，从某种程度上来说，个人开发可能还具有某些优势：接触敏感数据的人少。大公司里都是打工的人，你并不能指望每个人都对你的数据安全上心（肯定有兢兢业业的人，不误伤）。而且他们都是有限责任公司，只要不违法，很多责任是在“有限”之外的。这鼓励了人们创新<sup><a href="#fn_2" id="reffn_2">2</a></sup>，因为不用承担更多的责任，但有时会给别人留下了隐患。有人可能会反驳说，参与公司投资、购买公司产品，都是个人做出的选择，“自己为自己的选择负责”；这在今天的背景下听起来没有问题，甚至还站上了某些道德高地，但当社会中因此出现越来越多的 inverse hero<sup><a href="#fn_1" id="reffn_1">1</a></sup>、占据不对称优势的人，有些事情可能会发生改变。这里谨引用章北海在“自然选择号”上留下的一句话<sup><a href="#fn_3" id="reffn_3">3</a></sup>：</p>
 <blockquote>
@@ -923,7 +922,7 @@
       var disqus_config = function () {
         this.page.url = 'https://www.sining.io/2020/04/03/how-safe-the-world-is/';
         this.page.identifier = '2020/04/03/how-safe-the-world-is/';
-        this.page.title = '这一切真的安全么';
+        this.page.title = '这一切真的安全么——一个开发项目引发的思考';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
