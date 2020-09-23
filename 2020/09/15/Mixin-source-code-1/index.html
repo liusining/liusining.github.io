@@ -115,17 +115,17 @@
 
 
   <meta name="description" content="听别人信心满满的宣讲，也许不如自己安安静静地看代码">
-<meta name="keywords" content="学习, 编程, 语言, 递弱代偿, 物演通论">
+<meta name="keywords" content="编程,源代码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mixin 源代码分析①：软件服务架构">
+<meta property="og:title" content="Mixin 源代码分析一：软件服务架构">
 <meta property="og:url" content="https://www.sining.io/2020/09/15/Mixin-source-code-1/index.html">
 <meta property="og:site_name" content="sining.io">
 <meta property="og:description" content="听别人信心满满的宣讲，也许不如自己安安静静地看代码">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.sining.io/images/Mixin-Software-Architecture-Simplified.jpg">
-<meta property="og:updated_time" content="2020-09-16T06:48:19.528Z">
+<meta property="og:updated_time" content="2020-09-19T13:33:41.902Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mixin 源代码分析①：软件服务架构">
+<meta name="twitter:title" content="Mixin 源代码分析一：软件服务架构">
 <meta name="twitter:description" content="听别人信心满满的宣讲，也许不如自己安安静静地看代码">
 <meta name="twitter:image" content="https://www.sining.io/images/Mixin-Software-Architecture-Simplified.jpg">
 
@@ -144,7 +144,7 @@
   };
 </script>
 
-  <title>Mixin 源代码分析①：软件服务架构 | sining.io</title>
+  <title>Mixin 源代码分析一：软件服务架构 | sining.io</title>
   
 
 
@@ -356,7 +356,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Mixin 源代码分析①：软件服务架构
+          <h2 class="post-title" itemprop="name headline">Mixin 源代码分析一：软件服务架构
               
             
           </h2>
@@ -398,7 +398,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2020-09-16 14:48:19" itemprop="dateModified" datetime="2020-09-16T14:48:19+08:00">2020-09-16</time>
+                <time title="Modified: 2020-09-19 21:33:41" itemprop="dateModified" datetime="2020-09-19T21:33:41+08:00">2020-09-19</time>
               
             
           </span>
@@ -433,18 +433,25 @@
       
 
       
-        <p>创新需要理解底层原理。大多数想创新的人应该会同意这句话。即使无法完全理解，多深入一分，视野也会成倍开拓。</p>
-<p>本系列文章是我看 Mixin 代码的一些积累，希望帮助和我一样的第三方开发者理解其底层工作方式，让自己的视野超越官方 API 文档所定义的调用范式。</p>
+        <p>真正的创新需要理解底层原理。大多数想创新的人应该会同意这句话。即使无法完全理解，多深入一分，视野也会成倍开拓。</p>
+<p>本系列文章是我研究 Mixin 代码的一些积累，希望帮助和我一样的、之前没接触过区块链应用的第三方开发者理解其底层工作方式，让自己的视野超越官方 API 文档所定义的调用范式。</p>
+<p>文章对于非开发者的意义可能在于理解一些词汇的实际意义，比如“节点换届”、“上主网”。</p>
 <p>不过，Mixin 的代码在不断更新，所以请注意文章发布的时间。如果有与现状不符的地方，还请自行研究，但总体上应该还是能帮你了解 Mixin。 </p>
 <h2 id="服务架构概述"><a href="#服务架构概述" class="headerlink" title="服务架构概述"></a>服务架构概述</h2><p><img src="/images/Mixin-Software-Architecture-Simplified.jpg" alt></p>
 <p>我们先对 Mixin 的整体软件架构做一个简要（所以可能不精确）的描述。</p>
-<p>Mixin 的核心部分是 Mixin Network，它目前包括 Mixin Domains 和 Mixin Kernals。Domains 控制或通过多签地址控制比特币等各种资产，作为数据出入 Mixin Network 的“关口”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。Kernals 就是 Mixin Network 上的全节点，他们基于 Domain 所提供的原始数据，记录用户在 Mixin Network 内部产生的“交易”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
-<p>但对于 Mixin Messenger 的用户和其上的 Bot 开发者来说，这些软件服务单元是不可见的，因为他们被 Mixin 官方服务器封装起来了。目前大多数情况下，我们都是调用 Mixin 官方的 API 来间接使用 Mixin Network。</p>
-<p>同时，Mixin Messenger 还有社交功能，他们也由 Mixin 官方服务器提供服务，所以 Mixin 肯定还有很多常规的、非区块链的网络服务单元，比如各种数据库、CDN 之类的。</p>
+<p>Mixin 的核心部分是 Mixin Network，它目前包括 Mixin Domains 和 Mixin Kernals。Domains 控制或通过多签地址控制比特币等各种资产，作为数据出入 Mixin Network 的“关口”<sup><a href="#fn_1" id="reffn_1">1</a></sup><sup><a href="#fn_2" id="reffn_2">2</a></sup>。Kernals 就是 Mixin Network 上的全节点，目前总共有几十个这样的节点<sup><a href="#fn_3" id="reffn_3">3</a></sup>；他们基于 Domain 所提供的原始数据，去中心化地记录用户在 Mixin Network 内部产生的“交易”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
+<p>但对于 Mixin Messenger 的用户和 Bot 开发者来说，上述软件服务单元是不可见的，因为他们被 Mixin 官方服务器封装起来了。目前大多数情况下，我们都是调用 Mixin 官方的 API 来间接使用 Mixin Network。</p>
+<p>同时，Mixin Messenger 还有社交功能，他们也由 Mixin 官方服务器提供服务，所以 Mixin 肯定还有很多常规的、非区块链的网络服务单元，比如各种数据库、CDN 之类的，不再赘述。</p>
 <p>Mixin 官方服务器上的代码没有开源，但为了完成对 Mixin Kernals 的调用，我们可以大致猜测 Mixin 官方服务器上做了哪些事。因此我们接下来几篇研究 Mixin Kernals 的调用过程和原理。</p>
 <p></p>
 <blockquote id="fn_1">
 <sup>1</sup>. <em>Mixin Network</em>. (2018). Retrieved from <a href="https://mixin.one/assets/Mixin-Draft-2018-07-01.pdf‌" target="_blank" rel="noopener">https://mixin.one/assets/Mixin-Draft-2018-07-01.pdf‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. Mixin Network 的资产安全与收益模型 - W3c.Group. (2020). Retrieved September 16, 2020, from W3c.group website: <a href="https://w3c.group/c/1592225120614549‌" target="_blank" rel="noopener">https://w3c.group/c/1592225120614549‌</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. Mixin Bots. (2020). Retrieved September 18, 2020, from Mixinbots.com website: <a href="http://hot-bots.mixinbots.com/tools‌" target="_blank" rel="noopener">http://hot-bots.mixinbots.com/tools‌</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
 </blockquote>
 
       
@@ -467,6 +474,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+            <a href="/tags/源代码/" rel="tag"># 源代码</a>
+          
+        </div>
+      
 
       
       
@@ -476,8 +491,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/06/01/on-fraudulent-bonus-hunters/" rel="next" title="“羊毛党”不是你靠憎恨就能消灭的">
-                <i class="fa fa-chevron-left"></i> “羊毛党”不是你靠憎恨就能消灭的
+              <a href="/2020/05/10/a-little-thing-called-turning-up-network-card/" rel="next" title="记一次启动网卡的过程">
+                <i class="fa fa-chevron-left"></i> 记一次启动网卡的过程
               </a>
             
           </div>
@@ -485,6 +500,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/09/18/Mixin-source-code-2-data-synchronization-between-kernals/" rel="prev" title="Mixin 源代码分析二：节点间数据同步">
+                Mixin 源代码分析二：节点间数据同步 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -643,7 +662,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>
@@ -872,7 +891,7 @@
       var disqus_config = function () {
         this.page.url = 'https://www.sining.io/2020/09/15/Mixin-source-code-1/';
         this.page.identifier = '2020/09/15/Mixin-source-code-1/';
-        this.page.title = 'Mixin 源代码分析①：软件服务架构';
+        this.page.title = 'Mixin 源代码分析一：软件服务架构';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
