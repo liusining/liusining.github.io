@@ -410,7 +410,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   border: 1px solid #ddd;
-  font-size: 14px;
+  font-size: 16px;
   word-break: break-all;
 }
 table>tbody>tr:nth-of-type(odd) {
@@ -506,7 +506,7 @@ pre,
   overflow: auto;
   margin: 20px 0;
   padding: 0;
-  font-size: 14px;
+  font-size: 16px;
   color: #4d4d4c;
   background: #f7f7f7;
   line-height: 1.6;
@@ -522,7 +522,7 @@ code {
   color: #555;
   background: #eee;
   border-radius: 3px;
-  font-size: 14px;
+  font-size: 16px;
 }
 pre {
   padding: 10px;
@@ -954,7 +954,7 @@ pre .javascript .function {
 .btn {
   display: inline-block;
   padding: 0 20px;
-  font-size: 14px;
+  font-size: 16px;
   color: #555;
   background: transparent;
   border: 2px solid #222;
@@ -1211,13 +1211,13 @@ pre .javascript .function {
 }
 @media screen and (max-width: 767px) {
   .menu .menu-item {
-    margin-top: 10px;
+    margin-top: 10px !important;
   }
 }
 .menu .menu-item a,
 .menu .menu-item span.exturl {
   display: block;
-  font-size: 13px;
+  font-size: 16px;
   line-height: inherit;
   border-bottom: 1px solid transparent;
   transition-property: border-color;
@@ -1853,7 +1853,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #d7fcff;
+  background: #c8c2b3;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2620,6 +2620,7 @@ hr {
   background: #e1e1e1;
 }
 .menu {
+  float: right;
   margin: 8px 0 0 0;
 }
 @media (max-width: 767px) {
