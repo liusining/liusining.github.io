@@ -122,15 +122,14 @@
 <meta property="og:site_name" content="sining.io">
 <meta property="og:description" content="为了找到自己的位置，我们需要将全世界编码">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://www.sining.io/images/if-china-locates-at-high-latitude.png">
 <meta property="og:image" content="https://s2geometry.io/devguide/img/s2curve-small.gif">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Spherical_cap_diagram.tiff/lossless-page1-220px-Spherical_cap_diagram.tiff.png">
 <meta property="og:image" content="https://www.sining.io/images/s2-cells-convering-a-cap.png">
-<meta property="og:updated_time" content="2020-09-25T03:28:53.113Z">
+<meta property="og:updated_time" content="2020-10-10T01:48:45.768Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搜索地球表面上的点（工程）">
 <meta name="twitter:description" content="为了找到自己的位置，我们需要将全世界编码">
-<meta name="twitter:image" content="https://www.sining.io/images/if-china-locates-at-high-latitude.png">
+<meta name="twitter:image" content="https://s2geometry.io/devguide/img/s2curve-small.gif">
 
 
 
@@ -328,8 +327,8 @@
     <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Sining Liu">
-      <meta itemprop="description" content="以始以成而不知其所以然">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
       <meta itemprop="image" content="/images/sining-avatar.png">
     </span>
 
@@ -384,7 +383,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2020-09-25 11:28:53" itemprop="dateModified" datetime="2020-09-25T11:28:53+08:00">2020-09-25</time>
+                <time title="修改时间：2020-10-10 09:48:45" itemprop="dateModified" datetime="2020-10-10T09:48:45+08:00">2020-10-10</time>
               
             
           </span>
@@ -419,62 +418,51 @@
       
 
       
-        <p>这里尝试解决一个需求：寻找附近的 POI（Points of Interest，相关地点，下同）。</p>
+        <p>这里尝试解决一个需求：寻找附近的 POI（Points of Interest，相关地点，下同）。一些数据库，比如 MangoDB，ElasticSearch 已经有现成的方案。但如果你用的数据库，比如 AWS DyanmoDB，Google Cloud Firestore，没有已经封装好的 API，可以按照本文的方式，通过地理索引，实现附近的 POI 查询。如果不想看关于地理索引的分析，可以直接跳到「代码实现」一节。</p>
 <p>第一种方法，也是最直接、最简单的办法是：</p>
 <ol>
 <li>确定中心点</li>
 <li>计算数据库中各个点和中心点的距离</li>
-<li>保留距离在要求范围内（假设为 [0, D]）的点</li>
+<li>保留合适的点</li>
 </ol>
-<p>当数据很少的时候，这样可能是最好的方法，但是如果数据增加，计算量会按照 <code>O(n)</code> 函数线性增加。对于大数据量是不可行的。</p>
-<p>上面的方法可以改良。如果这些点按照经纬度排序，那么可以通过坐标先排除一部分明显很远的点。如果纬度或经度的存储使用 B+ tree 等 index，定位某个范围的时间可能更短。于是，一个可能的方法是：</p>
+<p>当数据很少的时候，这样可能是最好的方法，但是如果 POI 数量增加，m 次查询的计算量会按照 <code>O(m * n)</code> 的程度增长。对于大数据量是不可行的。</p>
+<p>上面的方法可以改良。如果这些点按照经纬度排序，那么可以通过坐标先排除一部分明显很远的点。于是，一个可能的方法是：</p>
 <ol>
-<li>搜索临近经纬度，只取回满足初步条件的点（可称为候选点）</li>
+<li>确定中心点</li>
+<li>只查询附近的经纬度，取回满足初步条件的点（可称为候选点）</li>
 <li>计算候选点到中心点的距离</li>
-<li>保留距离在  [0, D] 内的点</li>
+<li>保留合适的点</li>
 </ol>
 <p>但这个方法也面临问题。</p>
-<p>首先，DynamoDB 等分布式数据库是按分区存储数据的，如果通过划分经纬度来制定数据分区键（partition key），那么有些目标区域可能跨越 N 个数据分区，需要做 N 次查询请求；分区越细，目标区域跨越的分区就越多，N 就越大。如果把所有数据都存在一个分区内，可以利用纬度和经度的组合字段做 index（类似于关系型数据库中的多字段 index），但又容易造成此分区过于繁忙（热键问题）。当然，某些情况下这些处理方法是可以接受的。</p>
-<p>其次，虽然相同的纬度差（∆lat）代表的距离总是大致相等，但是相同的经度差（∆lng）却可能代表非常不同的距离。相同的 ∆lng 在赤道附近有更长的距离，越靠近南北极越短，因此需要调整经度区间的大小，才能保持搜索范围的大小和靠近赤道的区域一致。</p>
-<p>对于上述之第一个问题，可以把经、纬度 2 个值编码为一个值，最简单的方法就是拼接，比如，把 N30° - N31° 之间且 E110° - E111° 之间的区域编码为 <code>N30.5-E110.5</code>。这样，此范围内的点都可以对应相同的地理编码，进而存在同一个数据分区内（以地理编码做分区键）。如果某个中心点之外，半径 D 之内没有超过 <code>N30.5-E110.5</code> 编码所表示的区域，那么仅在一个数据分区内就能取回所有的候选点，只做一次请求。而且，数据分区内还可以利用 sort key 等方法进一步缩小候选点的范围。</p>
-<p>一个地理编码表示的范围越大，你就越有可能用 1 个请求取回所有的候选点。但如果编码覆盖的区域太大，很多查询可能同时击中一个分区，同样热键问题。这里需要看怎么平衡两种消耗（请求次数，热键的可能性）。</p>
-<p>上面说的地理编码方式很简单。另外也有很多编码规范供你选择，Geohash 就是一种，应该算是比较知名的。</p>
-<p>然而 Geohash 并没有解决上述之第二个问题：单位经度差所代表的实际距离随着纬度升高而大幅减小。所以，同一级别的地理编码，在赤道代表的面积比在南北极代表的面积大很多<sup><a href="#fn_1" id="reffn_1">1</a></sup>。虽然在平面地图上看起来南北极附近的编码区域好像很大，但那是因为平面地图把极点附近聚拢的区域展开成了跟赤道一样宽。（类似地，俄罗斯、南极洲都没有平面地图上显示的比例那么大；根据 thetruesize.com 计算，如果把中国挪到俄罗斯的纬度位置，在平面地图上看起来会比在中纬度大得多）</p>
-<p><img src="/images/if-china-locates-at-high-latitude.png" alt></p>
-<p>如果你是看了 <a href="https://aws.amazon.com/blogs/aws/new-geo-library-for-dynamodb/" target="_blank" rel="noopener">AWS 的博客</a>或者 Google 搜索排名很靠前的<a href="https://read.acloud.guru/location-based-search-results-with-dynamodb-and-geohash-267727e5d54f" target="_blank" rel="noopener">一篇文章</a>，而想在自己的 dynamodb 中用 geohash 做数据分区，那么他们可能误导了你。这些博客中提到的代码库其实用的是 s2 geometry 做的地理编码。可以通过<a href="https://github.com/amazon-archives/dynamodb-geo/blob/1d0881295142a9bb15415817c644b104657666e5/src/com/amazonaws/geo/s2/internal/S2Manager.java#L115" target="_blank" rel="noopener">其 github 上的代码</a>确认。</p>
-<p>s2 geometry 让同一级别的地理编码所代表的面积相近<sup><a href="#fn_2" id="reffn_2">2</a></sup>，即使在南北极也不会和赤道的差距过于悬殊。所以，到这里，我们基本上可以解决上述提到的问题：</p>
-<ol>
-<li>利用地理区域筛选候选点，解决逐一计算距离则计算量过大的问题</li>
-<li>利用合适的地理编码系统（s2 geometry cell）解决地理区域划分的部分难点</li>
-<li>调整地理编码所代表的区域大小，使请求次数和产生热键的概率都保持在可接受的范围内</li>
-</ol>
+<p>首先是基于经纬度建立地理索引的技术问题。我们考虑下面几个方案和他们的问题：</p>
+<p>a. 建立经、纬度联合索引。但是，地理查询需要用到经纬度的上界和下界，在 SQL 中使用这种范围查询会导致联合索引失效。对于分布式 NoSQL，联合索引或许可以通过分区键（partition key）和排序键（sort key）来实现，但是如果以小数点后好几位的经纬度划分分区键，会导致分区过多；分区过多，会导致查询次数过多，增加数据库负担。</p>
+<p>b. 把经、纬度 2 个值归结为一个索引值。生成这种索引的方法有很多，简单的字符串拼接、Geohash<sup><a href="#fn_1" id="reffn_1">1</a></sup>等，都可以把经纬度两个值合并成一个值，而且连续的索引值代表的区域在地理上也大致接近。但由于地球是个球体，相同的经度差（∆lng）越靠近两极，就越只有很短距离；最极端的例子是在北纬或南纬 90 度的极点，从 0 度经线到 180 度经线的最短距离是零。也就是说，如果用同样的经纬度差值来划分地理区域，在海南能划出一大片区域，而在黑龙江只能划出很小的区域。这就导致，要想查询一个覆盖范围，比如周围 10km，那么，在海南地区只需要查询一个索引下的区域，而在黑龙江，则会击中很多个索引。这对于 SQL 数据库的影响是需要设计球面几何算法，来计算需要查询的地理索引的范围；对于分布式 NoSQL 的影响是，查询普遍击中一个分区会造成热键，或者需要查询过多分区时则会增加数据库负担。因此都需要平衡。</p>
+<p>c. 找到一个让地理分区的面积大小基本接近的索引算法，解决 b 中关于球面几何计算的问题，也能平衡数据分区键下的数据量大小。s2 geometry 就是让同一级别的地理编码所代表的面积相近<sup><a href="#fn_2" id="reffn_2">2</a></sup>，即使在南北极，一块分区的面积大小，也不会跟赤道附近的差太多。同样的算法还有 uber 开发的 h3。</p>
+<p>本文就尝试使用 s2 geometry 来实现地理索引，解决查询附近的 POI 这个需求。</p>
 <p><img src="https://s2geometry.io/devguide/img/s2curve-small.gif" alt></p>
-<p>至于为什么一定要用 s2 geometry cell，其实不一定，但我只了解过 s2。其实还有其他的地理编码系统，比如 uber 开发的 h3，但我还不是很了解。</p>
+<p>另外，一个小话题，如果你是看了 <a href="https://aws.amazon.com/blogs/aws/new-geo-library-for-dynamodb/" target="_blank" rel="noopener">AWS 的博客</a>或者 Google 搜索排名很靠前的<a href="https://read.acloud.guru/location-based-search-results-with-dynamodb-and-geohash-267727e5d54f" target="_blank" rel="noopener">一篇文章</a>，而想在自己的 dynamodb 中用 Geohash 做数据分区，那么他们可能误导了你。这些博客中提到的代码库其实用的是 s2 geometry 做的地理编码。可以通过<a href="https://github.com/amazon-archives/dynamodb-geo/blob/1d0881295142a9bb15415817c644b104657666e5/src/com/amazonaws/geo/s2/internal/S2Manager.java#L115" target="_blank" rel="noopener">其 github 上的代码</a>确认。</p>
+<p>总之，到这里，我们的解决方案是：</p>
+<ol>
+<li>利用合适的地理编码系统（s2 geometry cell）为 POI 的地理位置生成索引；同时，在实现过程中，让一个索引对应的地理区域大小要合适，避免热键和分区过多的问题</li>
+<li>查询索引，找到初步候选点</li>
+<li>计算候选点到中心点的距离</li>
+<li>保留合适的点</li>
+</ol>
 <h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>下面进入工程实现的部分（语言为 golang）。</p>
 <ol>
-<li>生成中心点（Cell 类型）</li>
-<li>扩大中心点成一个圆盘范围（Cap 类型）</li>
-<li>计算覆盖区域：圆盘范围覆盖了哪些地理分区（Cells）</li>
+<li>生成中心点（Point 类型）</li>
+<li>生成目标搜索范围：从中心点向外画一个圆盘（Cap 类型）</li>
+<li>计算覆盖区域：目标范围覆盖了哪些地理分区（Cells）</li>
 <li>计算数据分区：地理分区的编码就是数据分区的分区键</li>
 <li>请求数据库，查询候选点</li>
 <li>计算取回的候选点是否在目标区域内</li>
 </ol>
-<p>作为事先准备，我们先生成一个 cell id。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s2"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s1"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	latLng := s2.LatLngFromDegrees(<span class="number">39.916667</span>, <span class="number">116.383333</span>) <span class="comment">// Beijing</span></span><br><span class="line">	cellID := s2.CellIDFromLatLng(latLng)</span><br><span class="line">	cellIDUint := <span class="keyword">uint64</span>(cellID)</span><br><span class="line">	base2 := strconv.FormatUint(cellIDUint, <span class="number">2</span>)</span><br><span class="line">	base10 := strconv.FormatUint(cellIDUint, <span class="number">10</span>)</span><br><span class="line">	base16 := strconv.FormatUint(cellIDUint, <span class="number">16</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"cell id:\nbase2(%s)\nbase10(%s)\nbase16(%s)\ntoken(%s)\n"</span>,</span><br><span class="line">		base2, base10, base16, cellID.ToToken(),</span><br><span class="line">	)</span><br><span class="line"><span class="comment">// cell id:</span></span><br><span class="line"><span class="comment">// base2(11010111110000010100101111001001110010010000011111100101111001)</span></span><br><span class="line"><span class="comment">// base10(3886697679673227641)</span></span><br><span class="line"><span class="comment">// base16(35f052f27241f979)</span></span><br><span class="line"><span class="comment">// token(35f052f27241f979)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因此，我们用作实验的 cell id 是：<code>35f052f27241f979</code>。</p>
-<p>搜索工程就从接收这个 cell id 开始。至于为什么要传入 cell id，而不是经纬度。因为：</p>
-<ol>
-<li>cell id 也可以用来表示地图上的点，和传入经纬度坐标是一样的。</li>
-<li>cell id 有现成的方法可以控制精度，不需要精确定位时，可以使用低级别的 cell id。</li>
-</ol>
-<p>当然，如果你想使用精确的经纬度来生成点（<code>S2Point</code>）也是可以的。</p>
-<p>第一步，生成中心点，我用 Cell 类型的值表示。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// generate a cell given a token of cell id</span></span><br><span class="line">cellID := <span class="string">"35f052f27241f979"</span></span><br><span class="line">cell := s2.CellFromCellID(s2.CellIDFromToken(cellID))</span><br></pre></td></tr></table></figure>
+<p>第一步，生成中心点 center。这个中心点的左右可以由前端获取后传递到后端。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s2"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s1"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	latLng := s2.LatLngFromDegrees(<span class="number">39.916667</span>, <span class="number">116.383333</span>) <span class="comment">// Beijing</span></span><br><span class="line">	center := s2.PointFromLatLng(latLng)</span><br></pre></td></tr></table></figure>
 <p>第二步，生成搜索范围，用 Cap 类型表示。Cap 的意思是帽子，如此命名可能是因为一个圆盘范围扣在地球上，就像一个帽子戴在头上。</p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Spherical_cap_diagram.tiff/lossless-page1-220px-Spherical_cap_diagram.tiff.png" alt="By Wikipedia"></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EarthRadius = <span class="number">6378.137</span></span><br><span class="line"><span class="built_in">cap</span> := cell.CapBound()</span><br><span class="line">region := <span class="built_in">cap</span>.Expanded(s1.Angle(distance / EarthRadius)) <span class="comment">// distance is set by you</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EarthRadius = <span class="number">6378.137</span></span><br><span class="line"><span class="built_in">cap</span> := center.CapBound()</span><br><span class="line">region := <span class="built_in">cap</span>.Expanded(s1.Angle(distance / EarthRadius)) <span class="comment">// distance is set by you</span></span><br></pre></td></tr></table></figure>
 <p>因为 s2 用角度大小表示距离<sup><a href="#fn_3" id="reffn_3">3</a></sup>，所以需要先把我们所用的距离，比如 10 公里，转化为地球弧度角。在地球表面，10 公里（在过球心的圆面上）所形成的弧度（radian）大概是 <code>10 / 6378.137</code>，其中 6378.137 是地球在赤道上的半径距离（km）<sup><a href="#fn_4" id="reffn_4">4</a></sup>。</p>
-<p>如此得到的搜索范围 region 的半径，比 distance 大一点，因为 cell 本身也有一定宽度，如果不能接受这样的误差，可以主动调整 distance，抵消 cell 的宽度。</p>
 <p>第三步，计算搜索范围 region 覆盖了哪些地理分区（cells），因为数据分区是根据地理分区制定的，只有得到了地理分区，我们才能知道候选点存在哪个数据分区。</p>
 <p><img src="/images/s2-cells-convering-a-cap.png" alt></p>
 <p><small>图片使用 <a href="https://s2.sidewalklabs.com/regioncoverer/?center=39.952504%2C-243.644092&amp;zoom=11&amp;cells=35f049555%2C35f04bf%2C35f04d%2C35f04f%2C35f054%2C35f1aac%2C35f1ab4%2C35f1abc%2C35f1ad%2C35f1b3" target="_blank" rel="noopener">s2.sidewalklabs.com</a> 制作</small></p>
@@ -485,7 +473,7 @@
 <li>MinLevel 代表最大的 Cell，即不能使用更大的 cell 来代表覆盖区域，MinLevel 也不能小于数据分区使用的编码级别，因为级别太小的话（覆盖范围太大）就分不清具体指向哪个数据分区。</li>
 <li><code>Covering</code> 方法返回的结果是一个 CellUnion 类型的值（包含一个或多个 cell id），而这个结果可能没有归一化（normalize），所以有时 4 个 cell id 已经构成一个完整的 cell（更大的 cell），但却没有被合并<sup><a href="#fn_5" id="reffn_5">5</a></sup>，增加了接下来数据查询的复杂度，因此需要进一步归一化，即调用 <code>Normalize</code> 方法。</li>
 </ol>
-<p>第四步，计算数据分区。上面得到的 cell ids 并不直接就是数据分区的分区键（partition key），因为有些 cell id 的范围比数据分区所代表的地理范围小。但通过找到范围较小的 cell id 的父级，就能得到其所对应的数据分区。</p>
+<p>第四步，计算数据分区。上面得到的 cell ids 并不直接就是数据分区的分区键（partition key），因为有些 cell id 的范围比数据分区所代表的地理范围小。但通过找到 cell id 的父级，就能得到其所对应的数据分区。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pk := v.Parent(parentLevel) <span class="comment">// parentLevel is set by you</span></span><br></pre></td></tr></table></figure>
 <p>如果有 cell ids 所对应的数据分区相同，则可以合并到同一个分区中搜索数据。并且，利用 sort key 可以只取回此数据分区中相关的候选点，类似于 <code>cellID.RangeMin() &lt;= sort_key &lt;= cellID.RangeMax()</code>，因为一个 cell 中的 cell ids 是连续的（编码连续，但数值间隔 2），所以在 min 和 max 之间的点肯定属于这个 cell。</p>
 <p>第五步，数据查询。利用上面得到的数据分区键和排序键（sort key），取回一定数量的候选点。</p>
@@ -493,19 +481,9 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, v := <span class="keyword">range</span> pointsYouRetrievedFromDatabase &#123;</span><br><span class="line">  <span class="keyword">if</span> region.ContainsPoint(v) &#123;</span><br><span class="line">    <span class="comment">// do something ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="可能的问题"><a href="#可能的问题" class="headerlink" title="可能的问题"></a>可能的问题</h2><ol>
 <li>人口扎堆在大城市，对应的数据分区更容易被击中，成为热键（如果有很多人用的话）</li>
-<li><p>cell id 的发送方（比如网页前端）和接收方（比如服务器后端）对于搜索范围的确定可能有偏差，因为前端标示距离的算法和后端使用的 s2 geometry 计算距离的算法可能不一样；而且使用较模糊的 cell id（level 较低的 cell），本来就难以保证前后端中心点一致</p>
-</li>
-<li><p>需要平衡计算覆盖区域、数据查询、再次确认距离（即，第四、五、六步）之间的时间开销，在某一步降低消耗可能会导致剩下的步骤产生更多消耗。比如，计算覆盖区域时不使用精确计算，可能导致数据查询时返回更多候选点，进而需要分页处理以及更多次确认距离。监控、平衡各步的消耗，降低总体消耗，可能是个合理的选择。</p>
-</li>
+<li>如果开发者想在前端对经纬度进行脱敏，可以使用 js 的 s2 geometry 开发包，生成一个模糊的地理区域再传入后端。</li>
+<li>需要平衡计算覆盖区域、数据查询、再次确认距离（即，第四、五、六步）之间的时间开销，在某一步降低消耗可能会导致剩下的步骤产生更多消耗。比如，计算覆盖区域时不使用精确计算，可能导致数据查询时返回更多候选点，进而需要分页处理以及更多次确认距离。监控、平衡各步的消耗，降低总体消耗，可能是个合理的选择。</li>
 </ol>
-<p>最后，s2 geometry 连接各地理分区所用的空间填充曲线很有意思，让人怀疑这个世界到底是什么样子。</p>
-<blockquote>
-<p>说明：</p>
-<ol>
-<li>这里没涉及什么原理，只是一些工程应用，因为我也不太懂原理</li>
-<li>数据存储、查询基于 DynamoDB，迁移到其他 NoSQL 应该差不多</li>
-</ol>
-</blockquote>
 <blockquote id="fn_1">
 <sup>1</sup>. Wikipedia Contributors. (2020, March 19). Geohash. Retrieved April 10, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Geohash#Non-linearity‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Geohash#Non-linearity‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
@@ -628,10 +606,10 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="Sining Liu">
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
             
-              <p class="site-author-name" itemprop="name">Sining Liu</p>
-              <p class="site-description motion-element" itemprop="description">以始以成而不知其所以然</p>
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
           </div>
 
           
@@ -641,7 +619,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -730,7 +708,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-count">26</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -821,7 +799,7 @@
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">Sining Liu</span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
 
   
 
