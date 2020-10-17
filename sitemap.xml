@@ -4,7 +4,14 @@
   <url>
     <loc>https://www.sining.io/2020/10/12/it-is-important-to-recognize-who-you-are-talking-to/</loc>
     
-    <lastmod>2020-10-13</lastmod>
+    <lastmod>2020-10-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.sining.io/2017/12/27/whats-more/</loc>
+    
+    <lastmod>2020-10-14</lastmod>
     
   </url>
   
@@ -45,13 +52,6 @@
   
   <url>
     <loc>https://www.sining.io/manifest.json</loc>
-    
-    <lastmod>2020-10-07</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sining.io/2017/12/27/whats-more/</loc>
     
     <lastmod>2020-10-07</lastmod>
     
@@ -186,7 +186,7 @@
 
   <url>
     <loc>https://www.sining.io/</loc>
-    <lastmod>2020-10-13</lastmod>
+    <lastmod>2020-10-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
