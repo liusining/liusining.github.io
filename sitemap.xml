@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.sining.io/2020/12/16/proofs-on-some-modular-arithmetic/</loc>
+    
+    <lastmod>2020-12-16</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sining.io/2020/10/12/it-is-important-to-recognize-who-you-are-talking-to/</loc>
     
-    <lastmod>2020-10-15</lastmod>
+    <lastmod>2020-10-20</lastmod>
     
   </url>
   
@@ -186,7 +193,7 @@
 
   <url>
     <loc>https://www.sining.io/</loc>
-    <lastmod>2020-10-17</lastmod>
+    <lastmod>2020-12-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
