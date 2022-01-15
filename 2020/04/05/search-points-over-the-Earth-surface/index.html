@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="为了找到自己的位置，我们需要将全世界编码">
+<meta name="keywords" content="工程,地球">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搜索地球表面上的点（工程）">
+<meta property="og:url" content="https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="为了找到自己的位置，我们需要将全世界编码">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s2geometry.io/devguide/img/s2curve-small.gif">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Spherical_cap_diagram.tiff/lossless-page1-220px-Spherical_cap_diagram.tiff.png">
+<meta property="og:image" content="https://www.sining.io/images/s2-cells-convering-a-cap.png">
+<meta property="og:updated_time" content="2022-01-15T12:40:20.798Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搜索地球表面上的点（工程）">
+<meta name="twitter:description" content="为了找到自己的位置，我们需要将全世界编码">
+<meta name="twitter:image" content="https://s2geometry.io/devguide/img/s2curve-small.gif">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>搜索地球表面上的点（工程） | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">搜索地球表面上的点（工程）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-05 13:27:20" itemprop="dateCreated datePublished" datetime="2020-04-05T13:27:20+08:00">2020-04-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">为了找到自己的位置，我们需要将全世界编码</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这里尝试解决一个需求：寻找附近的 POI（Points of Interest，相关地点，下同）。一些数据库，比如 MangoDB，ElasticSearch 已经有现成的方案。但如果你用的数据库，比如 AWS DyanmoDB，Google Cloud Firestore，没有已经封装好的 API，可以按照本文的方式，通过地理索引，实现附近的 POI 查询。如果不想看关于地理索引的分析，可以直接跳到「代码实现」一节。</p>
+<p>第一种方法，也是最直接、最简单的办法是：</p>
+<ol>
+<li>确定中心点</li>
+<li>计算数据库中各个点和中心点的距离</li>
+<li>保留合适的点</li>
+</ol>
+<p>当数据很少的时候，这样可能是最好的方法，但是如果 POI 数量增加，m 次查询的计算量会按照 <code>O(m * n)</code> 的程度增长。对于大数据量是不可行的。</p>
+<p>上面的方法可以改良。如果这些点按照经纬度排序，那么可以通过坐标先排除一部分明显很远的点。于是，一个可能的方法是：</p>
+<ol>
+<li>确定中心点</li>
+<li>只查询附近的经纬度，取回满足初步条件的点（可称为候选点）</li>
+<li>计算候选点到中心点的距离</li>
+<li>保留合适的点</li>
+</ol>
+<p>但这个方法也面临问题。</p>
+<p>首先是基于经纬度建立地理索引的技术问题。我们考虑下面几个方案和他们的问题：</p>
+<p>a. 建立经、纬度联合索引。但是，地理查询需要用到经纬度的上界和下界，在 SQL 中使用这种范围查询会导致联合索引失效。对于分布式 NoSQL，联合索引或许可以通过分区键（partition key）和排序键（sort key）来实现，但是如果以小数点后好几位的经纬度划分分区键，会导致分区过多；分区过多，会导致查询次数过多，增加数据库负担。</p>
+<p>b. 把经、纬度 2 个值归结为一个索引值。生成这种索引的方法有很多，简单的字符串拼接、Geohash<sup><a href="#fn_1" id="reffn_1">1</a></sup>等，都可以把经纬度两个值合并成一个值，而且连续的索引值代表的区域在地理上也大致接近。但由于地球是个球体，相同的经度差（∆lng）越靠近两极，就越只有很短距离；最极端的例子是在北纬或南纬 90 度的极点，从 0 度经线到 180 度经线的最短距离是零。也就是说，如果用同样的经纬度差值来划分地理区域，在海南能划出一大片区域，而在黑龙江只能划出很小的区域。这就导致，要想查询一个覆盖范围，比如周围 10km，那么，在海南地区只需要查询一个索引下的区域，而在黑龙江，则会击中很多个索引。这对于 SQL 数据库的影响是需要设计球面几何算法，来计算需要查询的地理索引的范围；对于分布式 NoSQL 的影响是，查询普遍击中一个分区会造成热键，或者需要查询过多分区时则会增加数据库负担。因此都需要平衡。</p>
+<p>c. 找到一个让地理分区的面积大小基本接近的索引算法，解决 b 中关于球面几何计算的问题，也能平衡数据分区键下的数据量大小。s2 geometry 就是让同一级别的地理编码所代表的面积相近<sup><a href="#fn_2" id="reffn_2">2</a></sup>，即使在南北极，一块分区的面积大小，也不会跟赤道附近的差太多。同样的算法还有 uber 开发的 h3。</p>
+<p>本文就尝试使用 s2 geometry 来实现地理索引，解决查询附近的 POI 这个需求。</p>
+<p><img src="https://s2geometry.io/devguide/img/s2curve-small.gif" alt></p>
+<p>另外，一个小话题，如果你是看了 <a href="https://aws.amazon.com/blogs/aws/new-geo-library-for-dynamodb/" target="_blank" rel="noopener">AWS 的博客</a>或者 Google 搜索排名很靠前的<a href="https://read.acloud.guru/location-based-search-results-with-dynamodb-and-geohash-267727e5d54f" target="_blank" rel="noopener">一篇文章</a>，而想在自己的 dynamodb 中用 Geohash 做数据分区，那么他们可能误导了你。这些博客中提到的代码库其实用的是 s2 geometry 做的地理编码。可以通过<a href="https://github.com/amazon-archives/dynamodb-geo/blob/1d0881295142a9bb15415817c644b104657666e5/src/com/amazonaws/geo/s2/internal/S2Manager.java#L115" target="_blank" rel="noopener">其 github 上的代码</a>确认。</p>
+<p>总之，到这里，我们的解决方案是：</p>
+<ol>
+<li>利用合适的地理编码系统（s2 geometry cell）为 POI 的地理位置生成索引；同时，在实现过程中，让一个索引对应的地理区域大小要合适，避免热键和分区过多的问题</li>
+<li>查询索引，找到初步候选点</li>
+<li>计算候选点到中心点的距离</li>
+<li>保留合适的点</li>
+</ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>下面进入工程实现的部分（语言为 golang）。</p>
+<ol>
+<li>生成中心点（Point 类型）</li>
+<li>生成目标搜索范围：从中心点向外画一个圆盘（Cap 类型）</li>
+<li>计算覆盖区域：目标范围覆盖了哪些地理分区（Cells）</li>
+<li>计算数据分区：地理分区的编码就是数据分区的分区键</li>
+<li>请求数据库，查询候选点</li>
+<li>计算取回的候选点是否在目标区域内</li>
+</ol>
+<p>第一步，生成中心点 center。这个中心点的左右可以由前端获取后传递到后端。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s2"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/golang/geo/s1"</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	latLng := s2.LatLngFromDegrees(<span class="number">39.916667</span>, <span class="number">116.383333</span>) <span class="comment">// Beijing</span></span><br><span class="line">	center := s2.PointFromLatLng(latLng)</span><br></pre></td></tr></table></figure>
+<p>第二步，生成搜索范围，用 Cap 类型表示。Cap 的意思是帽子，如此命名可能是因为一个圆盘范围扣在地球上，就像一个帽子戴在头上。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Spherical_cap_diagram.tiff/lossless-page1-220px-Spherical_cap_diagram.tiff.png" alt="By Wikipedia"></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> EarthRadius = <span class="number">6378.137</span></span><br><span class="line"><span class="built_in">cap</span> := center.CapBound()</span><br><span class="line">region := <span class="built_in">cap</span>.Expanded(s1.Angle(distance / EarthRadius)) <span class="comment">// distance is set by you</span></span><br></pre></td></tr></table></figure>
+<p>因为 s2 用角度大小表示距离<sup><a href="#fn_3" id="reffn_3">3</a></sup>，所以需要先把我们所用的距离，比如 10 公里，转化为地球弧度角。在地球表面，10 公里（在过球心的圆面上）所形成的弧度（radian）大概是 <code>10 / 6378.137</code>，其中 6378.137 是地球在赤道上的半径距离（km）<sup><a href="#fn_4" id="reffn_4">4</a></sup>。</p>
+<p>第三步，计算搜索范围 region 覆盖了哪些地理分区（cells），因为数据分区是根据地理分区制定的，只有得到了地理分区，我们才能知道候选点存在哪个数据分区。</p>
+<p><img src="/images/s2-cells-convering-a-cap.png" alt></p>
+<p><small>图片使用 <a href="https://s2.sidewalklabs.com/regioncoverer/?center=39.952504%2C-243.644092&amp;zoom=11&amp;cells=35f049555%2C35f04bf%2C35f04d%2C35f04f%2C35f054%2C35f1aac%2C35f1ab4%2C35f1abc%2C35f1ad%2C35f1b3" target="_blank" rel="noopener">s2.sidewalklabs.com</a> 制作</small></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rc := &amp;s2.RegionCoverer&#123;MinLevel: <span class="number">5</span>, MaxLevel: <span class="number">20</span>, MaxCells: <span class="number">8</span>&#125;</span><br><span class="line">covering := rc.Covering(region)</span><br><span class="line">covering.Normalize()</span><br></pre></td></tr></table></figure>
+<p>其中，</p>
+<ol>
+<li>MaxLevel 代表最小的 cell，即覆盖区域精细到什么程度，如果数值太大，可能会返回一些细小的 cell；</li>
+<li>MinLevel 代表最大的 Cell，即不能使用更大的 cell 来代表覆盖区域，MinLevel 也不能小于数据分区使用的编码级别，因为级别太小的话（覆盖范围太大）就分不清具体指向哪个数据分区。</li>
+<li><code>Covering</code> 方法返回的结果是一个 CellUnion 类型的值（包含一个或多个 cell id），而这个结果可能没有归一化（normalize），所以有时 4 个 cell id 已经构成一个完整的 cell（更大的 cell），但却没有被合并<sup><a href="#fn_5" id="reffn_5">5</a></sup>，增加了接下来数据查询的复杂度，因此需要进一步归一化，即调用 <code>Normalize</code> 方法。</li>
+</ol>
+<p>第四步，计算数据分区。上面得到的 cell ids 并不直接就是数据分区的分区键（partition key），因为有些 cell id 的范围比数据分区所代表的地理范围小。但通过找到 cell id 的父级，就能得到其所对应的数据分区。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pk := v.Parent(parentLevel) <span class="comment">// parentLevel is set by you</span></span><br></pre></td></tr></table></figure>
+<p>如果有 cell ids 所对应的数据分区相同，则可以合并到同一个分区中搜索数据。并且，利用 sort key 可以只取回此数据分区中相关的候选点，类似于 <code>cellID.RangeMin() &lt;= sort_key &lt;= cellID.RangeMax()</code>，因为一个 cell 中的 cell ids 是连续的（编码连续，但数值间隔 2），所以在 min 和 max 之间的点肯定属于这个 cell。</p>
+<p>第五步，数据查询。利用上面得到的数据分区键和排序键（sort key），取回一定数量的候选点。</p>
+<p>最后，再次计算候选点是否处在我们预想的范围 region 内：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _, v := <span class="keyword">range</span> pointsYouRetrievedFromDatabase &#123;</span><br><span class="line">  <span class="keyword">if</span> region.ContainsPoint(v) &#123;</span><br><span class="line">    <span class="comment">// do something ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="可能的问题"><a href="#可能的问题" class="headerlink" title="可能的问题"></a>可能的问题</h2><ol>
+<li>人口扎堆在大城市，对应的数据分区更容易被击中，成为热键（如果有很多人用的话）</li>
+<li>如果开发者想在前端对经纬度进行脱敏，可以使用 js 的 s2 geometry 开发包，生成一个模糊的地理区域再传入后端。</li>
+<li>需要平衡计算覆盖区域、数据查询、再次确认距离（即，第四、五、六步）之间的时间开销，在某一步降低消耗可能会导致剩下的步骤产生更多消耗。比如，计算覆盖区域时不使用精确计算，可能导致数据查询时返回更多候选点，进而需要分页处理以及更多次确认距离。监控、平衡各步的消耗，降低总体消耗，可能是个合理的选择。</li>
+</ol>
+<blockquote id="fn_1">
+<sup>1</sup>. Wikipedia Contributors. (2020, March 19). Geohash. Retrieved April 10, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Geohash#Non-linearity‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Geohash#Non-linearity‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. S2 Cells. (2020). Retrieved April 10, 2020, from S2Geometry website: <a href="https://s2geometry.io/devguide/s2cell_hierarchy#coordinate-systems‌" target="_blank" rel="noopener">https://s2geometry.io/devguide/s2cell_hierarchy#coordinate-systems‌</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. Quick Start. (2020). Retrieved April 11, 2020, from S2Geometry website: <a href="https://s2geometry.io/devguide/cpp/quickstart#s2closestpointquery‌" target="_blank" rel="noopener">https://s2geometry.io/devguide/cpp/quickstart#s2closestpointquery‌</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. Earth Fact Sheet. (2020). Retrieved April 11, 2020, from Nasa.gov website: <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html‌" target="_blank" rel="noopener">https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. S2 Cells. (2020). Retrieved April 12, 2020, from S2Geometry website: <a href="https://s2geometry.io/devguide/s2cell_hierarchy#approximating-regions‌" target="_blank" rel="noopener">https://s2geometry.io/devguide/s2cell_hierarchy#approximating-regions‌</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/工程/" rel="tag"># 工程</a>
+          
+            <a href="/tags/地球/" rel="tag"># 地球</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/03/how-safe-the-world-is/" rel="next" title="这一切真的安全么——一个开发项目引发的思考">
+                <i class="fa fa-chevron-left"></i> 这一切真的安全么——一个开发项目引发的思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/10/a-little-thing-called-turning-up-network-card/" rel="prev" title="记一次启动网卡的过程">
+                记一次启动网卡的过程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/';
+        this.page.identifier = '2020/04/05/search-points-over-the-Earth-surface/';
+        this.page.title = '搜索地球表面上的点（工程）';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

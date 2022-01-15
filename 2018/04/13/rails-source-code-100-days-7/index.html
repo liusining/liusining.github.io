@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta name="keywords" content="Rails,源代码,持续行动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 源代码 100 天（7）">
+<meta property="og:url" content="https://www.sining.io/2018/04/13/rails-source-code-100-days-7/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-01-15T12:40:20.794Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 源代码 100 天（7）">
+<meta name="twitter:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2018/04/13/rails-source-code-100-days-7/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Rails 源代码 100 天（7） | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2018/04/13/rails-source-code-100-days-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Rails 源代码 100 天（7）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-13 10:37:34" itemprop="dateCreated datePublished" datetime="2018-04-13T10:37:34+08:00">2018-04-13</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">既然靠 Rails 吃饭，吃得踏实一点才好</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上上次我们说到，Rails 在创建 HasManyReflection 对象的时候把一个实例变量赋值为<code>Mutex.new</code>。今天，我们的目标就是探索一下<code>Mutex</code>，以及他在 Reflection 对象中的作用。</p>
+<p>首先说，有些 web 服务器是基于线程的。线程的好处是，在一个进程中可以创建多个线程。要想探索 Mutex ，首先要了解线程和进程。为了讨论方便，我会用英文 Thread 和 Process 来表示这两个概念，因为在中文中，线程和进程这两个词容易看混。</p>
+<p>多个 thread 中都可以执行自己的程序，比如在 Ruby 用线程来执行数组的插入：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">arr = []</span><br><span class="line"><span class="number">10</span>.times <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">	Thread.new <span class="keyword">do</span></span><br><span class="line">		arr &lt;&lt; i</span><br><span class="line">	<span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这和在一个 process 中执行的循环插入数组是不一样的：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">arr = []</span><br><span class="line"><span class="number">10</span>.times <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">	arr &lt;&lt; i</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>前者得到的<code>arr</code>可能是：<code>[4, 1, 0, 2, 5, 6, 7, 8, 9, 3]</code>， 而后者得到的结果一定是：<code>[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</code>。出现这种差异的原因在于，各个线程都在执行自己的<code>arr &lt;&lt; i</code>，而且是哪个 Thread 拿到了执行权，哪个 Thread 就执行这个操作，因为不一定是哪个 Thread 先拿到执行权，所以会产生插入位置无法预测的现象。</p>
+<p>从另一个角度讲，出现这个顺序不可预测的情况，也不能全怪<sup><a href="#fn_1" id="reffn_1">1</a></sup> Thread，因为谁让你非得去插入同一个数组呢？如果你想要的是类似于不同线程分别计算的计算过程，比如<sup><a href="#fn_2" id="reffn_2">2</a></sup>：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_sum</span><span class="params">(arr)</span></span></span><br><span class="line">  sleep(<span class="number">2</span>)</span><br><span class="line">  sum = <span class="number">0</span></span><br><span class="line">  arr.each <span class="keyword">do</span> <span class="params">|item|</span></span><br><span class="line">    sum += item</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  sum</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">@items1 = [<span class="number">12</span>, <span class="number">34</span>, <span class="number">55</span>]</span><br><span class="line">@items2 = [<span class="number">45</span>, <span class="number">90</span>, <span class="number">2</span>]</span><br><span class="line">@items3 = [<span class="number">99</span>, <span class="number">22</span>, <span class="number">31</span>]</span><br><span class="line"></span><br><span class="line">threads = <span class="number">3</span>.times <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">  Thread.new(i) <span class="keyword">do</span> <span class="params">|i|</span></span><br><span class="line">    items = instance_variable_get(<span class="string">"@items<span class="subst">#&#123;i&#125;</span>"</span>)</span><br><span class="line">    puts <span class="string">"items<span class="subst">#&#123;i&#125;</span> = <span class="subst">#&#123;calculate_sum(items)&#125;</span>"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>计算结果就不会受 Thread 的执行顺序的影响。</p>
+<p>然而，有些时候，如果我们即想用 Thread，又想处理一个可以被不同 Thread 操作的数据，怎么避免结果不可预测的情况呢？</p>
+<p>这个时候，<code>Mutex</code>就可以派上用场了。</p>
+<p>说到<code>Mutex</code>，我们先聊一个题外话： Mutex 的全称是 Mutual Exclusion，翻译成中文应该叫「相互独立」，这让我想到了在 Business Consulting 领域一个知名度很高的思考框架叫做：<a href="https://en.wikipedia.org/wiki/MECE_principle" target="_blank" rel="noopener">MECE</a>，mutually exclusive, collectively exhaustive，翻译成中文叫做「相互独立，且穷尽」，意思大致是，把事情发展的可能情况都想到，但每种可能情况之间界限清晰，而不能给把实际上相同的情况起了两个不同的名字来定义。</p>
+<p>这其中对我们理解 Mutex 有意义的一句话是：相互独立。Mutex 在线程管理中的作用是类似的，他让不同的 Thread 相互独立，而且，这里的「相互独立」指的是时间上不可重叠。</p>
+<p>还有一个比较俏皮的解释，有兴趣的可以<a href="https://stackoverflow.com/a/34558/6633748" target="_blank" rel="noopener">看看这个 Stack Overflow 上的回答</a>。</p>
+<p>下面分别给出不使用 <code>Mutext</code> 的一段示例代码，new 出来的几个 thread 都操作了一个共同的 <code>@sum</code> 资源：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_sum</span><span class="params">(arr)</span></span></span><br><span class="line">  @sum = <span class="number">0</span></span><br><span class="line">  m = Mutex.new</span><br><span class="line">  arr.each <span class="keyword">do</span> <span class="params">|item|</span></span><br><span class="line">    Thread.new <span class="keyword">do</span></span><br><span class="line">      print item</span><br><span class="line">      tmp = @sum</span><br><span class="line">      sleep(rand(<span class="number">2</span>))</span><br><span class="line">      @sum = tmp + item</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]</span><br><span class="line">calculate_sum(arr)</span><br><span class="line">sleep(<span class="number">3</span>)</span><br><span class="line">puts @sum</span><br></pre></td></tr></table></figure>
+<p>首先说，在倒数第二行，加上一行<code>sleep(3)</code>，是为了确保所有的 threads 都执行完毕。如果不加这一行的话，可能程序已经执行到最后的<code>puts @sum</code>，但之前 new 出来的 thread 还没有执行完。</p>
+<p>执行这段代码，打印出来的结果可能是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">123956784</span><br><span class="line">12</span><br></pre></td></tr></table></figure>
+<p>也就是说，某个 thread 拿到了最后一次执行<code>@sum = tmp + item</code>的机会，但由于他之前的 tmp 停留在一个留后的值上，导致最后的<code>@sum</code> 被赋值成了12。</p>
+<p>通常人们把这种不同 thread 可能在同一时间操作同一个资源的的情况称为 race conditions.</p>
+<p>接下来，我们给出 race conditions 问题的解决方案：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_sum</span><span class="params">(arr)</span></span></span><br><span class="line">  @sum = <span class="number">0</span></span><br><span class="line">  m = Mutex.new</span><br><span class="line">  arr.each <span class="keyword">do</span> <span class="params">|item|</span></span><br><span class="line">    Thread.new <span class="keyword">do</span></span><br><span class="line">      print <span class="string">'*'</span></span><br><span class="line">      m.lock</span><br><span class="line">      print item</span><br><span class="line">      tmp = @sum</span><br><span class="line">      sleep(rand(<span class="number">2</span>))</span><br><span class="line">      @sum = tmp + item</span><br><span class="line">			print <span class="string">'!'</span></span><br><span class="line">      m.unlock</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]</span><br><span class="line">calculate_sum(arr)</span><br><span class="line">sleep(<span class="number">10</span>)</span><br><span class="line">puts @sum</span><br></pre></td></tr></table></figure>
+<p>通常，这段代码中倒数第二行的<code>sleep(10)</code>是为了保证每个 thread 都执行完毕。不过这次 sleep 的时间比上一次长，这是为什么呢？</p>
+<p>当在某个线程中有 mutex 对象执行了<code>m.lock</code>，其他 thread 虽然可以继续执行，但是，如果在他们自己的执行过程中也遇到了<code>m.lock</code>，他们就得判断这个 mutex 是不是已经被锁住，如果是，就必须等在<code>m.lock</code>的门外，直到刚刚锁住 mutex 的那个线程执行<code>m.unlock</code> —— 解锁，其他等在门外的 thread 才有机会再去争抢 <code>m.lock</code> 的执行权。所以，下面下面这段代码在同一时间，只能有一个 thread 在执行：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print item</span><br><span class="line">tmp = @sum</span><br><span class="line">sleep(rand(<span class="number">2</span>))</span><br><span class="line">@sum = tmp + item</span><br><span class="line">print <span class="string">'!'</span></span><br></pre></td></tr></table></figure>
+<p>这段代码就是 <code>lock</code> 和 <code>unlock</code> 之间的代码，其中的 <code>@sum</code>资源在同一时间也就只能被单独一个 thread 操作，从而避免了竞争情况。</p>
+<p>又因为这段代码同一时间只能被一个 thread 之前，其他 thread 都在等候，所以最终这个程序的执行时间就要算上这些等待时间，因此更长一点。</p>
+<p>不过这里还有一个小问题，如何证明一个 thread 执行<code>m.lock</code>之后，其他 thread 在遇到同样的 <code>m.lock</code> 之前可以继续进行呢？看看我们上一大段代码的执行结果吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">***3******!2!1!4!5!6!7!8!9!</span><br><span class="line">45</span><br></pre></td></tr></table></figure>
+<p>我 <code>Thread.new</code> 之后，<code>m.lock</code> 之前特意加上了 <code>print &#39;*&#39;</code>。在程序打印<code>3</code>之后，打印<code>!</code>之前，mutex 肯定是处于锁住的状态的，但是在<code>3</code> 和它之后的<code>!</code>之间有那么多的 <code>*</code>，可以说明其他 thread 在执行到 <code>m.lock</code> 之前，依然可以在打印字符串，而不是停下来。</p>
+<p>最后，除了 <code>lock</code> 和 <code>unlock</code> 这对方法可以开关 mutex 的锁，ruby 中还提供了一个<code>synchronize</code> 方法，这样可以把 <code>lock</code> 和 <code>unlock</code> 之前的代码作为代码块传入 <code>synchronize</code>:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">m.synchronize <span class="keyword">do</span></span><br><span class="line">  print item</span><br><span class="line">  tmp = @sum</span><br><span class="line">  sleep(rand(<span class="number">2</span>))</span><br><span class="line">	print <span class="string">'!'</span></span><br><span class="line">  @sum = tmp + item</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>而在 Rails 中，Reflection 对象在被 new 出来后，一个 Mutex 对象就被赋值给 <code>@scope_lock</code> 这个实例变量。当 reflection 对象执行 <code>association_scope_cache</code> 方法时，叫做会用到这个 mutex：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">association_scope_cache</span><span class="params">(conn, owner)</span></span></span><br><span class="line">  key = conn.prepared_statements</span><br><span class="line">  <span class="keyword">if</span> polymorphic?</span><br><span class="line">    key = [key, owner._read_attribute(@foreign_type)]</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  @association_scope_cache[key] <span class="params">||</span>= @scope_lock.synchronize &#123;</span><br><span class="line">    @association_scope_cache[key] <span class="params">||</span>= <span class="keyword">yield</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>具体这个 <code>association_scope_cache</code> 方法是在做什么，我们继续探索。</p>
+<blockquote id="fn_1">
+<sup>1</sup>.    其实没什么可怪的，不确定性是事实而已。<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>.    代码参考自<a href="https://www.sitepoint.com/threads-ruby/" target="_blank" rel="noopener">这里</a>，有改动<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails/" rel="tag"># Rails</a>
+          
+            <a href="/tags/源代码/" rel="tag"># 源代码</a>
+          
+            <a href="/tags/持续行动/" rel="tag"># 持续行动</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/25/rails-source-code-100-days-6/" rel="next" title="Rails 源代码 100 天（6）">
+                <i class="fa fa-chevron-left"></i> Rails 源代码 100 天（6）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/27/rails-source-code-100-days-8/" rel="prev" title="Rails 源代码 100 天（8）">
+                Rails 源代码 100 天（8） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2018/04/13/rails-source-code-100-days-7/';
+        this.page.identifier = '2018/04/13/rails-source-code-100-days-7/';
+        this.page.title = 'Rails 源代码 100 天（7）';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

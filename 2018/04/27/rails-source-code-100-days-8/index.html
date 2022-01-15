@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta name="keywords" content="Rails,源代码,持续行动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 源代码 100 天（8）">
+<meta property="og:url" content="https://www.sining.io/2018/04/27/rails-source-code-100-days-8/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-01-15T12:40:20.794Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 源代码 100 天（8）">
+<meta name="twitter:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2018/04/27/rails-source-code-100-days-8/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Rails 源代码 100 天（8） | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2018/04/27/rails-source-code-100-days-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Rails 源代码 100 天（8）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-04-27 10:37:34" itemprop="dateCreated datePublished" datetime="2018-04-27T10:37:34+08:00">2018-04-27</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">既然靠 Rails 吃饭，吃得踏实一点才好</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>根据我们前面的探索，我们已经知道 <code>has_many</code> 方法本身是一个类方法，定义在 <code>ActiveRecord::Associations</code> 这个类中，从方法的定义可以看出：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">has_many</span><span class="params">(name, scope = <span class="literal">nil</span>, options = &#123;&#125;, &amp;extension)</span></span></span><br><span class="line">  reflection = Builder::HasMany.build(<span class="keyword">self</span>, name, scope, options, &amp;extension)</span><br><span class="line">  Reflection.add_reflection <span class="keyword">self</span>, name, reflection</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这个方法的第一个动作是去调用 <code>ActiveRecord::Associations::Builder::HasMany</code> 的 build 方法。根据我们之前的探索, <code>build</code> 是被定义在 <code>ActiveRecord::Associations::Builder::Association</code> 这个类中的类方法。又因为如下继承关系：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ActiveRecord::Associations::Builder::HasMany</span> &lt; ActiveRecord::Associations::<span class="title">Builder::CollectionAssociation</span>;</span> <span class="keyword">end</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ActiveRecord::Associations::Builder::CollectionAssociation</span> &lt; ActiveRecord::Associations::<span class="title">Builder::Association</span>;</span> <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p><code>ActiveRecord::Associations</code> 这个 module 下，可以直接用 <code>Builder::HasMany</code> 调用 build 方法，而 build 方法的返回值是一个 <code>ActiveRecord::Reflection::HasManyReflection</code> 对象。</p>
+<p>我们接下来的目标就是探索这个 reflection 对象在被 new 出来之后，在 build 方法中经过了哪些处理。</p>
+<p>先来回顾一下 build 方法的代码：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">build</span><span class="params">(model, name, scope, options, &amp;block)</span></span></span><br><span class="line">  <span class="keyword">if</span> model.dangerous_attribute_method?(name)</span><br><span class="line">    raise ArgumentError, <span class="string">"You tried to define an association named <span class="subst">#&#123;name&#125;</span> on the model <span class="subst">#&#123;model.name&#125;</span>, but "</span> \</span><br><span class="line">                         <span class="string">"this will conflict with a method <span class="subst">#&#123;name&#125;</span> already defined by Active Record. "</span> \</span><br><span class="line">                         <span class="string">"Please choose a different association name."</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  extension = define_extensions model, name, &amp;block</span><br><span class="line">  reflection = create_reflection model, name, scope, options, extension</span><br><span class="line">  define_accessors model, reflection</span><br><span class="line">  define_callbacks model, reflection</span><br><span class="line">  define_validations model, reflection</span><br><span class="line">  reflection</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>我们在前面的探索中已经知道，这个方法中的局部变量 reflection 已经是一个 <code>ActiveRecord::Reflection::HasManyReflection</code> 对象。接下来这个对象会被传进 <code>define_accessors</code> 等方法。</p>
+<p>我们今天的小目标就是理清这个 <code>define_accessors</code> 方法对 <code>reflection</code> 对象做了什么。</p>
+<p>根据 Rails 源代码中的注释：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># activerecord-5.1.4/lib/active_record/associations/builder/association.rb</span></span><br><span class="line"><span class="comment"># Defines the setter and getter methods for the association</span></span><br><span class="line"><span class="comment"># class Post &lt; ActiveRecord::Base</span></span><br><span class="line"><span class="comment">#   has_many :comments</span></span><br><span class="line"><span class="comment"># end</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Post.first.comments and Post.first.comments= methods are defined by this method...</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">define_accessors</span><span class="params">(model, reflection)</span></span></span><br><span class="line">  mixin = model.generated_association_methods</span><br><span class="line">  name = reflection.name</span><br><span class="line">  define_readers(mixin, name)</span><br><span class="line">  define_writers(mixin, name)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这个方法会获得 getter 和 setter 的方法，比如用我们之前提到的例子就是 <code>Product.first.users</code> 和 <code>Product.first.users =</code>。具体是怎么实现的，我们来仔细看一下代码。</p>
+<p>首先来看，在这个方法的第一行，model 这个参数，也就是调用<code>has_many</code>方法的那个类，会去调用<code>generated_association_methods</code>方法。这个方法是这样的：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># activerecord-5.1.4/lib/active_record/core.rb</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generated_association_methods</span></span></span><br><span class="line">  @generated_association_methods <span class="params">||</span>= <span class="keyword">begin</span></span><br><span class="line">    mod = const_set(<span class="symbol">:GeneratedAssociationMethods</span>, Module.new)</span><br><span class="line">    private_constant <span class="symbol">:GeneratedAssociationMethods</span></span><br><span class="line">    <span class="keyword">include</span> mod</span><br><span class="line"></span><br><span class="line">    mod</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>假设是我们的<code>Product</code>这个 model 去调用这个方法，这个方法执行时的隐含变量 self 就是 <code>Product</code> 这个类，所以局部变量 mod 会是一个名为<code>Product::GeneratedAssociationMethods</code>的 module。并且这个 module 会被 include，里面的方法会成为<code>Product</code>的实例方法。而对于</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@generated_association_methods <span class="params">||</span>= <span class="keyword">begin</span></span><br><span class="line">  <span class="comment">#...</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这样的结构，根据经验，大多是为了防止当<code>#generated_association_methods</code>这个方法被多次调用时，里面的实例变量不至于被覆盖。而且，这个方法中的实例变量名和方法名是一样的，<a href="https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Naming/MemoizedInstanceVariableName" target="_blank" rel="noopener">符合 ruby 中关于定义 memoization 方法的惯例</a>。</p>
+<p>什么是 <a href="https://en.wikipedia.org/wiki/Memoization" target="_blank" rel="noopener">memoization 方法</a>？根据维基百科的描述，这是一种把一部分计算结果存储起来，下次再调用相同的计算时，就可以直接取出存好的结果，而不用重新计算。这有助于提成程序的性能，也可以用于保证多次调用时结果具有一致性。</p>
+<p>回到<code>define_accessors</code>方法中，我们已经知道，mixin 是一个名字叫 <code>GeneratedAssociationMethods</code> 的空 module。</p>
+<p>紧接着，我们要取出 reflection 中的 name 属性。但是，创建 reflection 对象的时候，经过了很多层抽象，不知道你还记不记得 name 属性到底是什么。从源代码中找，在<code>HasManyReflection</code>的一个祖先（<code>MacroReflection</code>）中，有一个构造方法创建了 name 这个 getter 方法，那事的 name 就是 <code>has_many :users</code> 这个调用中传入的 symbol，所以，name 就是 <code>:users</code>。</p>
+<p>另外，我们也可以从 <code>Product.first.users</code> 得到 <code>User::ActiveRecord_Associations_CollectionProxy</code> 对象了中取出这个 reflection 对象 —— <code>Product.first.users.instance_variable_get(:@association).reflection</code>，这个对象了中的实例变量如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#&lt;ActiveRecord::Reflection::HasManyReflection:0x007f87472e3698&gt;</span></span><br><span class="line">  @name=<span class="symbol">:users</span>,</span><br><span class="line">  @scope=<span class="literal">nil</span>,</span><br><span class="line">  @options=&#123;&#125;,</span><br><span class="line">  @active_record=Product(<span class="symbol">id:</span> integer, <span class="symbol">name:</span> string, <span class="symbol">price:</span> decimal, <span class="symbol">detail:</span> string, <span class="symbol">created_at:</span> datetime, <span class="symbol">updated_at:</span> datetime),</span><br><span class="line">  @klass=User(<span class="symbol">id:</span> integer, <span class="symbol">product_id:</span> integer, <span class="symbol">name:</span> string, <span class="symbol">created_at:</span> datetime, <span class="symbol">updated_at:</span> datetime),</span><br><span class="line">  @plural_name=<span class="string">"users"</span>,</span><br><span class="line">  @automatic_inverse_of=<span class="symbol">:product</span>,</span><br><span class="line">  @type=<span class="literal">nil</span>,</span><br><span class="line">  @foreign_type=<span class="string">"users_type"</span>,</span><br><span class="line">  @constructable=<span class="literal">true</span>,</span><br><span class="line">  @association_scope_cache=&#123;&#125;,</span><br><span class="line">  @scope_lock=#&lt;Thread::Mutex:0x007f87472e2e78&gt;,</span><br><span class="line">  @class_name=<span class="string">"User"</span>,</span><br><span class="line">  @inverse_of=#&lt;ActiveRecord::Reflection::BelongsToReflection:0x007f8748452820&gt;,</span><br><span class="line">    @name=<span class="symbol">:product</span>,</span><br><span class="line">    @scope=<span class="literal">nil</span>,</span><br><span class="line">    @options=&#123;&#125;,</span><br><span class="line">    @active_record=User(<span class="symbol">id:</span> integer, <span class="symbol">product_id:</span> integer, <span class="symbol">name:</span> string, <span class="symbol">created_at:</span> datetime, <span class="symbol">updated_at:</span> datetime),</span><br><span class="line">    @klass=<span class="literal">nil</span>,</span><br><span class="line">    @plural_name=<span class="string">"products"</span>,</span><br><span class="line">    @automatic_inverse_of=<span class="literal">nil</span>,</span><br><span class="line">    @type=<span class="literal">nil</span>, @foreign_type=<span class="string">"product_type"</span>, @constructable=<span class="literal">true</span>, @association_scope_cache=&#123;&#125;,</span><br><span class="line">    @scope_lock=#&lt;Thread::Mutex:0x007f87484505e8&gt;</span><br><span class="line">  @inverse_which_updates_counter_cache=<span class="literal">nil</span>,</span><br><span class="line">  @foreign_key=<span class="string">"product_id"</span>,</span><br><span class="line">  @active_record_primary_key=<span class="string">"id"</span></span><br></pre></td></tr></table></figure>
+<p>对于这么多的实例变量，我们目前用到的只有<code>@name</code>，剩下的我们以后会用到。</p>
+<p>接下来，在<code>define_accessors</code>方法中，rails 又分别调用了<code>define_readers</code>和<code>define_writers</code>方法，这两个方法是这样的：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># activerecord-5.1.4/lib/active_record/associations/builder/association.rb</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">define_readers</span><span class="params">(mixin, name)</span></span></span><br><span class="line">  mixin.class_eval &lt;&lt;-CODE, __FILE_<span class="number">_</span>, __LINE_<span class="number">_</span> + <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="comment">#&#123;name&#125;(*args)</span></span></span><br><span class="line">      association(<span class="symbol">:</span><span class="comment">#&#123;name&#125;).reader(*args)</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  CODE</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">define_writers</span><span class="params">(mixin, name)</span></span></span><br><span class="line">  mixin.class_eval &lt;&lt;-CODE, __FILE_<span class="number">_</span>, __LINE_<span class="number">_</span> + <span class="number">1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="comment">#&#123;name&#125;=(value)</span></span></span><br><span class="line">      association(<span class="symbol">:</span><span class="comment">#&#123;name&#125;).writer(value)</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  CODE</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>其中参数 mixin 就是我们刚刚新建的 module —— <code>Product::GeneratedAssociationMethods</code>。现在，利用 class<em>eval 方法向这个 module 中动态插入两个方法。根据 name 的值是 <code>:users</code>，插入的来个方法就成了 <code>users</code> 和 <code>users=</code>，这是使用非常常用的来个方法。在插入这两个方法的时候，rails 还直到了代码在文件中的位置: `mixin.class<em>eval &lt;&lt;-CODE, <strong>FILE</strong>, __LINE</em></em> + 1<code>，这表示代码动态插入的位置在当前文件（</code>activerecord-5.1.4/lib/active_record/associations/builder/association.rb`）的此行 + 1。我们可以验证一下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Product.first.method(<span class="symbol">:users</span>).source_location</span><br><span class="line"><span class="comment"># =&gt; [  "XXX/activerecord-5.1.4/lib/active_record/associations/builder/association.rb", 110 ]</span></span><br></pre></td></tr></table></figure>
+<p>到这里，我们已经探索完了 <code>define_accessors</code> 方法在构建 reflection 对象时的作用。总结一些就是：</p>
+<ol>
+<li>为调用 has_many 的 model 生成 model::GeneratedAssociationMethods 这个 module</li>
+<li>在这个 module 中动态插入两个 associations 的方法，这样所有 model 的实例对象，就都可以访问 associations 方法了。</li>
+</ol>
+<p>不过，我们还有一些问题没有探索，就是在动态生成的 associations 方法，调用了 <code>association</code> 这个方法，这个方法是做什么的。我们将在接下来探索。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails/" rel="tag"># Rails</a>
+          
+            <a href="/tags/源代码/" rel="tag"># 源代码</a>
+          
+            <a href="/tags/持续行动/" rel="tag"># 持续行动</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/13/rails-source-code-100-days-7/" rel="next" title="Rails 源代码 100 天（7）">
+                <i class="fa fa-chevron-left"></i> Rails 源代码 100 天（7）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/30/understanding-bellman-ford-algorithm/" rel="prev" title="理解 Bellman-Ford 算法">
+                理解 Bellman-Ford 算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">27</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2018/04/27/rails-source-code-100-days-8/';
+        this.page.identifier = '2018/04/27/rails-source-code-100-days-8/';
+        this.page.title = 'Rails 源代码 100 天（8）';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
