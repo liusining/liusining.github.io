@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="对 go 泛型的使用进行分类">
+<meta name="keywords" content="编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go 泛型的使用">
+<meta property="og:url" content="https://www.sining.io/2022/08/01/modeling-use-cases-of-go-generic/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="对 go 泛型的使用进行分类">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-08-01T03:13:44.912Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="go 泛型的使用">
+<meta name="twitter:description" content="对 go 泛型的使用进行分类">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2022/08/01/modeling-use-cases-of-go-generic/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>go 泛型的使用 | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2022/08/01/modeling-use-cases-of-go-generic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">go 泛型的使用
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-08-01 10:43:59 / 修改时间：11:13:44" itemprop="dateCreated datePublished" datetime="2022-08-01T10:43:59+08:00">2022-08-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">对 go 泛型的使用进行分类</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>go 1.18 release note 中对于泛型提到了语法上的 6 条改变<sup><a href="#fn_1" id="reffn_1">1</a></sup>：</p>
+<blockquote>
+<ol>
+<li>The syntax for <a href="https://go.dev/ref/spec#Function_declarations" target="_blank" rel="noopener">function</a> and <a href="https://go.dev/ref/spec#Type_declarations" target="_blank" rel="noopener">type declarations</a> now accepts <a href="https://go.dev/ref/spec#Type_parameter_declarations" target="_blank" rel="noopener">type parameters</a>.</li>
+<li>Parameterized functions and types can be instantiated by following them with a list of type arguments in square brackets.</li>
+<li>The new token <code>~</code> has been added to the set of <a href="https://go.dev/ref/spec#Operators_and_punctuation" target="_blank" rel="noopener">operators and punctuation</a>.</li>
+<li>The syntax for <a href="https://go.dev/ref/spec#Interface_types" target="_blank" rel="noopener">Interface types</a> now permits the embedding of arbitrary types (not just type names of interfaces) as well as union and <code>~T</code> type elements. Such interfaces may only be used as type constraints. An interface now defines a set of types as well as a set of methods.</li>
+<li>The new <a href="https://go.dev/ref/spec#Predeclared_identifiers" target="_blank" rel="noopener">predeclared identifier</a><code>any</code> is an alias for the empty interface. It may be used instead of <code>interface{}</code>.</li>
+<li>The new <a href="https://go.dev/ref/spec#Predeclared_identifiers" target="_blank" rel="noopener">predeclared identifier</a><code>comparable</code> is an interface that denotes the set of all types which can be compared using <code>==</code> or <code>!=</code>. It may only be used as (or embedded in) a type constraint.</li>
+</ol>
+</blockquote>
+<p>我们或许可以把他们总结为 3 大类：</p>
+<ol>
+<li>在 function 中可以使用泛型</li>
+<li>在 type 中可以使用泛型</li>
+<li>在 interface 中可以使用泛型</li>
+</ol>
+<p>我们逐一讨论。</p>
+<p>Go 文档的一个泛型语法教程<sup><a href="#fn_2" id="reffn_2">2</a></sup>里展示了在定义 function 时使用泛型的案例。比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SumIntsOrFloats sums the values of map m. It supports both int64 and float64</span></span><br><span class="line"><span class="comment">// as types for map values.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SumIntsOrFloats</span>[<span class="title">K</span> <span class="title">comparable</span>, <span class="title">V</span> <span class="title">int64</span> | <span class="title">float64</span>]<span class="params">(m <span class="keyword">map</span>[K]V)</span> <span class="title">V</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> s V</span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> m &#123;</span><br><span class="line">        s += v</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如此，<code>SumIntsOrFloats</code> 就可以处理多种类型的参数。但如果没有泛型的语法，是否可以用一个 function 处理多种类型呢。go 中的 interface 或许支持这种想法，比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SumIntsOrFloatsWithInterface</span><span class="params">(m <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">	<span class="keyword">switch</span> nums := m.(<span class="keyword">type</span>) &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int64</span>:</span><br><span class="line">		<span class="keyword">var</span> s <span class="keyword">int64</span></span><br><span class="line">		<span class="keyword">for</span> _, v := <span class="keyword">range</span> nums &#123;</span><br><span class="line">			s += v</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> s</span><br><span class="line">	<span class="keyword">case</span> <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">float64</span>:</span><br><span class="line">		<span class="keyword">var</span> s <span class="keyword">float64</span></span><br><span class="line">		<span class="keyword">for</span> _, v := <span class="keyword">range</span> nums &#123;</span><br><span class="line">			s += v</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> s</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"Unknown type"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>又或者把不同类型的 map 抽象出一个带有 Sum() 方法的接口，比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> NumMap <span class="keyword">interface</span> &#123;</span><br><span class="line">	Sum() <span class="keyword">interface</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> NumMapInt64 <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int64</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m NumMapInt64)</span> <span class="title">Sum</span><span class="params">()</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">	<span class="keyword">var</span> s <span class="keyword">int64</span></span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> m &#123;</span><br><span class="line">		s += v</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> NumMapFloat64 <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">float64</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m NumMapFloat64)</span> <span class="title">Sum</span><span class="params">()</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">	<span class="keyword">var</span> s <span class="keyword">float64</span></span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> m &#123;</span><br><span class="line">		s += v</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SumIntsOrFloatsWithPredifinedInterface</span><span class="params">(m <span class="keyword">interface</span>&#123;&#125;)</span> <span class="title">interface</span></span>&#123;&#125; &#123;</span><br><span class="line">	<span class="keyword">switch</span> nums := m.(<span class="keyword">type</span>) &#123;</span><br><span class="line">	<span class="keyword">case</span> NumMapInt64:</span><br><span class="line">		<span class="keyword">return</span> nums.Sum()</span><br><span class="line">	<span class="keyword">case</span> NumMapFloat64:</span><br><span class="line">		<span class="keyword">return</span> nums.Sum()</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"Unknown type"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fmt.Printf("Predifined Interface Sums: %v and %v\n", SumIntsOrFloatsWithPredifinedInterface(NumMapInt64(ints)), SumIntsOrFloatsWithPredifinedInterface(NumMapFloat64(floats)))</span></span><br></pre></td></tr></table></figure>
+<p>但是不使用泛型的写法</p>
+<ol>
+<li>看起来有点啰嗦</li>
+<li>返回值的类型可能还需要再 type assertion 或者 switch 一下</li>
+<li>类型错误可能会在 runtime 中发生，而泛型的参数类型如果不被支持，在 compile time 就会报错<sup><a href="#fn_2" id="reffn_2">2</a></sup></li>
+</ol>
+<p>综上，虽然我不知道什么时候使用泛型函数合适，但是所有需要 type switch 的地方，或许都可以考虑一下泛型的写法。</p>
+<p>声明 type 时也可以使用类型参数，从而构成泛型。比如 go 文档中的一个例子 <sup><a href="#fn_3" id="reffn_3">3</a></sup>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> List[T any] <span class="keyword">struct</span> &#123;</span><br><span class="line">	next  *List[T]</span><br><span class="line">	value T</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的泛型 type 可以实例化、用于指定函数的参数类型、甚至作为 receiver 去声明 methods：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 泛型 type 的实例化</span></span><br><span class="line"><span class="keyword">var</span> l *List[<span class="keyword">int</span>]</span><br><span class="line">l = &amp;List[<span class="keyword">int</span>]&#123;value: <span class="number">1</span>, next: &amp;List[<span class="keyword">int</span>]&#123;value: <span class="number">2</span>, next: &amp;List[<span class="keyword">int</span>]&#123;value: <span class="number">3</span>, next: <span class="literal">nil</span>&#125;&#125;&#125;</span><br><span class="line">fmt.Println(l)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 指定函数的参数类型</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TraverseList</span>[<span class="title">T</span> <span class="title">int</span> | <span class="title">float64</span>]<span class="params">(l *List[T])</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> l != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(l.value)</span><br><span class="line">		l = l.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// or</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TraverseList</span><span class="params">(l *List[<span class="keyword">int</span>])</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> l != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(l.value)</span><br><span class="line">		l = l.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// call with</span></span><br><span class="line"><span class="comment">// TraverseList(l)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 作为 receiver 去声明 methods</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(l *List[T])</span> <span class="title">Traverse</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> l != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(l.value)</span><br><span class="line">		l = l.next</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// call with</span></span><br><span class="line"><span class="comment">// l.Traverse()</span></span><br></pre></td></tr></table></figure>
+<p>如此使用泛型也可以避免写极其相似的代码来构建属性、方法都接近的 types。</p>
+<p>最后，在 interface 中可以插入非 interface 的类型，形成一个 type constraint，但这样的 interface 也只能作为 type constraint 了。在目前的 go 语法规则下，它不能实例化，不能作为函数的参数类型或者 composite 结构的 field 类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Interface <span class="keyword">interface</span> &#123;</span><br><span class="line">	<span class="keyword">struct</span>&#123;&#125; | <span class="keyword">int</span> | []any</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Err: MisplacedConstraintIface</span></span><br><span class="line"><span class="comment">https://pkg.go.dev/golang.org/x/tools/internal/typesinternal#MisplacedConstraintIface</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">var i Interface</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">func _print(i Interface) &#123;</span></span><br><span class="line"><span class="comment">	fmt.Println(i)</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>但是这样的 type constraint 依然可以插入接口需要的 method 或者其他 interface。比如下面的语句是可以的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Interface <span class="keyword">interface</span> &#123;</span><br><span class="line">	<span class="keyword">struct</span>&#123;&#125; | <span class="keyword">int</span> | []any</span><br><span class="line">	NumMap <span class="comment">// NumMap 是上面定义一个 interface</span></span><br><span class="line">	String()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有博客<sup><a href="#fn_4" id="reffn_4">4</a></sup>指出，go 文档将 interface 的定义从 a method set 改为了 a type set。在 type constraint 中混合 interface 原先的用法，达成的效果是进一步限制 type constraint 的范围<sup><a href="#fn_5" id="reffn_5">5</a></sup>，实现一个不会比之前的 type constraint 更大的 type set。</p>
+<p>而以前 method set 形式的 interface 现在是一个没有 type union（type constraint 中类似 <code>int | float64</code> 的语句）的 type set，除了作他以前的用途（比如，声明后实例化为一个 nil 的变量，指定函数的参数类型）也可以用作 type constraint，比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span>[<span class="title">A</span> <span class="title">NumMap</span>]<span class="params">(a A)</span></span> &#123;</span><br><span class="line">	fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>综上，我们对比一下含有和不含有 type union 的 interface 的区别：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>含有 type union 的 interface</th>
+<th>不含有</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>实例化</td>
+<td>不可以</td>
+<td>可以声明出一个 nil 的变量</td>
+</tr>
+<tr>
+<td>指定参数类型或 filed 类型</td>
+<td>不可以</td>
+<td>可以</td>
+</tr>
+<tr>
+<td>嵌入其他 interface 的效果</td>
+<td>限制 type set</td>
+<td>继承接口的 methods</td>
+</tr>
+<tr>
+<td>必须作为 type constraint 使用</td>
+<td>是</td>
+<td>不是</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote id="fn_1">
+<sup>1</sup>. “Go 1.18 Release Notes - The Go Programming Language.” 1 Aug. 2022, go.dev/doc/go1.18#generics.<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. “Tutorial: Getting started with generics - The Go Programming Language.” 1 Aug. 2022, go.dev/doc/tutorial/generics.<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. “The Go Programming Language Specification - The Go Programming Language.” 1 Aug. 2022, go.dev/ref/spec#Type_parameter_declarations.<a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. “Go generic programming: interface is no longer the interface.” 9 Jan. 2022, www.sobyte.net/post/2022-01/the-interface-is-not-that-interface-in-go-1-18.<a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. “Three new concepts related to interfaces since Go 1.18.” 18 Jan. 2022, www.sobyte.net/post/2022-01/three-new-concepts-of-go-interface-since-1-18.<a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/02/06/if-men-do-not-have-a-future-what-should-we-do/" rel="next" title="如果这个世界不会好了，我们这代人该怎么办？">
+                <i class="fa fa-chevron-left"></i> 如果这个世界不会好了，我们这代人该怎么办？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2022/08/01/modeling-use-cases-of-go-generic/';
+        this.page.identifier = '2022/08/01/modeling-use-cases-of-go-generic/';
+        this.page.title = 'go 泛型的使用';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

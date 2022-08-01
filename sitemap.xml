@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.sining.io/2022/08/01/modeling-use-cases-of-go-generic/</loc>
+    
+    <lastmod>2022-08-01</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sining.io/2021/09/23/relationship-between-human-beings-and-pets/</loc>
     
     <lastmod>2022-05-20</lastmod>
@@ -37,7 +44,7 @@
   </url>
   
   <url>
-    <loc>https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/</loc>
+    <loc>https://www.sining.io/2020/12/16/proofs-on-some-modular-arithmetic/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -51,14 +58,14 @@
   </url>
   
   <url>
-    <loc>https://www.sining.io/2020/10/12/it-is-important-to-recognize-who-you-are-talking-to/</loc>
+    <loc>https://www.sining.io/2020/04/05/search-points-over-the-Earth-surface/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sining.io/2020/12/16/proofs-on-some-modular-arithmetic/</loc>
+    <loc>https://www.sining.io/2020/10/12/it-is-important-to-recognize-who-you-are-talking-to/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -93,13 +100,6 @@
   </url>
   
   <url>
-    <loc>https://www.sining.io/2017/12/27/whats-more/</loc>
-    
-    <lastmod>2022-01-15</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.sining.io/2018/02/25/rails-source-code-100-days-1/</loc>
     
     <lastmod>2022-01-15</lastmod>
@@ -107,14 +107,14 @@
   </url>
   
   <url>
-    <loc>https://www.sining.io/2018/02/26/rails-source-code-100-days-2/</loc>
+    <loc>https://www.sining.io/2017/12/27/whats-more/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
   </url>
   
   <url>
-    <loc>https://www.sining.io/2018/03/08/how-to-control-calling-method-to-return-in-called-method/</loc>
+    <loc>https://www.sining.io/2018/03/24/rails-source-code-100-days-5/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -135,7 +135,14 @@
   </url>
   
   <url>
-    <loc>https://www.sining.io/2018/03/24/rails-source-code-100-days-5/</loc>
+    <loc>https://www.sining.io/2018/02/26/rails-source-code-100-days-2/</loc>
+    
+    <lastmod>2022-01-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.sining.io/2018/03/08/how-to-control-calling-method-to-return-in-called-method/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -143,13 +150,6 @@
   
   <url>
     <loc>https://www.sining.io/2018/03/25/rails-source-code-100-days-6/</loc>
-    
-    <lastmod>2022-01-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sining.io/2018/04/13/rails-source-code-100-days-7/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -170,21 +170,14 @@
   </url>
   
   <url>
+    <loc>https://www.sining.io/2018/04/13/rails-source-code-100-days-7/</loc>
+    
+    <lastmod>2022-01-15</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sining.io/2019/01/21/distinguish-iloc-and-loc-in-pandas/</loc>
-    
-    <lastmod>2022-01-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sining.io/2019/01/23/cases-on-thinking-both-in-twos-kind-of-language/</loc>
-    
-    <lastmod>2022-01-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sining.io/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -198,21 +191,7 @@
   </url>
   
   <url>
-    <loc>https://www.sining.io/2019/03/29/our-society-is-differentiating/</loc>
-    
-    <lastmod>2022-01-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sining.io/2019/08/21/we-live-but-not-for-happiness/</loc>
-    
-    <lastmod>2022-01-15</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.sining.io/2020/03/24/dynamodb-basic-features-as-a-batabase/</loc>
+    <loc>https://www.sining.io/2019/01/23/cases-on-thinking-both-in-twos-kind-of-language/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -226,7 +205,28 @@
   </url>
   
   <url>
+    <loc>https://www.sining.io/2019/08/21/we-live-but-not-for-happiness/</loc>
+    
+    <lastmod>2022-01-15</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.sining.io/2020/04/03/how-safe-the-world-is/</loc>
+    
+    <lastmod>2022-01-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.sining.io/2020/03/24/dynamodb-basic-features-as-a-batabase/</loc>
+    
+    <lastmod>2022-01-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.sining.io/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/</loc>
     
     <lastmod>2022-01-15</lastmod>
     
@@ -239,10 +239,17 @@
     
   </url>
   
+  <url>
+    <loc>https://www.sining.io/2019/03/29/our-society-is-differentiating/</loc>
+    
+    <lastmod>2022-01-15</lastmod>
+    
+  </url>
+  
 
   <url>
     <loc>https://www.sining.io/</loc>
-    <lastmod>2022-05-20</lastmod>
+    <lastmod>2022-08-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
