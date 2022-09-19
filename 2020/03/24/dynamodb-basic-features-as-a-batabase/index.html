@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="ACID and more">
+<meta name="keywords" content="AWS,数据库,实践">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DynamoDB 增删改查要点">
+<meta property="og:url" content="https://www.sining.io/2020/03/24/dynamodb-basic-features-as-a-batabase/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="ACID and more">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-01-15T12:40:20.794Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DynamoDB 增删改查要点">
+<meta name="twitter:description" content="ACID and more">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2020/03/24/dynamodb-basic-features-as-a-batabase/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>DynamoDB 增删改查要点 | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/03/24/dynamodb-basic-features-as-a-batabase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">DynamoDB 增删改查要点
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-24 21:22:42" itemprop="dateCreated datePublished" datetime="2020-03-24T21:22:42+08:00">2020-03-24</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">ACID and more</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>DynamoDB 作为一个数据库，其特性也落在 ACID 的框架之内。我们先来复习一下什么是 ACID<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
+<ol>
+<li>原子性（Atomicity）：不可分割性，一个具有原子性的操作要么都成功，要么都失败，不存在只有开头成功，结尾却失败；不存在只有前几个语句成功，后几句却失败。</li>
+<li>一致性（Consistency）：任何操作都需保持数据库中的数据合法、有效<sup><a href="#fn_2" id="reffn_2">2</a></sup>，包括数据完整、不违背写入规则等。对于 DynamoDB 这样的分布式数据库来说，可能还包括主、从节点的数据相同，不发生分歧<sup><a href="#fn_3" id="reffn_3">3</a></sup>。</li>
+<li>隔离性（Isolation）：多个进程、线程同时写入数据库时，可能造成某些数据的冲突、覆盖，一定的隔离性防止冲突发生。</li>
+<li>持久性（Durability）：数据一旦提交，就会存在数据库中，不能丢失。</li>
+</ol>
+<!-- 对于 DynamoDB 的常规操作，可能比较主要的考虑就是，基于这些特性来防止数据冲突、同时提高效率。-->
+<h2 id="增、改、删"><a href="#增、改、删" class="headerlink" title="增、改、删"></a>增、改、删</h2><p>写入操作都很忌讳意外覆盖，导致数据丢失。因此要着重考察数据原子性、一致性、隔离性，防止冲突地修改。</p>
+<p>如果你的使用场景中确定没有并发的写入，比如个人随便记录东西的数据库，那设计就很简单。</p>
+<ol>
+<li>可以顺序执行 <code>PutItem</code>，<code>UpdateItem</code>，<code>DeleteItem</code> 等各种操作，直至把他们组合起来形成批量写入 <code>BatchWriteItem</code></li>
+</ol>
+<p>但只要有多个不同的程序操作同一个 item，尤其是同一个 item 的同一个 attribute，那冲突就有可能发生了。比如，有些进程可能读取了旧数据，隔一段时间后还在基于旧数据来更新 item，从而导致在那段时间中别人的更新被覆盖，成为 lost update<sup><a href="#fn_4" id="reffn_4">4</a></sup>。</p>
+<p>此时可以尽量避免冲突：</p>
+<ol>
+<li>使用原子性操作，将 read-modify-write[<a href="https://en.wikipedia.org/wiki/Read–modify–write" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Read%E2%80%93modify%E2%80%93write</a>] 在一个事物内完成，缩短读取数据和更改数据之间的窗口时间，比如 atomic counter（类似于 <code>#attr = #attr + :val</code>），不取回数据，只在数据库本身中使用数据。</li>
+<li>如果必须取回数据、计算一番之后再修改数据，那写入时，就需要再检查一次，确保自己刚刚的计算所基于的数据是最新的，这就是  <code>ConditionExpression</code>  的作用。</li>
+</ol>
+<p>可以基于 <code>ConditionExpression</code> 来检查某些特殊的字段，比如数据的版本号（version），就实现了乐观锁。</p>
+<p>DynamoDB 中的 request 都是具有原子性的<sup><a href="#fn_5" id="reffn_5">5</a></sup>（<code>BatchWriteItem</code> 除外），但是原子性不意味着隔离性。一个原子性操作的过程中，别的线程并未被隔离，也在修改数据，还是有可能造成冲突。<small>我不确定 DynamoDB 中，对同一个 item 执行多个原子性写入，是否会序列化隔离<sup><a href="#fn_6" id="reffn_6">6</a></sup>；而且没人明确提到，带上 ConditionExpression 后，原子性的 request 就能阻止并发覆盖。但基本可以确定的是，写入都基于 leader node<sup><a href="#fn_7" id="reffn_7">7</a></sup>，提交过的数据会立刻在后续写入中应用</small></p>
+<p>在 2018 年之前，我们可能找不到 DynamoDB 对于 ACID 的完整支持，<a href="https://www.sswug.org/bentaylor/editorials/amazon-dynamodb-does-acid/" target="_blank" rel="noopener">据说</a> DynamoDB 更关注写入的一致性和持久性，而没那么关注隔离性的实现。但是现在 DynamoDB 有了自己的 transaction 操作，可以实现序列化级别的隔离<sup><a href="#fn_8" id="reffn_8">8</a></sup>。这种序列化包括 transcation 之间的序列化和 transaction 和普通写入的序列化<sup><a href="#fn_9" id="reffn_9">9</a></sup>。<!--在 api 简介中，也只有 transaction 明确说明支持 acid，其他全部没说：https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.API.html --></p>
+<p>因此</p>
+<ol>
+<li>当你不允许某个 item 被冲突修改，那么所有对这个 item 的修改都用 <code>TransactWriteItems</code>。</li>
+<li>除此之外，你可以在一个 transaction 中修改多个 item，这些修改具有一个原子性，统一和其他请求隔离。</li>
+</ol>
+<p>相比之下，之前的 DynamoDB 是无法在一个原子操作内修改多个 item 的。如果你要修改 2 个 item，就只能创建两个写入请求，结果可能是一个成功，另一个却在执行时发生冲突。以及还有更多种子情况需要你处理，你可以想象那意味着什么……</p>
+<p>但 DynamoDB 的序列化隔离不会锁住正要修改的 item，而是发现 item 被别的 transaction 修改后让当前的修改失败（这种不基于锁的序列化，被称为“快照隔离”<sup><a href="#fn_10" id="reffn_10">10</a></sup>），因此你需要处理相关的失败，重试或放弃。不过请注意，冲突只发生在以下情况<sup><a href="#fn_9" id="reffn_9">9</a></sup>：</p>
+<ol>
+<li>当 transaction 遇到正在进行的 transaction，后来的 transaction 失败</li>
+<li>当后来的普通写入遇到正在进行的 transaction，后来的普通写入失败</li>
+</ol>
+<p><small>这是否间接证明对单一 item 的普通原子性写入本来就是可序列化的？因为没有关于 transaction 遇到正在进行的普通写入后会失败的描述；也就是说，他们有可能相遇，但不会失败。</small></p>
+<p>总之，由简单到复杂，由一个  <code>PutItem</code> ，到多个请求合并成一个原子性的、transaction 之间序列化的 <code>TransactWriteItems</code>，这是一个大致连续的变化。情况确定了，复杂度就确定了，操作方式也就确定了。</p>
+<!-- 如果你选定了一种操作方式，性能的基础也就被 AWS 给定了，想增加性能就交钱开大并发。-->
+<p>当然，你可能也发现了：DynamoDB 中目前没有标准意义上的范围写入（<code>WHERE</code>一个大范围），每一个写入都需要明确 primary key。如果你要大批量、甚至全表改数据，不是一件容易的事情，所以设计表结构的时候要谨慎。</p>
+<p>最后的最后，纵观各种写入限制<sup><a href="#fn_11" id="reffn_11">11</a></sup>，</p>
+<ol>
+<li>最容易被突破的是一个 item 的数据大小不能超过 400kb（如果 item 包含 Local Secondary Index，则 index 大小包含在内），不要把 attributes 当成一个小 table，存一些总是在增长的数据（比如用户历史订单），迟早会撑爆。</li>
+<li>如果遵守了这个限制，其他的限制都“留有余地”的：<code>BatchWriteItem</code> 和 <code>TransactWriteItems</code> 可容纳的 25 个请求加起来也不会超过他们分别的大小限制 16 mb<sup><a href="#fn_12" id="reffn_12">12</a></sup> 和 4 mb。</li>
+</ol>
+<h2 id="查"><a href="#查" class="headerlink" title="查"></a>查</h2><p>AWS 提示，DynamoDB 这种 NoSQL 和关系型数据库的一个重要区别是：你需要先想好查表的方式，然后再设计表<sup><a href="#fn_13" id="reffn_13">13</a></sup>。因为不是每一个 attribute（类似于关系型数据库中的 column）都可以当作查询的条件；没有事先建立 index 的查询，在 DynamoDB 中非常耗费资源。</p>
+<p>所以，我们先来简单介绍一下常用的查询模式对应到 DynamoDB 中应该怎样建表：</p>
+<ol>
+<li>1 对 1：<ul>
+<li>利用 composite key<sup><a href="#fn_14" id="reffn_14">14</a></sup> 建表或建立 index，一个 PK（partition key，下同） 下留一个 SK（sort key，下同） 来存一对一关系</li>
+</ul>
+</li>
+<li>1 对多：<ul>
+<li>同理，在 table 或 index 的一个 PK 下，存多个 SK，就构成了一对多关系；</li>
+<li>同时，一对多经常需要排序，比如一个用户的多个订单按时间排序，那么你可以把时间当作 SK，或者是多个字段聚合在 SK 中<sup><a href="#fn_15" id="reffn_15">15</a></sup>，比如时间和订单号的聚合， <code>2020-04-01T12:34:56.000Z|order12345</code>，这样数据会按顺序存储，返回时也按时间顺序返回</li>
+</ul>
+</li>
+<li>多对 1:<ul>
+<li>可以把“1”存在多个 items 的 attribute 中</li>
+</ul>
+</li>
+<li>多对多：<ul>
+<li>首先建立一个 1 对多，这样 1 个 PK 就对应多个 items，再把 items 中的一个 attribute，比如 project_id 作为新 PK’，建立一个新的 index’，这样 project_id 相同的 items 就会聚合在 index’ 的同一个 partition 中，实现通过 attribute 定位 items（不然 DynamoDB 是无法像关系型数据库那样，对任意 column 做查询来定位 rows 的）。这种在 attribute 上建 index 来查原始 items 的操作或可称为 inverted index<sup><a href="#fn_18" id="reffn_18">18</a></sup>。可能的情景是：一个用户参与多个项目，一个项目中有多个用户。</li>
+</ul>
+</li>
+</ol>
+<p>按照文档的定义，这种设计方式可以被称为 Adjacency List<sup><a href="#fn_16" id="reffn_16">16</a></sup>。</p>
+<p>另外，以上所有模式中，你都可以把数据存入 attributes 来构建数据间的关系，比如一个用户有 5 个收货地址，你可以把他们存入名为 address 的 attribute 中，但是如果用户有 1000 个收货地址，item 的总大小可能就会超过限制，就不能存在 attribute 中了。</p>
+<p>接下来再看如何查询这些数据。</p>
+<p>和 SQL 只用 <code>SELECT</code> 一个命令做查询不同，目前 DynamoDB 有 5 种查询指令：<code>GetItem</code>、<code>BatchGetItem</code>、<code>Query</code>、<code>Scan</code>、<code>TransactGetItems</code>。我们对他们的查询能力做一下分类。</p>
+<!--查询的本质是比对目标之实际条件和你给出的条件。上述命令所能利用的“条件”类型有很大不同[^11]：-->
+<ol>
+<li>扫描所有 partition：<code>Scan</code>，唯一一个可以全表扫描的接口，和关系型数据库可以相对轻松的全表扫描不同，<code>Scan</code> 在多个 partition 之间扫描，非常耗费资源。我猜，这种情况主要发生在你没有对某些 attribute 建 index 时。</li>
+<li>扫描一个 partition：<code>Query</code>，扫描顺序和 SK 顺序相同（或完全倒序），返回此 PK 下的多个 items。</li>
+<li>查找确定的 primary key：<code>GetItem</code>、 <code>BatchGetItem</code>、<code>TransactGetItems</code>，他们都只能利用 primary key 做查找，无法扫描。</li>
+</ol>
+<p>大致可以看出，这几个接口并不是可以随意选择的，使用场景很确定。</p>
+<p>也大致可以看出，我们总是要把已知数据当作 PK，如果不知道的话，就只能 <code>Scan</code> 来检查所有 PK；知道了 PK，就可以查询由此引出的其他数据。</p>
+<p>以上就是“查”的主要操作。但基于 DynamoDB 的特性，“查”的结果还受一致性和隔离性的影响。</p>
+<ol>
+<li>可序列化读：<code>TransactGetItems</code> 实现了可序列化读，一个 transaction 中读取同一批 item，数据一定是一样的<small>（但好像没必要读取同一批 item）</small>；如果读取过程中相关的 item 被其他 transaction 或普通写入修改，会抛出异常<sup><a href="#fn_9" id="reffn_9">9</a></sup>&lt;/small&gt;</li>
+<li>提交读、不可重复读：DynamoDB 没有“脏读”，只能读到提交过的数据；但同时，其他线程的提交可能使 <code>GetItem</code>、<code>BatchGetItem</code>、<code>Query</code>、<code>Scan</code> 两次读到的数据不同</li>
+<li>“提交也暂时不能读”：DynamoDB 是一种分布式数据库<sup><a href="#fn_17" id="reffn_17">17</a></sup>，读取数据会访问“从节点”，而从节点和主节点的数据同步可能会有延迟<sup><a href="#fn_7" id="reffn_7">7</a></sup>，因此提交过的数据也可能暂时读取不到。当然 AWS 自己管这叫“Eventually Consistent Read”<sup><a href="#fn_3" id="reffn_3">3</a></sup>，是同一事物的另一面。如果要想获得强一致性的读取，可以使用“Strongly Consistent Read”。</li>
+</ol>
+<p>以上，就是我对 DynamoDB 增删改查的一些总结。整理的大致思路是：需求决定操作。希望对您有帮助。</p>
+<p>最后，如果我的文章展现了某些漏洞，请告诉我，但不要用 Hack 我的方式告诉我。好人一生平安。</p>
+<blockquote id="fn_1">
+<sup>1</sup>. Wikipedia Contributors. (2020, March 20). ACID. Retrieved March 25, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/ACID‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/ACID‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. Wikipedia Contributors. (2019, June 19). Consistency (database systems). Retrieved March 25, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Consistency_(database_systems)‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Consistency_(database_systems)‌</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. Read Consistency - Amazon DynamoDB. (2020). Retrieved April 5, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html‌</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. Wikipedia Contributors. (2019, December 12). Concurrency control. Retrieved March 24, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Concurrency_control#Why_is_concurrency_control_needed.3F‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Concurrency_control#Why_is_concurrency_control_needed.3F‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. AWS Developer Forums: Is “UpdateItem” an atomic operation wrt … (2015). Retrieved March 24, 2020, from Amazon.com website: <a href="https://forums.aws.amazon.com/thread.jspa?threadID=179999‌" target="_blank" rel="noopener">https://forums.aws.amazon.com/thread.jspa?threadID=179999‌</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. Working with Items and Attributes - Amazon DynamoDB. (2020). Retrieved March 24, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html#WorkingWithItems.AtomicCounters‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithItems.html#WorkingWithItems.AtomicCounters‌</a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. Amazon Web Services. (2020). AWS re:Invent 2018: Amazon DynamoDB Under the Hood: How We Built a Hyper-Scale Database (DAT321) [YouTube Video]. Retrieved from <a href="https://www.youtube.com/watch?time_continue=160&amp;v=yvBR71D0nAQ‌" target="_blank" rel="noopener">https://www.youtube.com/watch?time_continue=160&amp;v=yvBR71D0nAQ‌</a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_8">
+<sup>8</sup>. New – Amazon DynamoDB Transactions | Amazon Web Services. (2018, November 27). Retrieved March 25, 2020, from Amazon Web Services website: <a href="https://aws.amazon.com/blogs/aws/new-amazon-dynamodb-transactions/‌" target="_blank" rel="noopener">https://aws.amazon.com/blogs/aws/new-amazon-dynamodb-transactions/‌</a><a href="#reffn_8" title="Jump back to footnote [8] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_9">
+<sup>9</sup>. Amazon DynamoDB Transactions: How It Works - Amazon DynamoDB. (2020). Retrieved March 25, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html#transaction-isolation‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/transaction-apis.html#transaction-isolation‌</a><a href="#reffn_9" title="Jump back to footnote [9] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_10">
+<sup>10</sup>. Wikipedia Contributors. (2020, March 3). Isolation (database systems). Retrieved March 24, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Isolation_(database_systems)#Serializable‌</a><a href="#reffn_10" title="Jump back to footnote [10] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_11">
+<sup>11</sup>. Limits in Amazon DynamoDB - Amazon DynamoDB. (2020). Retrieved March 25, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html‌</a><a href="#reffn_11" title="Jump back to footnote [11] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_12">
+<sup>12</sup>. Package dynamodb. (2012). Retrieved March 25, 2020, from Godoc.org website: <a href="https://godoc.org/github.com/aws/aws-sdk-go/service/dynamodb#DynamoDB.BatchWriteItem‌" target="_blank" rel="noopener">https://godoc.org/github.com/aws/aws-sdk-go/service/dynamodb#DynamoDB.BatchWriteItem‌</a><a href="#reffn_12" title="Jump back to footnote [12] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_13">
+<sup>13</sup>. NoSQL Design for DynamoDB - Amazon DynamoDB. (2020). Retrieved April 5, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-general-nosql-design.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-general-nosql-design.html‌</a><a href="#reffn_13" title="Jump back to footnote [13] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_14">
+<sup>14</sup>. Best Practices for Designing and Using Partition Keys     Effectively - Amazon DynamoDB. (2020). Retrieved April 5, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-design.html‌</a><a href="#reffn_14" title="Jump back to footnote [14] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_15">
+<sup>15</sup>. Best Practices for Using Sort Keys to Organize Data - Amazon DynamoDB. (2020). Retrieved April 5, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-sort-keys.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-sort-keys.html‌</a><a href="#reffn_15" title="Jump back to footnote [15] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_16">
+<sup>16</sup>. Best Practices for Managing Many-to-Many     Relationships - Amazon DynamoDB. (2020). Retrieved April 5, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-adjacency-graphs.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-adjacency-graphs.html‌</a><a href="#reffn_16" title="Jump back to footnote [16] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_17">
+<sup>17</sup>. What Is Amazon DynamoDB? - Amazon DynamoDB. (2020). Retrieved April 5, 2020, from Amazon.com website: <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html‌" target="_blank" rel="noopener">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html‌</a><a href="#reffn_17" title="Jump back to footnote [17] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_18">
+<sup>18</sup>. Wikipedia Contributors. (2020, February 29). Inverted index. Retrieved April 5, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Inverted_index‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Inverted_index‌</a><a href="#reffn_18" title="Jump back to footnote [18] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AWS/" rel="tag"># AWS</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+            <a href="/tags/实践/" rel="tag"># 实践</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/21/we-live-but-not-for-happiness/" rel="next" title="活着不是为了快乐，请不要本末倒置">
+                <i class="fa fa-chevron-left"></i> 活着不是为了快乐，请不要本末倒置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/03/25/doing-sales-make-me-feel-a-little-different/" rel="prev" title="销售好像不是一个“说服”工作">
+                销售好像不是一个“说服”工作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2020/03/24/dynamodb-basic-features-as-a-batabase/';
+        this.page.identifier = '2020/03/24/dynamodb-basic-features-as-a-batabase/';
+        this.page.title = 'DynamoDB 增删改查要点';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

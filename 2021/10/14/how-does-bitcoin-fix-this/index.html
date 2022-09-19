@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="世界是否需要新的规则">
+<meta name="keywords" content="学习, 编程, 递弱代偿, 物演通论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How does Bitcoin fix this">
+<meta property="og:url" content="https://www.sining.io/2021/10/14/how-does-bitcoin-fix-this/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="世界是否需要新的规则">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-01-15T12:40:20.798Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="How does Bitcoin fix this">
+<meta name="twitter:description" content="世界是否需要新的规则">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2021/10/14/how-does-bitcoin-fix-this/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>How does Bitcoin fix this | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2021/10/14/how-does-bitcoin-fix-this/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">How does Bitcoin fix this
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-10-14 11:43:57" itemprop="dateCreated datePublished" datetime="2021-10-14T11:43:57+08:00">2021-10-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">世界是否需要新的规则</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这个世界在各个领域都有专家，比我聪明又专业的人有很多很多，但是他们中的很多人对比特币有不小的误解。究其原因，可能是所谓的“专业”建立在旧世界的知识体系之上，越专业，越受到旧思想的牵绊。然而，社会的地基已经悄然漂移，用新世界可能的标准看待比特币，也许就刚刚好。</p>
+<h2 id="比特币总量恒定，造成经济通缩，怎么办？"><a href="#比特币总量恒定，造成经济通缩，怎么办？" class="headerlink" title="比特币总量恒定，造成经济通缩，怎么办？"></a>比特币总量恒定，造成经济通缩，怎么办？</h2><p>不知道从什么时候开始，我们都习惯了通胀，觉得那样才是正常的。但真的一定要这样吗？</p>
+<p>很多人讨厌通缩，可能是因为通缩会抑制需求和生产，限制经济活动<sup><a href="#fn_1" id="reffn_1">1</a></sup>，阻碍经济发展。但经济为什么一定要发展呢？就因为你想赚更多钱吗？</p>
+<p>我们应该看到，经济发展不光给人类带来了一些好处，也带来了社会的全面动荡：比如全球变暖、能源危机、国际竞争乃至生物安全。很多人认为我们应该在发展中解决问题，或者说，“发展是解决我国一切问题的基础和关键”，但实际上，很多问题其实就是“发展”衍生出来的。我们谁也无法保证“发展”是颠覆不破的永恒真理。继续发展，就继续引入新问题。我也希望人类永远能够解决新问题，但谁又敢保证呢，毕竟人类大家族中已经有人种（比如尼安德特人）和文明（比如古玛雅）因为解决不了某些问题而灭绝了。实际上，我国的高层讲话中还有另外一个说法，“发展仍是解决我国所有问题的关键”<sup><a href="#fn_2" id="reffn_2">2</a></sup>。只是不知道这个“仍”字默认什么时候是结束。</p>
+<p>当然，现有的问题也要想办法应对，未来也依然要迎接很多问题，只不过是否一定要用“发展”的方式来处理，有待我们重新审视。</p>
+<p>如果我们假设，仅仅是假设，人类业已逼近增长的极限<sup><a href="#fn_3" id="reffn_3">3</a></sup>，社会采用“零增长”的经济策略，生产等于消耗，刚好满足需求，通缩就不会很严重。或者反过来说，货币总量恒定，可以让人们不得不调整经济策略，重新审视我们对于发展的狂热。而且，适当通缩可以激励人们降低需求、延迟满足，热衷攀比的人将被淘汰，炫富只能成为 loser 的文化。这可能有利于减少社会生活的紧张感。</p>
+<p>在这种情况下，比特币总量恒定，就不是一个特别大的问题。</p>
+<h2 id="比特币价格波动大，难以作为计价货币，怎么办？"><a href="#比特币价格波动大，难以作为计价货币，怎么办？" class="headerlink" title="比特币价格波动大，难以作为计价货币，怎么办？"></a>比特币价格波动大，难以作为计价货币，怎么办？</h2><p>有人绘声绘色的说，你今天也许还能用一个比特币买到一辆车，明天可能发现它连一个车轱辘都买不起。按照今天的常识，货币汇率波动太大，确实是个问题。</p>
+<p>但是，未来的世界呢？这取决于人类将来采取什么样的经济制度。</p>
+<p>当今世界，社会高度分工，这虽然提高了生产效率、扩大了生产规模，但也让社会更加脆弱，因为高度分工意味着所有人都高度依赖别人。供应链中的任何一个环节出现问题，就会一层一层波及到所有人。比如中美贸易战、新冠疫情，甚至一艘货轮堵住苏伊士运河<sup><a href="#fn_4" id="reffn_4">4</a></sup>都能影响全球贸易。</p>
+<p>如果人类继续推进这种高度分工的生产方式，很多本来不构成威胁的随机事件，都可能造成至少一段时间的社会崩溃。到时候，时代的那一粒灰不知道会落谁头上。</p>
+<p>降低这种脆弱性的方式之一是改善生产的独立性。中国最近就一直在解决“卡脖子”技术，减少对国外的依赖。</p>
+<p>如果独立性对于一个国家的安全有好处，那对于个人呢？</p>
+<p>很多人已经认识到了这一点，所以想要社会发展小农经济，人们自给自足，那么社会中的某些生产单元崩溃（比如航运）就不会影响太多人的生活，社会依然稳定，因为人们不依赖它。</p>
+<p>在小农经济下，自给自足的人们不必时刻参与市场交换，不会生活中缺点啥第一时间想到的就是网购，那么货币汇率波动，就不会太影响他们的生活。而且，被认为相对愚昧的古人都能用贵金属作为货币，而贵金属总量不易变化，今天的人们应该也可以使用比特币这种数字“黄金”。</p>
+<p>当然，小农经济或者其他缩小生产规模的经济模式都可能会降低生产效率，社会财富减少，生活水平下降。而且，小农经济供养不了全球这么多人口，走这条路必然需要人口下降，甚至下降到工业革命以前的程度，而那时全世界的人口不足 10 亿。不知道人类后面是否会选择走这条路。</p>
+<p>除此之外，人类还有其他方式避免用市场给比特币定价，比如计划经济。</p>
+<p>很多人认为比特币暴涨暴跌是比特币的问题，但换个角度，也可能是市场的问题。市场失效了，无法给比特币定价。这个时候，如果我们去掉市场，使用中国人曾经熟悉的指导价格，比如规定一个一个鸡蛋是 1 sat，就不用面对比特币价格的波动。</p>
+<p>当然，使用指导价格对海关有很高要求，要防止国外商品在指导价格高时涌入或者指导价格低时国内商品涌出，影响国内的生产和供给。</p>
+<p>不过，计划经济时代的中国恰是相对落后的中国，很多人因此对计划经济有很不好的回忆，甚至认为计划经济导致落后。但在新的技术背景下，尤其是随着大数据和人工智能的开发，我们有没有可能创造一种比市场分配资源的效率还高的计划经济呢？马云老师对此好像比较乐观<sup><a href="#fn_5" id="reffn_5">5</a></sup>。</p>
+<p>现在的大规模生产和市场经济给生产者带来了很大的营销压力，他们非常有意愿培植消费主义，即使这造成了过度消费，也要把自己的东西卖出去。这也是一种资源浪费，还产生很多环保问题。如果大数据下的计划经济能够更好的把握需求和供给的关系，减少过度生产、过度营销，这可能比开发很多被动应对污染的环保技术强多了，这样可能更接近于生态文明和可持续发展。</p>
+<p>总之，计划经济也是人类可选的一条路，而这条路上，比特币不用以市场的方式来给商品定价，因此人们也无须惧怕现在的大涨大跌。</p>
+<p>可以想象，上面的设想在今天看来都很扯淡，我自己其实也没有多少自信它们就一定能落实。而且据说很多人为的社会学设计都造成了灾难，比如大跃进，我们最好不要把自己的理念强加给社会，就让社会在某些基本规则下慢慢演化吧，比如比特币所给出的这些基本规则。</p>
+<!-- ##  比特币没有国家信用背书，怎么办？
+
+这个问题可能很多人已经讨论过。我谨在这里更新一下一些最新消息。
+
+如果所谓的“国家信用背书” -->
+<blockquote id="fn_1">
+<sup>1</sup>. Contributors to Wikimedia projects. (2021, October 01). Deflation - Wikipedia. Retrieved from <a href="https://en.wikipedia.org/w/index.php?title=Deflation&amp;oldid=1047560209" target="_blank" rel="noopener">https://en.wikipedia.org/w/index.php?title=Deflation&amp;oldid=1047560209</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. 人民网. (2021, June 18). 习近平谈“兴国之要”：发展是解决所有问题的关键. Retrieved from <a href="http://cpc.people.com.cn/xuexi/n1/2017/0615/c385474-29340955.html" target="_blank" rel="noopener">http://cpc.people.com.cn/xuexi/n1/2017/0615/c385474-29340955.html</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. Contributors to Wikimedia projects. (2021, September 26). The Limits to Growth - Wikipedia. Retrieved from <a href="https://en.wikipedia.org/w/index.php?title=The_Limits_to_Growth&amp;oldid=1046509318" target="_blank" rel="noopener">https://en.wikipedia.org/w/index.php?title=The_Limits_to_Growth&amp;oldid=1046509318</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. Contributors to Wikimedia projects. (2021, October 04). Ever Given - Wikipedia. Retrieved from <a href="https://en.wikipedia.org/w/index.php?title=Ever_Given&amp;oldid=1048172928" target="_blank" rel="noopener">https://en.wikipedia.org/w/index.php?title=Ever_Given&amp;oldid=1048172928</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. 马云：未来30年 计划经济会越来越大. (2021, October 09). Retrieved from <a href="https://www.yicai.com/news/5162510.html" target="_blank" rel="noopener">https://www.yicai.com/news/5162510.html</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/23/relationship-between-human-beings-and-pets/" rel="next" title="我不知道该如何面对宠物">
+                <i class="fa fa-chevron-left"></i> 我不知道该如何面对宠物
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/11/01/recognize-the-timeline-of-the-world/" rel="prev" title="我们的世界几岁了？">
+                我们的世界几岁了？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2021/10/14/how-does-bitcoin-fix-this/';
+        this.page.identifier = '2021/10/14/how-does-bitcoin-fix-this/';
+        this.page.title = 'How does Bitcoin fix this';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

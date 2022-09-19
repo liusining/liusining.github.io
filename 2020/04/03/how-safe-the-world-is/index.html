@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="复杂并不必然安全，高级并不必然可靠">
+<meta name="keywords" content="安全">
+<meta property="og:type" content="article">
+<meta property="og:title" content="这一切真的安全么——一个开发项目引发的思考">
+<meta property="og:url" content="https://www.sining.io/2020/04/03/how-safe-the-world-is/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="复杂并不必然安全，高级并不必然可靠">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-01-15T12:40:20.794Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="这一切真的安全么——一个开发项目引发的思考">
+<meta name="twitter:description" content="复杂并不必然安全，高级并不必然可靠">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2020/04/03/how-safe-the-world-is/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>这一切真的安全么——一个开发项目引发的思考 | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2020/04/03/how-safe-the-world-is/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">这一切真的安全么——一个开发项目引发的思考
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-04-03 08:08:49" itemprop="dateCreated datePublished" datetime="2020-04-03T08:08:49+08:00">2020-04-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">复杂并不必然安全，高级并不必然可靠</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在做一个涉及资产和地理位置的 Web App，每次向用户保证“安全”的时候（包括财产和隐私），我都会不由自主的问自己，真的安全么？所以在这里详细讨论一下。不过事先声明，我做的 app 可能无法绝对安全，但并不比同类的差，请自行比较。</p>
+<p>首先说，这世界上可能没有绝对安全，有的话也不属于人类。即使你躲在家中，也面临各种小概率灾难的威胁：大地震，大洪水，陨石撞击，火山喷发。很多人认为小概率事件不可能发生，但事实却是，我们不知道会不会发生。“不知道”不等不“不会”<sup><a href="#fn_1" id="reffn_1">1</a></sup>。</p>
+<p>很多人在 2019 年都觉得不会再发生非典那样严重的疫情。确实，结果 2020 年来了个更严重的疫情。我们不知道的事情，不代表不存在。</p>
+<p>没有了绝对安全，就只剩下相对安全了。“相对”的意思是“依靠一定条件而存在”（《现代汉语词典》）。我们可以大致可以猜想，如果安全需要依赖的条件多且苛刻，那么这种安全其实很不稳定。若真如此，人类生存的安全性就很让人“焦虑”，因为<a href="/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/">人类的依存需求很多</a>，甚至有可能是自然界中最多的。</p>
+<p>回到一个 Web App 上来，它真的安全么？这需要看他依赖的条件，其中至少包含以下几点：</p>
+<ol>
+<li>访问国际互联网的通路，包括 DNS，CDN 等</li>
+<li>云计算服务商的软硬件，包括设施维护、灾备处理等</li>
+<li>开发人员，包括其工作设备、开发工具、知识水平等诸多方面</li>
+</ol>
+<p>这中间任何环节出现问题，安全都将受到考验。比如云服务商意外删除了数据怎么办（<a href="https://about.gitlab.com/blog/2017/02/01/gitlab-dot-com-database-incident/" target="_blank" rel="noopener">这种事不是没有发生过</a>），开发人员的工作设备被入侵了怎么办（开发人员也无法搞清设备的每一个细节）。所以很多选择，并不是基于深刻理解，而是基于经验、品牌等，觉得那样没问题。所以安全就变成了，你依赖我，我依赖他们，他们依赖更多他们，脆弱性很可能就在这个链条中不断积累。</p>
+<p>如果上面的说明让你觉得我开发的 app 很不安全，那我得说，你接触到的网站都差不多，我开发的并没有更不安全。可能大公司有实力考虑更小的意外事故，所以他们自建机房（不使用云服务商）、监控工作人员的设备，但如果他们真的那么安全，每隔一段时间就会出现的数据泄露是怎么来的。所以，事实可能是，他们并没有更安全，相反，如果他们不花大价钱做更多防护，就会大大地不安全。他们必须为安全付出更大的成本，这里没有选择的余地。<small>当然，小公司也可能泄露数据，但是因为没人关注或者干脆公司自己都不知道，所以知道的人少。但大公司更容易成为“靶子”应该是确定的。</small></p>
+<p>并且，从某种程度上来说，个人开发可能还具有某些优势：接触敏感数据的人少。大公司里都是打工的人，你并不能指望每个人都对你的数据安全上心（肯定有兢兢业业的人，不误伤）。而且他们都是有限责任公司，只要不违法，很多责任是在“有限”之外的。这鼓励了人们创新<sup><a href="#fn_2" id="reffn_2">2</a></sup>，因为不用承担更多的责任，但有时会给别人留下了隐患。有人可能会反驳说，参与公司投资、购买公司产品，都是个人做出的选择，“自己为自己的选择负责”；这在今天的背景下听起来没有问题，甚至还站上了某些道德高地，但当社会中因此出现越来越多的 inverse hero<sup><a href="#fn_1" id="reffn_1">1</a></sup>、占据不对称优势的人，有些事情可能会发生改变。这里谨引用章北海在“自然选择号”上留下的一句话<sup><a href="#fn_3" id="reffn_3">3</a></sup>：</p>
+<blockquote>
+<p>新的文明在诞生，新的道德也在形成</p>
+</blockquote>
+<p>当然，我也只是猜，不要太当真。但一个难以否认的事实是，个人越来越无法为自己“负责”了，因为我们依赖的东西越来越多：手机、网络、软件、房子、车子、各种食品商品供应链，每一个你都不甚了解，但又不得不依赖，你越来越多的需要别人为你负责。从这个角度说，我觉得“有限责任公司”<strong>可能</strong>只是个历史阶段性产物。<small>注意，我没说要对我做的 app 承担 100% 的责任，这对我是不公平的，至少在今天这个环境下。</small></p>
+<p>我知道有些圈子流行“生命不息，折腾不止”，这挺好。但以后人们可能会更加关注一个问题：你折腾的是谁。如果是你自己，大家应该会勉强接受（当然，你也可以无视大家是否接受）；如果是别人，你的生命可能需要休息……开玩笑的，只是为了文字表达上的对称而已；有些人会愿意你折腾他们，可以去找这些人，或许。<small>注意，我没有暗指罗永浩老师，只是在给这句话加个注脚而已。</small></p>
+<p>有人会说，这世界不是零和游戏，资源越折腾越多。有可能。一个著名的例子是罗马俱乐部报告了人类增长的极限<sup><a href="#fn_4" id="reffn_4">4</a></sup>，说石油等资源会在接下来几十年到 100 年之内用尽，但人类却通过不断探测新储备、开发新能源，延长了这一时间，人们因此大受鼓舞。但问题是，你怎么知道人类永远能找到下一个能量来源。或者，换个说法，我们和我们的子孙（如果你有的话）<strong>本来</strong>没必要开发更高难度的资源，但是因为更容易的资源被前人用完了，所以逼迫着下一代不得不发展新能源；如果他们开发不出来，世界人口将会打折。这里没有选择的余地。</p>
+<p>所以，那些鼓吹甚至笃信“正和游戏”理论，但所作所为却只有消耗当前相对便宜的资源的人，你们真的不是在给自己的贪婪找借口么？不过，我不想控诉谁，今日之局面不是一人之所为；我也无法批判谁，在今天的<a href="/2019/10/17/worldview-is-changing-itself-and-will-continue-like-this/">世界观</a>下，消费主义也是我默认的行为。然而，静静地看，有些变化已悄然发生。</p>
+<p>回到正题，怎么解决安全问题呢？</p>
+<p>有些人认为是发展新的安全技术。这比较容易理解，毕竟，“发展是解决一切问题的总钥匙”<sup><a href="#fn_5" id="reffn_5">5</a></sup>。但有时我也会有些犹豫，毕竟，宇宙已经发展 130 亿年了，却没有给人类营造一个没有问题的空间；人类文明已经发展 1 万年了，眼看着问题好像越来越多（天灾好像少了，但人祸却变多了<sup><a href="#fn_6" id="reffn_6">6</a></sup>）。所以，我们是不是把这个世界看错了？</p>
+<p>注意，我并没有否定“进步论”，我目前还没有这个能力；而且，我自己也在努力进步。但借助上面的思考，对于安全问题，或许可以有不一样的解决方向：不发生，就不会有问题。如果我压根就不让敏感数据产生，或者不使用高敏感数据，大家都可以相对安全。</p>
+<p>基于此，相对最安全的方式其实是，不做这个 app。如果非要做，不使用、不存储敏感数据，就没有数据泄露等一系列问题。如果不得不存储私钥等数据，才使用一些安全技术。总之，能不发生的，就都不要发生。这多少印证了索福克勒斯（Sophocles，《俄狄浦斯王》作者）的名言<sup><a href="#fn_7" id="reffn_7">7</a></sup>：</p>
+<blockquote>
+<p>Not to be born is, beyond all estimation, best<br>没出生才是最好的情况</p>
+</blockquote>
+<p>这就是我对“安全”的一些思考。可能有些消极，但我们都要坚强的活下去，继续面对问题，继续解决问题……开玩笑的，生活还是很美好的，天空很蓝，阳光很明媚。</p>
+<blockquote id="fn_1">
+<sup>1</sup>. 《反脆弱》<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. <a href="http://jishi.cntv.cn/program/gongsideliliang/shouye/" target="_blank" rel="noopener">《公司的力量》 </a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. 刘慈欣. (2008). 黑暗森林. In 三体Ⅱ (pp. 420): 重庆出版社.<a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. Wikipedia Contributors. (2020, March 10). The Limits to Growth. Retrieved April 3, 2020, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/The_Limits_to_Growth‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/The_Limits_to_Growth‌</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <a href="https://web.archive.org/web/20170519150940/http://www.beltandroadforum.org/n100/2017/0514/c24-407.html" target="_blank" rel="noopener">“一带一路”演讲</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. 《物演通论》<a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. Contributors to Wikimedia projects. (2005, January 29). ancient Greek playwright. Retrieved April 3, 2020, from Wikiquote.org website: <a href="https://en.wikiquote.org/wiki/Sophocles#Oedipus_at_Colonus‌" target="_blank" rel="noopener">https://en.wikiquote.org/wiki/Sophocles#Oedipus_at_Colonus‌</a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/安全/" rel="tag"># 安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/03/25/doing-sales-make-me-feel-a-little-different/" rel="next" title="销售好像不是一个“说服”工作">
+                <i class="fa fa-chevron-left"></i> 销售好像不是一个“说服”工作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/04/05/search-points-over-the-Earth-surface/" rel="prev" title="搜索地球表面上的点（工程）">
+                搜索地球表面上的点（工程） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">33</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2020/04/03/how-safe-the-world-is/';
+        this.page.identifier = '2020/04/03/how-safe-the-world-is/';
+        this.page.title = '这一切真的安全么——一个开发项目引发的思考';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
