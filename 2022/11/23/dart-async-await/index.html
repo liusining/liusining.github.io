@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Dart 中的异步编程">
+<meta name="keywords" content="编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart 中的 async&#x2F;await">
+<meta property="og:url" content="https://www.sining.io/2022/11/23/dart-async-await/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="Dart 中的异步编程">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://dart.dev/guides/language/concurrency/images/event-loop.png">
+<meta property="og:updated_time" content="2022-11-23T11:22:39.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dart 中的 async&#x2F;await">
+<meta name="twitter:description" content="Dart 中的异步编程">
+<meta name="twitter:image" content="https://dart.dev/guides/language/concurrency/images/event-loop.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2022/11/23/dart-async-await/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Dart 中的 async/await | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2022/11/23/dart-async-await/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Dart 中的 async/await
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2022-11-23 18:53:27 / 修改时间：19:22:39" itemprop="dateCreated datePublished" datetime="2022-11-23T18:53:27+08:00">2022-11-23</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">Dart 中的异步编程</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我已经在 js, python, dart 三种语言中见过 async 和 await 的语法了。另外，听说 rust 和 swift 中也有相同的语法。我们以 dart 为例，来了解这两个关键词的用法。了解其他语言的同学可以对比一下。</p>
+<p>我们按照 async 和 await 的“生命周期”来逐步解释这种语法的使用，也就是说按照这样的顺序：</p>
+<ol>
+<li>声明</li>
+<li>调用</li>
+<li>运行</li>
+</ol>
+<h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><p>async 可以用来声明一个异步函数。比如</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">String</span>&gt; request() <span class="keyword">async</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"test"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数会立即返回一个 Future。Future 会在执行完成时，可以取到内部的值。至于 Future 何时执行完成，在「运行」部分进行讨论。</p>
+<p>这里为了举例方便，用了一个非常简单的 Future。</p>
+<p>但 async 某种程度上类似于一种语法糖 <sup><a href="#fn_1" id="reffn_1">1</a></sup>  <sup><a href="#fn_2" id="reffn_2">2</a></sup>  ，利用 Future 类的 API（Future 是一个抽象类）构造一个以 Future 为返回值的函数 <sup><a href="#fn_3" id="reffn_3">3</a></sup>  ，效果是一样的。比如</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">String</span>&gt; request() &#123;</span><br><span class="line">	<span class="keyword">return</span> Future&lt;<span class="built_in">String</span>&gt;.value(<span class="string">"test"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h2><p>要想取到 Future 的完成之后的值，可以用 await 等待 Future 完成，比如 await request() 。但是要想使用 await，必须在另外一个 async 函数的函数体内（注，用 await 必须用 async，但是用 async 不一定要在其中用 await）。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">String</span>&gt; handleResponse() <span class="keyword">async</span> &#123;</span><br><span class="line">	<span class="keyword">final</span> resp = <span class="keyword">await</span> request();</span><br><span class="line">	<span class="keyword">return</span> <span class="string">"got response: <span class="subst">$resp<span class="string">";</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">&#125;</span></span></span></span><br></pre></td></tr></table></figure>
+<p>同样，await 也类似于一种语法糖，相当于把 await 右边的语句当成一个 Future，然后把 await 之后代码当成是 Future 完成之后的回调。我们可以用 Future 的 API 实现相同的效果，比如</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="built_in">String</span>&gt; handleResponse() &#123;</span><br><span class="line">  <span class="keyword">return</span> request().then((resp) =&gt; <span class="string">"got response: <span class="subst">$resp<span class="string">");</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">&#125;</span></span></span></span><br></pre></td></tr></table></figure>
+<p>then 方法的返回值依然是一个 Future，可以继续串联 then，而传入的 then 的参数始终是上一个 Future 完成之后的值。但如果需要多个 then 串联，可能就还是写 await 更方便。</p>
+<p>但这里有一个问题，async 函数和 Future.then 方法返回的还是一个 Future，要想得到这个 Future 的值就需要在另外一个 async 函数中调用，或者继续串联 then ，什么时候才能停止这个 Future 的链条呢？</p>
+<p>首先，想要在 Future 的链条外得到 Future 的执行后的结果，或者说从异步的执行中，回到同步执行的代码中，是不可能的 <sup><a href="#fn_4" id="reffn_4">4</a></sup>  <sup><a href="#fn_5" id="reffn_5">5</a></sup>  。</p>
+<p>比如下面这段代码，即使等待足够长的时间，Future 也无法完成对变量 a 的赋值，然后继续执行 main 中剩下的同步代码，所以最后一行代码打印出的值还是 1 。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">int</span> a = <span class="number">0</span>;</span><br><span class="line">  Future.delayed(<span class="built_in">Duration</span>(seconds: <span class="number">1</span>), () &#123;</span><br><span class="line">    a = <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"future: <span class="subst">$a<span class="string">");</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">  &#125;);</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">  sleep(Duration(seconds: 2));</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">  print("</span></span>last line: <span class="subst">$a<span class="string">");</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">&#125;</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">// 输出结果：</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">// last line: 0</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="string">// future: 1</span></span></span></span><br></pre></td></tr></table></figure>
+<p>其次，也没必要这样做，实际生产的 Dart 项目，比如一个 Flutter app，本来就是不断产生事件，处理事件的过程，其中不断产生 Future，执行 Future，Future 用过之后自然抛弃（只要没有被继续引用，就会自动被垃圾回收），没有必要回到 main 的同步程序中，也回不去。</p>
+<p>这些都跟 Dart 的「运行」方式有关。</p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>Future 在 Dart 中的运行方式大致是这样的：</p>
+<ol>
+<li>Dart app 启动</li>
+<li>产生一个 Isolate（main isolate） <sup><a href="#fn_6" id="reffn_6">6</a></sup>  </li>
+<li>初始化 2 个事件队列 <sup><a href="#fn_6" id="reffn_6">6</a></sup>  </li>
+<li>在 main isolate 中执行 main() 函数<sup><a href="#fn_7" id="reffn_7">7</a></sup>  <sup><a href="#fn_8" id="reffn_8">8</a></sup>  </li>
+<li>main() 中产生的 Future 会被注册到事件队列中（刚刚两个事件队列中的一个）<sup><a href="#fn_6" id="reffn_6">6</a></sup>  </li>
+<li>main() 完成并退出</li>
+<li>main() 退出后，Event Loop 启动（每个 Isolate 有自己唯一且独立的 Event Loop)，按顺序处理队列中的事件和 Future <sup><a href="#fn_7" id="reffn_7">7</a></sup>   <sup><a href="#fn_8" id="reffn_8">8</a></sup>  </li>
+<li>Event Loop 处理事件队列的过程中，如果遇到新的事件或者产生新的 Future，会继续插入到事件队列中</li>
+<li>处理完事件之后，以及没有新的事件插入到事件队列中，main isolate 会退出 <sup><a href="#fn_7" id="reffn_7">7</a></sup>  <sup><a href="#fn_8" id="reffn_8">8</a></sup>  </li>
+<li>Dart app 运行结束</li>
+</ol>
+<p><img src="https://dart.dev/guides/language/concurrency/images/event-loop.png" alt></p>
+<p>其中，有一些细节会影响到 Future 执行的顺序。</p>
+<p>首先，main() 需要退出才能进入 Event Loop，Future（或事件）才能被处理。在 main() 执行的阶段，只有同步执行的代码会被真正的运行，而 Future 中的方法不会被执行。</p>
+<p>所以，我们会看到，如果阻塞住 main 中的同步过程，Future 的时效性无法保证。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"1st line: <span class="subst">$&#123;DateTime.now()&#125;</span>"</span>);</span><br><span class="line">  Future.delayed(</span><br><span class="line">      <span class="built_in">Duration</span>(seconds: <span class="number">1</span>), () =&gt; <span class="built_in">print</span>(<span class="string">'delay finished: <span class="subst">$&#123;DateTime.now()&#125;</span>'</span>));</span><br><span class="line">  sleep(<span class="keyword">const</span> <span class="built_in">Duration</span>(seconds: <span class="number">2</span>));</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"last line: <span class="subst">$&#123;DateTime.now()&#125;</span>"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 输出结果：</span></span><br><span class="line"><span class="comment">1st line: 2022-11-22 17:08:04.968417</span></span><br><span class="line"><span class="comment">last line: 2022-11-22 17:08:06.975185</span></span><br><span class="line"><span class="comment">delay finished: 2022-11-22 17:08:06.978442</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>其中，Future 不是延迟 1 秒执行，而是等待了 2 秒之后，在 main 退出之后立即执行的。</p>
+<p>其次，Isolate 有且只有一个线程，或者说每个 Isolate 只有一个 Event Loop，一旦被占用，这个 Event Loop 就没法处理其他事件，也没法运行那些事件的 handler。而且，Dart 一旦运行一个方法，就会一直把它运行完，中途不会被其他 Dart 代码打断，没有 interleaving <sup><a href="#fn_8" id="reffn_8">8</a></sup>  。</p>
+<p>这就会导致，即使程序已经进入 Event Loop，虽然可以处理各种异步 Future，但如果某个 Future 的实际运行占用了 Isolate，其他 Future 也无法得到执行。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  Future.delayed(<span class="built_in">Duration</span>(seconds: <span class="number">0</span>), () &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"before sleep <span class="subst">$&#123;DateTime.now()&#125;</span>"</span>);</span><br><span class="line">    sleep(<span class="built_in">Duration</span>(seconds: <span class="number">5</span>));</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"after sleep <span class="subst">$&#123;DateTime.now()&#125;</span>"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  Future.delayed(</span><br><span class="line">      <span class="built_in">Duration</span>(seconds: <span class="number">1</span>), () =&gt; <span class="built_in">print</span>(<span class="string">'delayed #1 <span class="subst">$&#123;DateTime.now()&#125;</span>'</span>));</span><br><span class="line">  Future.delayed(</span><br><span class="line">      <span class="built_in">Duration</span>(seconds: <span class="number">2</span>), () =&gt; <span class="built_in">print</span>(<span class="string">'delayed #2 <span class="subst">$&#123;DateTime.now()&#125;</span>'</span>));</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"last line"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 输出结果：</span></span><br><span class="line"><span class="comment">last line</span></span><br><span class="line"><span class="comment">before sleep 2022-11-22 21:59:42.428351</span></span><br><span class="line"><span class="comment">after sleep 2022-11-22 21:59:47.432718</span></span><br><span class="line"><span class="comment">delayed #1 2022-11-22 21:59:47.437846</span></span><br><span class="line"><span class="comment">delayed #2 2022-11-22 21:59:47.438072</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>其中，由于第一个进入事件队列的 Future 中有 sleep 5 秒，占用了 Event Loop，后面的 Future 虽然在代码上分别要求延迟 1 秒和 2 秒，但实际上都是在第一个 Future 结束之后，立即执行的。</p>
+<p>这和多线程的异步执行程序是不一样的，后者的事件（比如这里的计时结束事件 timer expiration）可以在别的线程进行处理，而不用等待现在的线程处理完上一个方法。</p>
+<p>谈到这里，我们可以讨论一下 Dart 这样的单线程设计（一个 Isolate 中只有一个线程，且有独立的内存 memory heap）的优劣。</p>
+<p>按照官方文档的说法，优点是不用考虑锁（mutex）和竞争关系（race conditions）<sup><a href="#fn_7" id="reffn_7">7</a></sup> 。</p>
+<p>劣势是如果有事件的 handler 或者 Future 的执行占用 main isolate 的 Event Loop 很长事件，那么 UI 就会卡顿，因为用户点击之类的事件也没有线程可以响应。</p>
+<p>所以，开发者有必要把比较耗时的步骤从 main isolate 中挪走。比如，新建一个 Isolate（新的 Isolate 中会有新的线程）来执行那些代码，避免阻塞 main isolate。生成新 Isolate 的方法有 <a href="https://api.dartlang.org/stable/dart-isolate/Isolate/spawn.html" target="_blank" rel="noopener">Isolate.spawn()</a> 和 Flutter 中的 <a href="https://flutter.dev/docs/cookbook/networking/background-parsing#4-move-this-work-to-a-separate-isolate" target="_blank" rel="noopener">compute()</a> 。 <sup><a href="#fn_7" id="reffn_7">7</a></sup>   <sup><a href="#fn_9" id="reffn_9">9</a></sup> </p>
+<p>最后，我们上面说一个 Isolate 中有 2 个事件队列，他们被分别称为 microtask 和 event。这两个队列的优先级是不一样的，microtask 更高。 <sup><a href="#fn_8" id="reffn_8">8</a></sup>  <sup><a href="#fn_6" id="reffn_6">6</a></sup>  </p>
+<p>这也会影响 Future 的执行顺序。比如 Future.then 所产生的 Future 就会插入到 microtask 中 <sup><a href="#fn_10" id="reffn_10">10</a></sup>  ，所以总是会比某些 Future 先执行。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'dart:io'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  Future(() =&gt; <span class="built_in">print</span>(<span class="string">'future #1 <span class="subst">$&#123;DateTime.now()&#125;</span>'</span>)).then((_) &#123;</span><br><span class="line">    sleep(<span class="built_in">Duration</span>(seconds: <span class="number">1</span>));</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"slept #1: <span class="subst">$&#123;DateTime.now()&#125;</span>"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  Future((() =&gt; <span class="built_in">print</span>(<span class="string">'future #2 <span class="subst">$&#123;DateTime.now()&#125;</span>'</span>)));</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"last line"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 输出结果：</span></span><br><span class="line"><span class="comment">last line</span></span><br><span class="line"><span class="comment">future #1 2022-11-23 10:57:26.569081</span></span><br><span class="line"><span class="comment">slept #1: 2022-11-23 10:57:27.573343</span></span><br><span class="line"><span class="comment">future #2 2022-11-23 10:57:27.574044</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>其中，Future #1 和 #2 是在 main 执行的过程中，就被插入到 event 队列中的。Future #1 执行完成之后回调 then。then 会把传入的方法包装在一个新的 Future 中，插入队列。如果他插入的队列是 event，则程序应该先打印 “future #2”。但实际情况是，then 产生的 Future 被插入到了优先级更高的 microtask 队列中，所以比 Future #2 先执行。</p>
+<p>这会带来一个问题，如果 microtask 中总是有待执行的 Future，那么 event 中的事件就无法被响应，UI 可能会出现卡顿。这时候可以把 Future #1 改成：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Future(() =&gt; <span class="built_in">print</span>(<span class="string">'future #1 <span class="subst">$&#123;DateTime.now()&#125;</span>'</span>)).then((_) &#123;</span><br><span class="line">  Future(() &#123;</span><br><span class="line">    sleep(<span class="built_in">Duration</span>(seconds: <span class="number">1</span>));</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"slept #1: <span class="subst">$&#123;DateTime.now()&#125;</span>"</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这样，在 then 中重新生成一个 Future，那么耗时的步骤会被插入 event 队列的末尾，和其他 Future 一起排队，这样可以给其他 Future 一些执行的机会 <sup><a href="#fn_8" id="reffn_8">8</a></sup>  。</p>
+<p>上面我们都是直接讨论 Future 的执行顺序，把这些 Future 改写成 async 和 await 也是一样的。</p>
+<p>在 async 函数中，Dart 会把</p>
+<ol>
+<li>await 之前的代码同步执行</li>
+<li>await 右侧的表达式也会被同步执行，该表达式的结果会被注册为一个 Future（如果结果本身就是 Future，则直接使用；否则，利用 Future.value() 创造一个 Future）<sup><a href="#fn_11" id="reffn_11">11</a></sup>  ，插入到相应的队列中（后一种情况插入的是 microtask <sup><a href="#fn_12" id="reffn_12">12</a></sup>  ）</li>
+<li>await 之后的代码当作 Future 完成后的回调 <sup><a href="#fn_6" id="reffn_6">6</a></sup><br>举例来说是这样的：</li>
+</ol>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  whatHappensAroundAwait();</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"last line of main()"</span>); <span class="comment">// 优先于 await 之后的代码进行打印</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> whatHappensAroundAwait() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"before await"</span>);</span><br><span class="line">  <span class="keyword">final</span> result = <span class="keyword">await</span> () &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"right to the await"</span>); <span class="comment">// 同步执行</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"result"</span>;</span><br><span class="line">  &#125;();</span><br><span class="line">  <span class="built_in">print</span>(result); <span class="comment">// 在 Future 的回调中执行</span></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"after await"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 输出结果：</span></span><br><span class="line"><span class="comment">before await</span></span><br><span class="line"><span class="comment">right to the await</span></span><br><span class="line"><span class="comment">last line of main()</span></span><br><span class="line"><span class="comment">result</span></span><br><span class="line"><span class="comment">after await</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>我们也可以说，如果一个 async 函数中没有 await，则他本身跟同步函数的执行顺序没有什么区别，只不过返回值会被包装在一个 Future 里（然后注册到 microtask 里）。</p>
+<p>对于 await 如何阻塞线程，这取决于 await 右侧的表达式。如果该表达式在同步执行阶段，或者产生的 Future 在执行阶段比较耗时，都会长时间阻塞线程。</p>
+<p>如果直接把 main 定义为 async，那么 main 会执行到第一个 await（包含该 await 右边的表达式），把 await 后面的语句当作 future 和该 future 完成之后的回调， 然后 main 就可以退出，进入 Event Loop 了。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"1st line of main()"</span>);</span><br><span class="line">  Future.microtask(</span><br><span class="line">      () =&gt; <span class="built_in">print</span>(<span class="string">"future #1: cannot be executed without main() exit"</span>));</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"before await"</span>); <span class="comment">// 先于 future #1 进行打印</span></span><br><span class="line">  <span class="keyword">final</span> result = <span class="keyword">await</span> () &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"right to the await"</span>); <span class="comment">// 先于 future #1 进行打印</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"result"</span>;</span><br><span class="line">  &#125;();</span><br><span class="line">  <span class="built_in">print</span>(result);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"after await"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 输出结果：</span></span><br><span class="line"><span class="comment">1st line of main()</span></span><br><span class="line"><span class="comment">before await</span></span><br><span class="line"><span class="comment">right to the await</span></span><br><span class="line"><span class="comment">future #1: cannot be executed without main() exit</span></span><br><span class="line"><span class="comment">result</span></span><br><span class="line"><span class="comment">after await</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>其中，await 前面和右面的代码都是在 main 中同步执行的，如果有打印，则先于 future #1 进行打印。而 await 之后的代码，需要 await 产生的 Future 回调时，才能执行，插入到事件队列（microtask）中的时间晚于 future #1，所以，比 future #1 打印晚一些。（BTW，如果 future #1 使用 Future() 构造，而不是用 Future.microtask() ，则会被插入到 event 队列中，执行顺序则会晚于 await 之后的回调，因为 await 右边的 Future 和之后的回调都插入的是 microtask，优先级更高）</p>
+<blockquote id="fn_1">
+<sup>1</sup>. ES6 入门教程 <a href="https://es6.ruanyifeng.com/#docs/async" target="_blank" rel="noopener">https://es6.ruanyifeng.com/#docs/async</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. Async and Await: Syntactic Sugar For Promises in Javascript | by Matt McAlister | Medium <a href="https://medium.com/@matt.mcalister93/async-and-await-syntactic-sugar-for-promises-in-javascript-aee7ace36d14" target="_blank" rel="noopener">https://medium.com/@matt.mcalister93/async-and-await-syntactic-sugar-for-promises-in-javascript-aee7ace36d14</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. Language tour | Dart <a href="https://dart.dev/guides/language/language-tour#handling-futures" target="_blank" rel="noopener">https://dart.dev/guides/language/language-tour#handling-futures</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. dart - Getting values from Future instances - Stack Overflow <a href="https://stackoverflow.com/questions/46579358/getting-values-from-future-instances" target="_blank" rel="noopener">https://stackoverflow.com/questions/46579358/getting-values-from-future-instances</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. flutter - Return a value from Future in dart - Stack Overflow <a href="https://stackoverflow.com/questions/56111615/return-a-value-from-future-in-dart" target="_blank" rel="noopener">https://stackoverflow.com/questions/56111615/return-a-value-from-future-in-dart</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. Flutter - Futures - Isolates - Event Loop <a href="https://www.didierboelens.com/2019/01/futures-isolates-event-loop/" target="_blank" rel="noopener">https://www.didierboelens.com/2019/01/futures-isolates-event-loop/</a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. Concurrency in Dart | Dart <a href="https://dart.dev/guides/language/concurrency#how-isolates-work" target="_blank" rel="noopener">https://dart.dev/guides/language/concurrency#how-isolates-work</a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_8">
+<sup>8</sup>. The Event Loop and Dart | webdev.dartlang.org <a href="https://web.archive.org/web/20170704074724/https://webdev.dartlang.org/articles/performance/event-loop" target="_blank" rel="noopener">https://web.archive.org/web/20170704074724/https://webdev.dartlang.org/articles/performance/event-loop</a><a href="#reffn_8" title="Jump back to footnote [8] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_9">
+<sup>9</sup>. Dart asynchronous programming: Isolates and event loops | by Kathy Walrath | Dart | Medium <a href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a" target="_blank" rel="noopener">https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a</a><a href="#reffn_9" title="Jump back to footnote [9] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_10">
+<sup>10</sup>. then method - Future class - dart:async library - Dart API <a href="https://api.dart.dev/stable/2.18.5/dart-async/Future/then.html" target="_blank" rel="noopener">https://api.dart.dev/stable/2.18.5/dart-async/Future/then.html</a><a href="#reffn_10" title="Jump back to footnote [10] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_11">
+<sup>11</sup>. Dart Language Specs <a href="https://dart.dev/guides/language/specifications/DartLangSpec-v2.10.pdf" target="_blank" rel="noopener">https://dart.dev/guides/language/specifications/DartLangSpec-v2.10.pdf</a><a href="#reffn_11" title="Jump back to footnote [11] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_12">
+<sup>12</sup>. sdk/future_impl.dart at 212d5e3a31e82f156ba1e9996ff2cf70d959582d · dart-lang/sdk · GitHub <a href="https://github.com/dart-lang/sdk/blob/212d5e3a31e82f156ba1e9996ff2cf70d959582d/sdk/lib/async/future_impl.dart#L639" target="_blank" rel="noopener">https://github.com/dart-lang/sdk/blob/212d5e3a31e82f156ba1e9996ff2cf70d959582d/sdk/lib/async/future_impl.dart#L639</a><a href="#reffn_12" title="Jump back to footnote [12] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/08/01/modeling-use-cases-of-go-generic/" rel="next" title="go 泛型的使用">
+                <i class="fa fa-chevron-left"></i> go 泛型的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">34</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">28</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2022/11/23/dart-async-await/';
+        this.page.identifier = '2022/11/23/dart-async-await/';
+        this.page.title = 'Dart 中的 async/await';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
