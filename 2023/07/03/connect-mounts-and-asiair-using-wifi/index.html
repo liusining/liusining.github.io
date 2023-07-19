@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="携带方便，减少绕线">
+<meta name="keywords" content="天文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="野外天文观测时利用 WiFi 串联设备">
+<meta property="og:url" content="https://www.sining.io/2023/07/03/connect-mounts-and-asiair-using-wifi/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="携带方便，减少绕线">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://www.sining.io/images/asiair-wifi-station-mode-interface.png">
+<meta property="og:image" content="https://www.sining.io/images/both-asiair-and-mounts-connect-to-smart-phone-hotspot.png">
+<meta property="og:image" content="https://www.sining.io/images/asiair-mount-network-setting-interface.png">
+<meta property="og:image" content="https://www.sining.io/images/mount-connecting-asiair-but-asiair-connecting-to-smartphone-hotspot.png">
+<meta property="og:updated_time" content="2023-07-03T04:00:10.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="野外天文观测时利用 WiFi 串联设备">
+<meta name="twitter:description" content="携带方便，减少绕线">
+<meta name="twitter:image" content="https://www.sining.io/images/asiair-wifi-station-mode-interface.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2023/07/03/connect-mounts-and-asiair-using-wifi/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>野外天文观测时利用 WiFi 串联设备 | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2023/07/03/connect-mounts-and-asiair-using-wifi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">野外天文观测时利用 WiFi 串联设备
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2023-07-03 11:45:34 / 修改时间：12:00:10" itemprop="dateCreated datePublished" datetime="2023-07-03T11:45:34+08:00">2023-07-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">携带方便，减少绕线</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>现在越来越多的天文观测设备（赤道仪、天文盒子等）带有 WiFi 连接功能，如果能用 WiFi，而不是数据线，把他们串联起来，可以获得很多好处，比如携带更方便之类的。</p>
+<p>但很多设备默认使用热点连接模式（Hotspot / Access Point / AP Mode）<sup><a href="#fn_1" id="reffn_1">1</a></sup><sup><a href="#fn_2" id="reffn_2">2</a></sup>，即设备本身作为 WiFi 基站，让手机、电脑去连他，如果用同一台手机去控制不同设备，可能就要来回切换 WiFi 频道，而且这些 WiFi 本身不连接互联网，手机连接后无法上网。</p>
+<p>为了解决这些问题，我们可以把这些设备调成桥接模式（Station Mode），让他们统一接入我们的手机热点，实现多个观测设备的大串联。</p>
+<h2 id="让设备连接手机热点"><a href="#让设备连接手机热点" class="headerlink" title="让设备连接手机热点"></a>让设备连接手机热点</h2><p>先说<strong>天文盒子</strong>。大家用的应该都是振旺的（即 ASIAIR），所以操作方式比较统一。步骤如下：</p>
+<p><img src="/images/asiair-wifi-station-mode-interface.png" alt></p>
+<ol>
+<li>手机连接天文盒子的 WiFi，并进入 ASIAIR app 的控制界面</li>
+<li>点击上边栏中的 WiFi 样子的图标，打开无线桥接（打开无线桥接后，ASIAIR 原本的 WiFi 也是存在的，如果中途出现错误，可以回到步骤 1）</li>
+<li>app 会让你选择一个 WiFi 网络。请选择一个手机热点，并输入密码（热点可以来自你现在操作的这台手机，也可以来自不同的手机，但有些手机无法在连接 WiFi 的同时开启热点，所以就需要另外一台手机的热点）</li>
+<li>连接成功后，点击你所连接的热点名称右边的 info 图标（ℹ️），最好记住 IP 地址</li>
+<li>现在手机连接的还是天文盒子的 WiFi，不过现在可以从手机的设置中断开连接了（不是 ASIAIR app 中）</li>
+<li>然后回到 app。如果它告诉你，无法连接到天文盒子，说明它没有扫描到桥接模式下天文盒子所在的 IP 地址，这时就需要你手动输入刚刚的 IP 地址了，确认之后，天文盒子就能在桥接模式下接受控制了</li>
+</ol>
+<p>如果你忘记了 IP，可以重新连接天文盒子的 WiFi，在步骤 4 所指出 app 界面中重新看一下。或者，如果你接入手机热点的某个设备（可以是别的手机或电脑，但通常不能是发出热点的设备本身）上有网络扫描工具（这里推荐手机应用 fing），可以扫描一下当前局域网中的设备，应该会发现一个叫 ASIAIR 的设备，就是天文盒子。</p>
+<p>如果上面的描述有未详尽之处，可以参考下面两个教程。他们都是将天文盒子接入普通的 WiFi。只要将这些教程中的 WiFi 换成一个合适的手机热点就行了。</p>
+<ol>
+<li><a href="https://astronomy-imaging-camera.com/asiair/asiair-guide-four-ways-to-connect-the-asiair-pro-to-network-updated/" target="_blank" rel="noopener">[ASIAIR GUIDE] Four ways to connect the ASIAIR PRO to network (UPDATED) – ZWO ASI</a></li>
+<li><a href="https://www.youtube.com/watch?v=qa5znE54Bgc" target="_blank" rel="noopener">ASIAIR Plus - STATION MODE - YouTube</a></li>
+</ol>
+<p>另外，这个桥接模式只需配置一次，天文盒子就可以记住了手机热点的密码了，下次打开同一个热点，天文盒子会自动连接。至于天文盒子所在的 IP，在同一个手机热点下，大概率也是不会变的，所以下次打开 ASIAIR app 可以直接通过桥接模式连接天文盒子了，无需重复配置。</p>
+<p>如果你用电脑，而不是天文盒子，来控制各种设备，那把有线换成无线，似乎更有必要。但我还没研究电脑上的各种天文软件，所以就不瞎说了。</p>
+<p>然后是<strong>赤道仪</strong>。配置思路和上面一样：</p>
+<ol>
+<li>手机连接赤道仪自带的 WiFi，然后在赤道仪 app 中开启桥接模式</li>
+<li>在 app 中输入手机热点的名称和密码，让赤道仪连接到我们的热点</li>
+<li>从赤道仪原有的 WiFi 断开，转而连接我们自己的热点（或者你的手机本身就是热点）</li>
+<li>在赤道仪 app 中输入设备所在的 IP 地址，即可实现桥接模式下的连接</li>
+</ol>
+<p>各家赤道仪的具体操作，可以参考厂家提供的用户手册：</p>
+<ol>
+<li>信达（需内置 WiFi，或者有 WiFi 适配器，比如新版 HEQ5）：参考<a href="https://inter-static.skywatcher.com/downloads/synscan_app_manual_en_20230525.pdf" target="_blank" rel="noopener">SynScan App 用户手册</a>中「SYNSCAN WI-FI SETTINGS」一节，或者 <a href="https://inter-static.skywatcher.com/downloads/synscanwifi_102.pdf" target="_blank" rel="noopener">WiFi 适配器说明书</a></li>
+<li>星特朗：一般需要单独购买该品牌的 SkyPortal 硬件<sup><a href="#fn_3" id="reffn_3">3</a></sup>，而且 SkyPortal 以前叫 SkyQ Link<sup><a href="#fn_3" id="reffn_3">3</a></sup>，所以参考 <a href="https://s3.amazonaws.com/celestron-site-support-files/support_files/93959_SkyQLink_ManualV2.pdf" target="_blank" rel="noopener">93959_SkyQLink_ManualV2.pdf</a>（不过这个手册中管热点模式叫 Direct Connect Mode，管桥接模式 Access Point Mode，有点奇怪）</li>
+<li>振旺谐波赤道仪：他们的 app 还挺直观的，可以直接上手</li>
+</ol>
+<h2 id="设备间互相连接"><a href="#设备间互相连接" class="headerlink" title="设备间互相连接"></a>设备间互相连接</h2><p>上面，我们已经实现了，在手机有网、不来回切换 WiFi 的情况下，用同一部手机控制多个设备。但到此为止，控制不同类别的设备还是需要打开不同的 app。</p>
+<p>我们既然使用了天文盒子，大概率是想要通过天文盒子间接控制赤道仪，所以还需要设置天文盒子跟赤道仪的通信。这一般通过在盒子跟赤道仪间接一根线来完成，但有了前面的铺垫，如果想省下这根线，也并不复杂。</p>
+<p><img src="/images/both-asiair-and-mounts-connect-to-smart-phone-hotspot.png" alt></p>
+<p>因为我们已经将赤道仪和天文盒子都接入了我们的手机热点，并且知道了他们的 IP，那么就可以在 ASIAIR app 中设置一下，让天文盒子知道赤道仪的通信地址。步骤如下：</p>
+<p><img src="/images/asiair-mount-network-setting-interface.png" alt></p>
+<ol>
+<li>进入 ASIAIR app 的控制页面，打开上边栏中的赤道仪菜单（图标为望远镜）</li>
+<li>把连接方式改为「网络」</li>
+<li>输入赤道仪的 IP</li>
+<li>输入赤道仪的端口和通信协议（参数见下方）</li>
+<li>点击菜单右上角的开关按钮，重新连接赤道仪</li>
+</ol>
+<p>对于端口和通讯协议，每家赤道仪有相对固定的参数，目前我查到的：</p>
+<ol>
+<li>信达，端口：11880 ，通信协议：UDP<sup><a href="#fn_4" id="reffn_4">4</a></sup><sup><a href="#fn_5" id="reffn_5">5</a></sup></li>
+<li>振旺，端口：4030（默认的就是），通信协议：TCP（默认的就是）<sup><a href="#fn_6" id="reffn_6">6</a></sup></li>
+</ol>
+<p>另外，也可以参考下面的教程，都是振旺官方出的，只不过他们是让赤道仪以桥接模式接入盒子的 WiFi，而我们是接入手机热点。这两种方式都可以让赤道仪获得一个盒子可以访问的 IP，只要把赤道仪的 IP 告诉盒子，赤道仪和盒子之间通信的效果是一样的。但在手机和天文盒子之间，还是要保持桥接模式，即天文盒子接入手机热点，而不是手机接入天文盒子的 WiFi，以保持手机有网。</p>
+<ol>
+<li>信达赤道仪和振旺盒子的连接，可以参考官方用户手册，<a href="https://i.cmoscool.com/zwo-website/manuals/ASIAIR%E4%B8%8E%E4%BF%A1%E8%BE%BEAZ-GTI%E7%BB%8F%E7%BA%AC%E4%BB%AA%E6%90%AD%E9%85%8D%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97.pdf" target="_blank" rel="noopener">ASIAIR与信达AZ-GTI经纬仪搭配使用指南.pdf</a> 或者 <a href="https://astronomy-imaging-camera.com/manuals/ASIAIR_Sky-Watcher_AZ-GTI.pdf" target="_blank" rel="noopener">ASIAIR_Sky-Watcher_AZ-GTI.pdf</a></li>
+<li>振旺谐波赤道仪和盒子的连接，可以参考 <a href="https://zhuanlan.zhihu.com/p/551085037" target="_blank" rel="noopener">熟记这五步！ASIAIR无线连接AM5，真的很简单！ - 知乎</a></li>
+</ol>
+<p><img src="/images/mount-connecting-asiair-but-asiair-connecting-to-smartphone-hotspot.png" alt></p>
+<p>当然，如果是让天文盒子执行长时间的拍摄计划，那么让赤道仪接入天文盒子的 WiFi 比较好，这样即使手机上的热点断掉了（手机没电，或者手机被拿远了），盒子也能继续控制赤道仪</p>
+<blockquote id="fn_1">
+<sup>1</sup>. <a href="https://bbs.astronomy-imaging-camera.com/d/10609-avx-with-skysafari-sync" target="_blank" rel="noopener">Avx with skysafari sync ?? - ZWO User Forum</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_2">
+<sup>2</sup>. <a href="https://astronomy-imaging-camera.com/asiair/asiair-guide-four-ways-to-connect-the-asiair-pro-to-network-updated/" target="_blank" rel="noopener">[ASIAIR GUIDE] Four ways to connect the ASIAIR PRO to network (UPDATED) – ZWO ASI</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <a href="https://www.celestron.com/pages/skyportal-mobile-app" target="_blank" rel="noopener">SkyPortal Powered by SkySafari™ Mobile App | Celestron</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_4">
+<sup>4</sup>. <a href="https://inter-static.skywatcher.com/downloads/synscanwifi_102.pdf" target="_blank" rel="noopener">SynScan Wi-Fi Adapter</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_5">
+<sup>5</sup>. <a href="https://astronomy-imaging-camera.com/manuals/ASIAIR_Sky-Watcher_AZ-GTI.pdf" target="_blank" rel="noopener">ASIAIR_Sky-Watcher_AZ-GTI.pdf</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_6">
+<sup>6</sup>. <a href="https://zhuanlan.zhihu.com/p/551085037" target="_blank" rel="noopener">熟记这五步！ASIAIR无线连接AM5，真的很简单！ - 知乎</a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/天文/" rel="tag"># 天文</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/11/23/dart-async-await/" rel="next" title="Dart 中的 async 和 await">
+                <i class="fa fa-chevron-left"></i> Dart 中的 async 和 await
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/07/19/what-is-right-ascension-and-declination/" rel="prev" title="什么是赤经、赤纬，以及赤道仪如何指向特定坐标？">
+                什么是赤经、赤纬，以及赤道仪如何指向特定坐标？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2023/07/03/connect-mounts-and-asiair-using-wifi/';
+        this.page.identifier = '2023/07/03/connect-mounts-and-asiair-using-wifi/';
+        this.page.title = '野外天文观测时利用 WiFi 串联设备';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

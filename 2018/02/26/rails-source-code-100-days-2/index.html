@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+  <meta name="google-site-verification" content="oBA3vmOn1wNAM3iTyftqwy2Ff1AqCsNRd7pRNOKCaKI">
+
+
+
+  <meta name="msvalidate.01" content="F079683AD6B0EA7D092C23537866D539">
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MNglSni2Ki">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.6.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/android-icon-192x192.png?v=6.6.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/android-icon-48x48.png?v=6.6.0">
+
+
+
+  <link rel="manifest" href="/manifest.json">
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.6.0',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta name="keywords" content="Rails,源代码,持续行动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 源代码 100 天（2）">
+<meta property="og:url" content="https://www.sining.io/2018/02/26/rails-source-code-100-days-2/index.html">
+<meta property="og:site_name" content="sining.io">
+<meta property="og:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-01-15T12:40:20.794Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 源代码 100 天（2）">
+<meta name="twitter:description" content="既然靠 Rails 吃饭，吃得踏实一点才好">
+
+
+
+
+
+
+  <link rel="canonical" href="https://www.sining.io/2018/02/26/rails-source-code-100-days-2/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Rails 源代码 100 天（2） | sining.io</title>
+  
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-85065650-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-85065650-2');
+</script>
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sining.io</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">刘思宁的博客</h1>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2018/02/26/rails-source-code-100-days-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘思宁">
+      <meta itemprop="description" content="一个无知的人">
+      <meta itemprop="image" content="/images/sining-avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="sining.io">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Rails 源代码 100 天（2）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-02-26 10:37:34" itemprop="dateCreated datePublished" datetime="2018-02-26T10:37:34+08:00">2018-02-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">既然靠 Rails 吃饭，吃得踏实一点才好</div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>现在，我们已经大致了解了<code>link_to</code>方法的内部，但有几个细节需要继续探索：</p>
+<ol>
+<li><code>link_to</code>内部调用的方法<code>convert_options_to_data_attributes</code>到底在做什么？</li>
+<li>为什么<code>link_to</code>方法中要<code>freeze</code>一些字符串？</li>
+<li><code>contant_tag</code>方法最终是如何生成<code>&lt;a&gt;</code>标签的？</li>
+</ol>
+<h2 id="整理-html-属性"><a href="#整理-html-属性" class="headerlink" title="整理 html 属性"></a>整理 html 属性</h2><p>首先，从<code>convert_options_to_data_attributes</code> 的命名可以看出，这个方法是为了把options中的一些相关字段转化为页面元素的属性，而且从下面的详细代码中可以看出，这个 options 包括 options 和 html_options。另外，这个方法在<code>button_to</code>等方法中也有调用，目的都是整理页面元素的属性。那么，Rails 想用这个方法来整理哪些属性呢？</p>
+<p>在<a href="https://github.com/rails/rails/blob/2135daf0d552bbb2eca4208f8c33fb015cf052ab/actionview/lib/action_view/helpers/url_helper.rb#L568" target="_blank" rel="noopener">这个方法内部</a>，</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert_options_to_data_attributes</span><span class="params">(options, html_options)</span></span></span><br><span class="line">  <span class="keyword">if</span> html_options</span><br><span class="line">    html_options = html_options.stringify_keys</span><br><span class="line">    html_options[<span class="string">"data-remote"</span>] = <span class="string">"true"</span>.freeze <span class="keyword">if</span> link_to_remote_options?(options) <span class="params">||</span> link_to_remote_options?(html_options)</span><br><span class="line"></span><br><span class="line">    method = html_options.delete(<span class="string">"method"</span>.freeze)</span><br><span class="line"></span><br><span class="line">    add_method_to_attributes!(html_options, method) <span class="keyword">if</span> method</span><br><span class="line"></span><br><span class="line">    html_options</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    link_to_remote_options?(options) ? &#123; <span class="string">"data-remote"</span> =&gt; <span class="string">"true"</span>.freeze &#125; : &#123;&#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>我们可以看到，因为从<code>link_to</code>内部传入的 <code>options</code> 和 <code>html_options</code> 参数都可能是 nil，所以会有很多不同情况的判断条件。</p>
+<p>这个方法处理的第一个属性是<code>data-remote</code>，而这个属性的设置方法可以是<code>link_to &#39;a link&#39;, products_path, method: :post, remote: true</code>，经过几行代码的处理之后，<code>remote</code>字段会被以<code>{&quot;data-remote&quot; =&gt;  &quot;true&quot;}</code>的形式表示在 html_options 这个变量中。</p>
+<p>另外，我们可以看到，Rails 其实考虑了<code>remote</code>字段不在 html_options 中，而在 options 参数中传入的情况。也就是说，如果你写出这样的代码，Rails 能巧合的生成正确的结果：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">link_to <span class="string">'a strange syntax'</span>, <span class="symbol">controller:</span> <span class="string">'products'</span>, <span class="symbol">action:</span> <span class="string">'index'</span>, <span class="symbol">remote:</span> <span class="literal">true</span></span><br><span class="line">link_to <span class="string">'a stranger syntax'</span>, &#123;<span class="symbol">controller:</span> <span class="string">'products'</span>, <span class="symbol">action:</span> <span class="string">'index'</span>, <span class="symbol">remote:</span> <span class="literal">true</span>&#125;, <span class="class"><span class="keyword">class</span>: '<span class="title">my</span>-<span class="title">class</span>'</span></span><br><span class="line"><span class="comment"># the above 2 are similar to:</span></span><br><span class="line">link_to <span class="string">'a more ordinary syntax'</span>, &#123;<span class="symbol">controller:</span> <span class="string">'products'</span>, <span class="symbol">action:</span> <span class="string">'index'</span>&#125;, <span class="symbol">remote:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>他们都会生成类似下面的元素：</p>
+<pre><code>&lt;a data-remote=&quot;true&quot; href=&quot;/products&quot;&gt;a ... syntax&lt;/a&gt;
+</code></pre><p>这在你使用 ajax 去 GET 远端的资源时或许用的上，3种语法任意选，不过正常来看，选择把<code>remote: true</code>放在 html_options 中更好，也就是上面的最后一种语法。</p>
+<p>整理了 <code>remote</code>字段后，Rails 会整理 <code>method</code> 字段。不过<code>method</code>就不像<code>remote</code>这么特殊了，它只能被写在 html_options 这个参数中。而在整理 method 字段时，Rails 又用到一个封装的方法<code>add_method_to_attributes!</code>：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_method_to_attributes!</span><span class="params">(html_options, method)</span></span></span><br><span class="line">  <span class="keyword">if</span> method &amp;&amp; method.to_s.downcase != <span class="string">"get"</span>.freeze &amp;&amp; html_options[<span class="string">"rel"</span>.freeze] !~ <span class="regexp">/nofollow/</span></span><br><span class="line">    html_options[<span class="string">"rel"</span>.freeze] = <span class="string">"<span class="subst">#&#123;html_options[<span class="string">"rel"</span>.freeze]&#125;</span> nofollow"</span>.lstrip</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line">  html_options[<span class="string">"data-method"</span>.freeze] = method</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这个方法做的事情就是根据一定规则创建<code>rel</code>字段（如果不是<code>get</code>方法，如果<code>rel</code>字段没有被明确地写为带<code>nofollow</code>的 link type，则修改 <code>rel</code> 字段）和<code>data-method</code>字段。</p>
+<p>到此为止，html_options 中剩下的字段只可能是<code>data-remote</code>，<code>data-method</code>，<code>rel</code>以及<code>class</code>等其他常用或自定义的属性。</p>
+<p>而 options 中一定不会存在 <code>remote</code> 字段了。</p>
+<h2 id="为什么freeze"><a href="#为什么freeze" class="headerlink" title="为什么freeze"></a>为什么<code>freeze</code></h2><p>到这里，我们其实可以解释一下，为什么要 <code>freeze</code>。</p>
+<p><code>freeze</code>其实是两年前（i.e. 2016 年）才<a href="https://github.com/rails/rails/commit/f785413ce3d56f51f813cfd92c515c803ffde4d6#diff-26e33d6e883deb07332ac9c1922eadc0" target="_blank" rel="noopener">被 merge 进 Rails 的源代码</a>的，而且整个 url_helper 模块的<code>freeze</code>都是一个人的贡献，他 commit 时留下的解释是：</p>
+<blockquote>
+<p>reduce string allocation</p>
+</blockquote>
+<p>因为 url_helper 这个方法经常被用到，所以如果减少这里面使用字符串时的内存重新分配，可以提高性能。</p>
+<p>其实，当人们在调用<code>freeze</code>的时候，<a href="http://flats.github.io/blog/2016/01/03/frozen-strings/#making-an-object-immutable" target="_blank" rel="noopener">通常想让他做的事可能是</a>：</p>
+<ol>
+<li>防止对象被更改</li>
+<li>检查内存的重新分配</li>
+</ol>
+<p>第一种情况通常发生在人们把一个对象放在变量中时，比如<code>a = {key: &#39;value&#39;}</code>。如果<code>a</code>不可修改，但别人有很难从变量的命名或者代码的其他地方看出<code>a</code>不可修改，那么这个时候可以通过<code>a =  {key: &#39;value&#39;}.freeze</code>把这个 Hash 对象锁住，让所有尝试改动此对象的人得到一个异常。</p>
+<p>第二种情况才是 url_helper 这个 module 中要使用<code>freeze</code>的原因。url_helper 中都没有把那些 String 对象赋值给一个变量，谈不上防止别人在别处修改变量中的对象。而使用 freeze 真的能减少内存分配么？这是真的，我们可以用<code>object_id</code>方法做个检验：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">no_allocation</span></span></span><br><span class="line">	<span class="string">'a string'</span>.freeze.object_id</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">no_allocation == no_allocation <span class="comment"># true</span></span><br></pre></td></tr></table></figure>
+<p>object_id 方法是对象的唯一标示，如果object_id 不同，则代表是不同的对象，存储位置也不一样。但是上面的实验显示两次使用<code>&#39;a string&#39;.freeze</code>得到的是同一个对象，Ruby 没有重新分配一块内存来存储新的 String 对象。</p>
+<p>但如果不用<code>freeze</code>的话，情况就不一样了：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">yes_allocation</span></span></span><br><span class="line">	<span class="string">'a string'</span>.object_id</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">yes_allocation == yes_allocation <span class="comment"># false</span></span><br></pre></td></tr></table></figure>
+<p>每次调用<code>yes_allocation</code>方法，内存都会新分配一个对方存储新的<code>&#39;a string&#39;</code>。</p>
+<h2 id="生成-lt-a-gt"><a href="#生成-lt-a-gt" class="headerlink" title="生成&lt;a&gt;"></a>生成<code>&lt;a&gt;</code></h2><p>现在的局面是跟 url 有关的字段都在 options 这个变量中，而跟元素其他属性相关的字段都以字典的形式存在 html_options 中，除了<code>href</code>属性。</p>
+<p>Rails 会用<code>url_for(options)</code>生成<code>href</code>属性需要的字符串，然后也存放到<code>html_options</code>中，就是<a href="https://github.com/rails/rails/blob/2135daf0d552bbb2eca4208f8c33fb015cf052ab/actionview/lib/action_view/helpers/url_helper.rb#L189" target="_blank" rel="noopener">这两行代码</a>：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">url = url_for(options)</span><br><span class="line">html_options[<span class="string">"href"</span>.freeze] <span class="params">||</span>= url</span><br></pre></td></tr></table></figure>
+<p>至于<code>url_for</code>方法是怎么生成 url 的，我们以后再讨论。</p>
+<p>更重要的是当所有这些<code>&lt;a&gt;</code>的元素都整理好之后，Rails 会用<code>content_tag</code>方法来生成<code>&lt;a&gt;</code>，怎么做的呢：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">content_tag(<span class="string">"a"</span>.freeze, name <span class="params">||</span> url, html_options, &amp;block)</span><br></pre></td></tr></table></figure>
+<p>而在 <code>content_tag</code> 方法中又发生了什么呢？这可以是独立的一节来描述，所以我们放到下一节。而且，可以想见，如果了解了 <code>content_tag</code>方法，其他类似的 tag 方法都可以类似的理解，比如<code>image_tag</code>。</p>
+<h2 id="Recap"><a href="#Recap" class="headerlink" title="Recap"></a>Recap</h2><p>到这里，我们可以小小的总结一下，我们从<code>link_to</code>这个在 ActionView 模块中定义的方法中看到了什么：</p>
+<ol>
+<li>利用含有默认值的 positional parameters 和接受 code block 类型的参数，使得调用方法的语法特别多样。</li>
+<li>在 block_given? 的情况下轮换参数顺序，使得在外部调用时感觉不到传参上的不便，比如出现<code>link_to(nil, &#39;http://example.com&#39;) { &#39;&lt;span&gt;Example&lt;/span&gt;&#39; }</code>这样必须传一个 nil 来站位的情况。</li>
+<li>封装方法，处理有很多个字段的字典，而不是在方法内部直接处理。在<code>link_to</code> 的外部，只需要使用<code>remote</code>等很简单的字段。转换成 html 元素属性的工作交给内部封装的方法。</li>
+<li>对于经常调用的方法中需要不断使用的同一字符串进行 freeze，减少 ruby 重新分别内存的次数，提高性能。这样的字符串也不适合复制给常量，因为使用的时候不够直接，所以就地<code>freeze</code>。</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Rails/" rel="tag"># Rails</a>
+          
+            <a href="/tags/源代码/" rel="tag"># 源代码</a>
+          
+            <a href="/tags/持续行动/" rel="tag"># 持续行动</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/25/rails-source-code-100-days-1/" rel="next" title="Rails 源代码 100 天（1）">
+                <i class="fa fa-chevron-left"></i> Rails 源代码 100 天（1）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/27/rails-source-code-100-days-3/" rel="prev" title="Rails 源代码 100 天（3）">
+                Rails 源代码 100 天（3） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/sining-avatar.png" alt="刘思宁">
+            
+              <p class="site-author-name" itemprop="name">刘思宁</p>
+              <p class="site-description motion-element" itemprop="description">一个无知的人</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">36</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/liusining" title="GitHub &rarr; https://github.com/liusining" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/liusining701213" title="Weibo &rarr; https://weibo.com/liusining701213" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/sining_start" title="Twitter &rarr; https://twitter.com/sining_start" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://stackoverflow.com/users/6633748/sining-liu" title="StackOverflow &rarr; https://stackoverflow.com/users/6633748/sining-liu" rel="noopener" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘思宁</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.6.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.6.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.6.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.6.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.6.0"></script>
+
+
+
+  
+
+  
+
+  
+    <script type="text/javascript">
+      var disqus_config = function () {
+        this.page.url = 'https://www.sining.io/2018/02/26/rails-source-code-100-days-2/';
+        this.page.identifier = '2018/02/26/rails-source-code-100-days-2/';
+        this.page.title = 'Rails 源代码 100 天（2）';
+        };
+      function loadComments () {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://sining-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      }
+      
+        $(function () {
+          var offsetTop = $('#comments').offset().top - $(window).height();
+          if (offsetTop <= 0) {
+            // load directly when there's no a scrollbar
+            loadComments();
+          } else {
+            $(window).on('scroll.disqus_scroll', function () {
+              // offsetTop may changes because of manually resizing browser window or lazy loading images.
+              var offsetTop = $('#comments').offset().top - $(window).height();
+              var scrollTop = $(window).scrollTop();
+
+              // pre-load comments a bit? (margin or anything else)
+              if (offsetTop - scrollTop < 60) {
+                $(window).off('.disqus_scroll');
+                loadComments();
+              }
+            });
+          }
+        });
+      
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
