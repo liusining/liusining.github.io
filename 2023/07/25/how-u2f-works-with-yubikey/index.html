@@ -114,25 +114,28 @@
 
 
 
-  <meta name="description" content="你何时曾看见，这世界为人们改变？">
-<meta name="keywords" content="社会,递弱代偿,文明">
+  <meta name="description" content="一种配合加密硬件使用的二次验证协议">
+<meta name="keywords" content="编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我们把世界看错了，却反说世界欺骗了我们——生小孩与996问题">
-<meta property="og:url" content="https://www.sining.io/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/index.html">
+<meta property="og:title" content="FIDO U2F 工作原理（配合 Yubikey）">
+<meta property="og:url" content="https://www.sining.io/2023/07/25/how-u2f-works-with-yubikey/index.html">
 <meta property="og:site_name" content="sining.io">
-<meta property="og:description" content="你何时曾看见，这世界为人们改变？">
+<meta property="og:description" content="一种配合加密硬件使用的二次验证协议">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-01-15T12:40:20.794Z">
+<meta property="og:image" content="https://www.sining.io/images/U2F_registration_pro_17d2.png">
+<meta property="og:image" content="https://www.sining.io/images/U2F_authenticatoin_p_1e6e.png">
+<meta property="og:updated_time" content="2023-07-25T04:35:59.870Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我们把世界看错了，却反说世界欺骗了我们——生小孩与996问题">
-<meta name="twitter:description" content="你何时曾看见，这世界为人们改变？">
+<meta name="twitter:title" content="FIDO U2F 工作原理（配合 Yubikey）">
+<meta name="twitter:description" content="一种配合加密硬件使用的二次验证协议">
+<meta name="twitter:image" content="https://www.sining.io/images/U2F_registration_pro_17d2.png">
 
 
 
 
 
 
-  <link rel="canonical" href="https://www.sining.io/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/">
+  <link rel="canonical" href="https://www.sining.io/2023/07/25/how-u2f-works-with-yubikey/">
 
 
 
@@ -142,7 +145,7 @@
   };
 </script>
 
-  <title>我们把世界看错了，却反说世界欺骗了我们——生小孩与996问题 | sining.io</title>
+  <title>FIDO U2F 工作原理（配合 Yubikey） | sining.io</title>
   
 
 
@@ -320,7 +323,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/">
+    <link itemprop="mainEntityOfPage" href="https://www.sining.io/2023/07/25/how-u2f-works-with-yubikey/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="刘思宁">
@@ -337,7 +340,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">我们把世界看错了，却反说世界欺骗了我们——生小孩与996问题
+          <h2 class="post-title" itemprop="name headline">FIDO U2F 工作原理（配合 Yubikey）
               
             
           </h2>
@@ -362,24 +365,12 @@
                 
               
 
-              <time title="创建时间：2019-05-12 08:05:28" itemprop="dateCreated datePublished" datetime="2019-05-12T08:05:28+08:00">2019-05-12</time>
+              <time title="创建时间：2023-07-25 12:34:22 / 修改时间：12:35:59" itemprop="dateCreated datePublished" datetime="2023-07-25T12:34:22+08:00">2023-07-25</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2022-01-15 20:40:20" itemprop="dateModified" datetime="2022-01-15T20:40:20+08:00">2022-01-15</time>
               
             
           </span>
@@ -398,7 +389,7 @@
           
 
           
-              <div class="post-description">你何时曾看见，这世界为人们改变？</div>
+              <div class="post-description">一种配合加密硬件使用的二次验证协议</div>
           
 
         </div>
@@ -414,51 +405,68 @@
       
 
       
-        <p>昨天读到一篇文章<sup><a href="#fn_1" id="reffn_1">1</a></sup>，大意是说：</p>
-<blockquote>
-<p>女人生小孩很痛苦，媒体却描述得很轻松。生完小孩后身体会出现很多尴尬的问题，过去优雅和自如会丧失大半，年轻女孩不懂，男人更不懂。</p>
-</blockquote>
-<p>按照传统的说法，母亲们是伟大的，我坚决拥护。但这伟大的游戏，不知道还能继续多久。</p>
-<p><strong>举目四望，自然界里也只有人类不能独立完成生产吧。</strong>猫、狗、马，谁不是找个地方就生产了呢？只有人类为了自己的生产，竟然还培养了一个独特的职业——妇产科医生。那些动物也基本是刚生产完就又活蹦乱跳了，没听说过有难产，更没听说过剖腹产，只听说过人类因为太贪婪可能会对动物杀鸡取卵。（《动物世界》里是这么演的）</p>
-<p>据说，越高级的动物生产难度越大。猪、狗、猫都是一胎多生，黑猩猩已经是一胎一个了。终于，这世界进化出了比黑猩猩更高级的人类，于是人类只好一胎生出半个：因为生出的孩子需要精心照料，才能成长，这被称为<strong>长大“成人”</strong>，说的就是在成人之前，母亲只生出了半个人吧。</p>
-<p>但人类还在进化。通过经济、技术、政治，完成层层进化。终于，西方的人口出生率据说已经很低了，中国年轻人又有多少愿意生小孩呢？于是，人类似乎连那半个孩子也不用生了。</p>
-<p>人们为此找了很多原因，工作压力啊，房价啊，养孩成本啊<sup><a href="#fn_5" id="reffn_5">5</a></sup>等等。这是典型的<a href="https://www.sining.io/2019/04/27/multi-factor-analysis-is-not-that-believable/?utm_campaign=self_ref&amp;utm_medium=link&amp;utm_source=siningio">多因素归因</a>，但须知，我们找这么多原因，不是因为我们眼界开阔，反而说明我们浅薄。例如，亚当斯密只把市场解释为“看不见的手”，而不是技术、心理、环境等多因素的东西；达尔文也只把进化解释为“自然选择”，而不是气候、食物、地理等多因素的影响。总之，似乎，看得见的都不够深刻，他们背后的东西才是唯一原因。</p>
-<p>而那原因是什么呢？已如上述。（当然，我也是猜的，兼参考《物演通论》）</p>
-<p>当然，还有一些人（包括我），意识到了人生的意义不只有生养孩子，坚信要追寻其他的意义。倘若长辈催婚催生，他们（也包括我）有十万个理由反驳你。但问题是，为什么偏偏是这个时候，似乎越来越多的人产生了这种意识呢？是那些人自由意志的独立思考？或许吧，这么想可以让我们心里好受一点。但我也怀疑，这是不是翻版的“死到临头了，还敢嘴硬”。</p>
-<p>贾平凹曾写过这样一个故事<sup><a href="#fn_2" id="reffn_2">2</a></sup>，你在其他地方可能也听说过：</p>
-<blockquote>
-<p>（贾平凹）眼前的这位小牧羊人形状丑陋，正是读书的年纪却在放羊了！<br>我问他：“你怎么不去上学呢？”<br>他说：“放羊哩嘛！”<br>“放羊为啥哩？”<br>“挤奶嘛！”<br>“挤奶为啥哩？”<br>“赚钱嘛！”<br>“赚钱为啥哩？”<br>“娶媳妇嘛！”<br>“娶媳妇为啥哩！”<br>“生娃嘛！”<br>“生娃为啥哩？”<br>“放羊嘛！”<br>我哈哈大笑，笑完了心里却酸酸的不是个滋味。</p>
-</blockquote>
-<p>我也曾笑过，（应该是跟贾平凹一样）笑这个孩子无知。但现在却忽然觉得一叶障目的人是我，还有点佩服这位放羊小哥的勇气。你让我承认人生的目的就是这个，我估计我就活不下去了。</p>
-<p>这故事已经过去了十几年吧。抬眼一看，世界终于来到了今天。</p>
-<p>这样尖锐的对比之下，我不得不怀疑，人类越来越成了大自然的弃婴。哈，我真不要脸，竟然说这种大话。当然，我们也可以自豪的认为，人类彻底摆脱了大自然的束缚，虎豹豺狼统统滚出城市，虽然小强留了下来。</p>
-<p>可是，摆脱了大自然的束缚很爽么？当然啊。可以坐飞机到处飞啊，买进口水果啊，用最薄的雨衣也不用担心身边多了个喊着要吃奶的嘴。然而，我还无法理解这些到底是什么，可能多年后（50年，100年）大家会有不一样的共识吧。趁着现在大家的世界观还没有改变，赶紧享受吧。</p>
-<p>但是，如果看另一面，可能就有点不美妙了。你看那些野生动物们，好像都处于失业状态，整天游手好闲，但人家饿不死，也不用买房，大自然给了他们基本的生存财富，只有人类社会中才有无产阶级。家养动物也基本上不用工作，整天奴役你来给他们买食物。而人类不行，我们的食物都需要工厂生产，需要人工烹饪，而且，恰好，生产食物的方法我们自己早已不会，只能交给<a href="https://www.sining.io/2019/03/29/our-society-is-differentiating/?utm_campaign=self_ref&amp;utm_medium=link&amp;utm_source=siningio">社会分工</a>（别以为会炒个菜就是会生产食物，摆在你面前的每份蔬菜可能都是经过了长长的生产链条才摆在市场摊位上的<sup><a href="#fn_3" id="reffn_3">3</a></sup>）；即使大自然有免费的果实，以我们残弱的身体，保证你吃没两天就拉肚子而死。</p>
-<p>因此，想要摆脱无产阶级的命运么？想通过社会分工体系换到食物么？工作吧，工作使人充实。</p>
-<p>但据说最近国内流行 996，弄得很多白领们心里窝火。要我说，生气也不应该气公司，敲打敲打自己可能才是正途：毕竟，你若有本事不工作，或者有能力跳槽，又何尝需要心不甘情不愿地 996 呢？还不是因为，你必须依靠公司（在你看来，还是黑心老板开的公司）来赚钱。甚至还可以说，是你太依赖这个社会，你的每件生活必需品，都需要由这个社会上的其他人来创造，电脑、手机、医疗、房子、车子，连钱都是别人印出来的，甚至治安、公平都需要交税来买，虽然还不一定买的到。所以，我们能跑到哪去？不是在一家公司工作，就是直接面向社会工作，然后才能有钱来满足自己其他的需要（你的房子在向你招手呢）。</p>
-<p>所以，没什么可抱怨的。没有人可以一直自由自在地过一生（吧），你脱离了自然，就要承受人类社会的困扰。正所谓：</p>
-<blockquote>
-<p>文明就是人祸逐步取代天灾的过程<sup><a href="#fn_4" id="reffn_4">4</a></sup></p>
-</blockquote>
-<p>在这个进步、进化、发展的康庄大道上，没有了天灾，给我们点人祸尝尝也是应该的。</p>
-<p>（注：我绝没有反对个人进步，因为个人渺小又脆弱，不进步的话可能连存在的资格都没有。这就是“老大徒伤悲”的隐藏含义，也是我们作为人有别于其他动物的地方。但不要搞错方向，我猜，进步是为了坚强地存在，而不是为了“好看”，你说呢？）</p>
+        <p>U2F 是一种使用硬件完成二次验证的协议，尝试解决过去的二次验证（2FA）或者多次验证（MFA）中的问题，比如对钓鱼网站没有防治功能<sup><a href="#fn_1" id="reffn_1">1</a></sup>；当然更能避免短信验证中运营商劫持等问题。</p>
+<p>我们先假设用户使用硬件是 Yubikey，要在一个浏览器中先后完成 2FA 的启用和验证。这个过程可以在 <a href="https://demo.yubico.com/" target="_blank" rel="noopener">Yubico demo website</a> 上模拟。</p>
+<h2 id="启用过程2"><a href="#启用过程2" class="headerlink" title="启用过程2"></a>启用过程<sup><a href="#fn_2" id="reffn_2">2</a></sup></h2><p>首先，用户请求在一个网站上启用 U2F，则网站的 server 至少会给前端返回：</p>
+<ol>
+<li>challenge，一个随机值，比如 <code>&quot;gcgeFFWFSxlXcCsGXmB0dY1kTeVx3rL/ZqN+Gjh2Vns=&quot;</code></li>
+<li>app id，一个代表网站的 URI<sup><a href="#fn_3" id="reffn_3">3</a></sup>。现在也叫 rp id，即 replying party id，这其实是 WebAuthn 协议中使用的名称，但和 U2F 的 app id 类似<sup><a href="#fn_4" id="reffn_4">4</a></sup></li>
+</ol>
+<p>然后，前端通过浏览器 API 把上述数据发送给 yubikey，所以需要浏览器支持 U2F。不过，目前 Chrome、Firefox 等浏览器已经移除了独立的 U2F API<sup><a href="#fn_5" id="reffn_5">5</a></sup><sup><a href="#fn_6" id="reffn_6">6</a></sup>，U2F 改为通过 WebAuthn API 实现<sup><a href="#fn_5" id="reffn_5">5</a></sup>：<code>navigator.credentials.create()</code></p>
+<p>另外，浏览器负责检查 app id 和当前网站是否一致，以防止钓鱼网站，然后再调用 yubikey 硬件。发给硬件的数据包括（其中的 origin 约等于 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin" target="_blank" rel="noopener">http 协议中的 origin</a>）：</p>
+<ol>
+<li>origin 哈希：<code>sha256(origin)</code></li>
+<li>challenge 哈希：<code>sha256(challenge, origin, 其他)</code></li>
+</ol>
+<p>接着，Yubikey 生成公私钥、key handle（私钥提手）、签名、设备证书（attestation cert），并返回给前端。</p>
+<p>其中 key handle 的作用是方便 yubikey 找到特定的私钥，因为一个 yubikey 会生成很多个私钥，对不同的网站会生成不同的私钥。yubikey 对于 key handle 的算法是 <code>keyHandle = AES(f(master key), private key + origin 哈希)</code>，也就是说私钥经过加密后，是返回给网站去存储的，这样的好处是 yubikey 不用自己记录私钥，节省存储空间，而且 yubico 认为这样并没有不安全<sup><a href="#fn_2" id="reffn_2">2</a></sup>。</p>
+<p>最后就是网站 server 收到前端转发来的签名信息，然后校验签名。成功，则把公钥、key handle 存储在用户的账户信息中。至此就完成了 U2F 的启用。</p>
+<p><img src="/images/U2F_registration_pro_17d2.png" alt="U2F registration process"></p>
+<h2 id="验证过程2"><a href="#验证过程2" class="headerlink" title="验证过程2"></a>验证过程<sup><a href="#fn_2" id="reffn_2">2</a></sup></h2><ol>
+<li>用户进入 U2F 验证的步骤，则服务器给前端返回验证需要的信息：key handle，app id，challenge。这些概念在“启用过程”中都出现过。</li>
+<li>前端通过浏览器 API <code>navigator.credentials.get()</code> 调用 yubikey。浏览器检查当前网页 origin 和 app id 是否匹配。检查通过则把 origin 哈希，challenge 哈希，key handle 发给 yubikey.</li>
+<li>yubikey 利用 key handle 找到之前用于这个网站的私钥。基于 yubikey 的 key handle 算法，其实就是从 key handle 中解密出私钥和刚启用时使用的 origin 哈希，比对当前验证的 origin 哈希和启用时的 origin 哈希。</li>
+<li>yubikey 签名：<code>signature(challenge 哈希 + origin 哈希 + counter)</code>，并把签名、counter 返回给浏览器</li>
+<li>前端转发签名信息给 server，server 用公钥校验签名，并且比对返回的 counter 大于之前存储的 counter。至此完成一次验证。</li>
+</ol>
+<p><img src="/images/U2F_authenticatoin_p_1e6e.png" alt="U2F authenticatoin process"></p>
+<h2 id="其他硬件，其他-app"><a href="#其他硬件，其他-app" class="headerlink" title="其他硬件，其他 app"></a>其他硬件，其他 app</h2><p>对于其他非 yubikey 的密钥硬件，U2F 协议的表现也是相同的，只是硬件返回给 server 的数据会有细节上的差别，比如 key handle 的算法不同。</p>
+<p>对于非浏览器的 app，可能要考虑怎么组织自己的 app id，比如在一个 app id 中使用多个 facet id 代表不同的设备平台<sup><a href="#fn_7" id="reffn_7">7</a></sup>。但 U2F 协议的其他表现也是一样的。</p>
+<h2 id="有什么用"><a href="#有什么用" class="headerlink" title="有什么用"></a>有什么用</h2><p>这种协议设计如何保护我们的数据安全呢？</p>
+<p>我们分别假设整个流程中，不同的组件被攻击。</p>
+<ol>
+<li>弱密码或密码泄漏：各种 2FA 技术都能阻止单纯的密码泄漏导致的攻击，U2F 当然也能</li>
+<li>服务器被攻击：你在这个网站的数据极可能会泄漏，但攻击者无法得到你的 FIDO master key（存在 yubikey 中），所以就无法破译你在其他网站的 U2F key handle，那些账户不会受到影响。</li>
+<li>网站被模仿：攻击者用一个域名和页面都很像的网站钓鱼你，他会得到你输入的用户名和密码，但是浏览器只会使用钓鱼网站的 origin 让 yubikey 签名。当攻击者想用你刚刚生成的签名登录真网站时，origin 对不上则签名验证会失败，无法窃取你更多的数据。</li>
+<li>浏览器或者 app 被篡改：比如你从不可信的地方下载的应用软件，其代码可能已经被篡改，会跳过 origin 校验，这时 yubikey 签名用的 origin 和 challenge 可能都来自真网站，你的签名就是有效的，攻击会就能冒充你完成登录。甚至，攻击者都不用在乎你的 U2F 验证过程，只需要等你彻底完成登录之后，拿走你的 Session Token 或者 Access Token 就行。</li>
+<li>连接不安全：如果连接本身不安全，中间人可以得知实际的 challenge 和对应的签名，也可以窃取你的 Session Token 继而模仿你的身份。</li>
+<li>yubikey 被复制：据说，部分型号的 yubikey 也可能被复制，但是需要物理破坏硬件的外壳<sup><a href="#fn_1" id="reffn_1">1</a></sup>，因此买到 yubikey 之后应该检查一下外观。不过，外观修复可能并不容易<sup><a href="#fn_8" id="reffn_8">8</a></sup>，广撒网式大批量伪造的可能性会降低。当然或许还有制造商本身作恶的风险<sup><a href="#fn_1" id="reffn_1">1</a></sup>，比如生产时记录 master key。不过对于二次验证的场景，如果攻击者不知道你的用户名和密码，也就拿不到数据。</li>
+</ol>
+<p>综上，U2F + yubikey 也并不能防止所有的安全问题。但是能辅助网站确认你是你，在安全的设备和浏览器里也能防止钓鱼。</p>
 <blockquote id="fn_1">
-<sup>1</sup>. 大龄产妇梅根王妃和中国年轻女孩之间的生产鸿沟 (2019). Retrieved May 11, 2019, from 微信 website: <a href="https://mp.weixin.qq.com/s/S8UJXnKvPemud0_ulwRf9A‌" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/S8UJXnKvPemud0_ulwRf9A‌</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+<sup>1</sup>. <a href="https://en.wikipedia.org/wiki/Universal_2nd_Factor" target="_blank" rel="noopener">Universal 2nd Factor - Wikipedia</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_2">
-<sup>2</sup>. 贾平凹. (2014). 老西安. In 《老西安》 (p. 6). 中国社会出版社.<a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
+<sup>2</sup>. <a href="https://docs.yubico.com/yesdk/users-manual/application-u2f/how-u2f-works.html" target="_blank" rel="noopener">How FIDO U2F works</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_3">
-<sup>3</sup>. Wikipedia Contributors. (2019, May 7). Food, Inc. Retrieved May 14, 2019, from Wikipedia website: <a href="https://en.wikipedia.org/wiki/Food%2C_Inc.‌" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Food%2C_Inc.‌</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
+<sup>3</sup>. <a href="https://developers.yubico.com/U2F/App_ID.html" target="_blank" rel="noopener">App ID</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_4">
-<sup>4</sup>. 王东岳. (2010). 《人类的没落》. 陕西人民出版社.<a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
+<sup>4</sup>. <a href="https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/Migrating_from_U2F.html" target="_blank" rel="noopener">Migrating from U2F</a><a href="#reffn_4" title="Jump back to footnote [4] in the text."> &#8617;</a>
 </blockquote>
 <blockquote id="fn_5">
-<sup>5</sup>. 单颖文. (2015). 当人口大国不再年轻：马尔萨斯与中国人口政策-中国社会科学网. Retrieved July 26, 2019, from Cssn.cn website: <a href="http://www.cssn.cn/shx/shx_bjtj/201503/t20150320_1555696_3.shtml" target="_blank" rel="noopener">http://www.cssn.cn/shx/shx_bjtj/201503/t20150320_1555696_3.shtml</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
+<sup>5</sup>. <a href="https://www.yubico.com/blog/google-chrome-u2f-api-decommission/" target="_blank" rel="noopener">Google Chrome U2F API decommission: What the change means for your users and how to prepare - Yubico</a><a href="#reffn_5" title="Jump back to footnote [5] in the text."> &#8617;</a>
 </blockquote>
-<p>‌</p>
-<p>‌</p>
+<blockquote id="fn_6">
+<sup>6</sup>. <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1737205" target="_blank" rel="noopener">1737205 - Remove the U2F DOM API once Chrome and Google websites have deprecated it</a><a href="#reffn_6" title="Jump back to footnote [6] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_7">
+<sup>7</sup>. <a href="https://web.archive.org/web/20220520201808/https://fidoalliance.org/specs/fido-u2f-v1.2-ps-20170411/fido-u2f-overview-v1.2-ps-20170411.html" target="_blank" rel="noopener">Universal 2nd Factor (U2F) Overview</a><a href="#reffn_7" title="Jump back to footnote [7] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_8">
+<sup>8</sup>. <a href="https://www.zdnet.com/article/should-you-worry-about-hackers-cloning-your-2fa-hardware-security-keys/" target="_blank" rel="noopener">Should you worry about hackers cloning your 2FA hardware security keys? | ZDNET</a><a href="#reffn_8" title="Jump back to footnote [8] in the text."> &#8617;</a>
+</blockquote>
 
       
     </div>
@@ -482,11 +490,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/社会/" rel="tag"># 社会</a>
-          
-            <a href="/tags/递弱代偿/" rel="tag"># 递弱代偿</a>
-          
-            <a href="/tags/文明/" rel="tag"># 文明</a>
+            <a href="/tags/编程/" rel="tag"># 编程</a>
           
         </div>
       
@@ -499,8 +503,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/09/what-is-absolute-what-is-relative/" rel="next" title="什么是绝对？什么是相对？什么是辩证？">
-                <i class="fa fa-chevron-left"></i> 什么是绝对？什么是相对？什么是辩证？
+              <a href="/2023/07/19/what-is-right-ascension-and-declination/" rel="next" title="什么是赤经、赤纬，以及赤道仪如何指向特定坐标？">
+                <i class="fa fa-chevron-left"></i> 什么是赤经、赤纬，以及赤道仪如何指向特定坐标？
               </a>
             
           </div>
@@ -508,10 +512,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/07/reasoning-is-used-for-fighting-for-benefits/" rel="prev" title="讲道理就是谈利益">
-                讲道理就是谈利益 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -896,9 +896,9 @@
   
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'https://www.sining.io/2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/';
-        this.page.identifier = '2019/05/12/we-read-the-world-wrong-and-say-it-deceives-us-human-living/';
-        this.page.title = '我们把世界看错了，却反说世界欺骗了我们——生小孩与996问题';
+        this.page.url = 'https://www.sining.io/2023/07/25/how-u2f-works-with-yubikey/';
+        this.page.identifier = '2023/07/25/how-u2f-works-with-yubikey/';
+        this.page.title = 'FIDO U2F 工作原理（配合 Yubikey）';
         };
       function loadComments () {
         var d = document, s = d.createElement('script');
